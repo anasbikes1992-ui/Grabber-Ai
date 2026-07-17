@@ -1,9 +1,5 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { authenticateRequest } from "@/auth/getUser";
-import { getRequiredAccessRole } from "@/auth/permissions";
-import { hasRequiredAccess } from "@/auth/roles";
-import { logAuthAudit } from "@/auth/audit";
 import { updateSession } from "@/lib/supabase/middleware";
 
 /**
@@ -14,6 +10,36 @@ import { updateSession } from "@/lib/supabase/middleware";
 export async function middleware(req: NextRequest) {
   if (!req.nextUrl.pathname.startsWith("/api/")) {
     return updateSession(req);
+  }
+
+  let authenticateRequest: typeof import("@/auth/getUser").authenticateRequest;
+  let getRequiredAccessRole: typeof import("@/auth/permissions").getRequiredAccessRole;
+  let hasRequiredAccess: typeof import("@/auth/roles").hasRequiredAccess;
+  let logAuthAudit: typeof import("@/auth/audit").logAuthAudit;
+
+  try {
+    [
+      { authenticateRequest },
+      { getRequiredAccessRole },
+      { hasRequiredAccess },
+      { logAuthAudit },
+    ] = await Promise.all([
+      import("@/auth/getUser"),
+      import("@/auth/permissions"),
+      import("@/auth/roles"),
+      import("@/auth/audit"),
+    ]);
+  } catch (error) {
+    console.error(
+      JSON.stringify({
+        scope: "middleware",
+        event: "auth_module_load_failed",
+        pathname: req.nextUrl.pathname,
+        method: req.method,
+        error: error instanceof Error ? error.message : String(error),
+      }),
+    );
+    return NextResponse.json({ ok: false, error: "internal_error" }, { status: 500 });
   }
 
   const origin = req.headers.get("origin") || "";
@@ -32,7 +58,12 @@ export async function middleware(req: NextRequest) {
 
   if (allowed.length === 0) {
     if (!origin || origin === requestOrigin) {
-      return allowRequest(req, requestOrigin);
+      return allowRequest(req, requestOrigin, {
+        authenticateRequest,
+        getRequiredAccessRole,
+        hasRequiredAccess,
+        logAuthAudit,
+      });
     }
     return new NextResponse("CORS not configured", { status: 500 });
   }
@@ -50,21 +81,35 @@ export async function middleware(req: NextRequest) {
     });
   }
 
-  return allowRequest(req, allowOrigin);
+  return allowRequest(req, allowOrigin, {
+    authenticateRequest,
+    getRequiredAccessRole,
+    hasRequiredAccess,
+    logAuthAudit,
+  });
 }
 
-async function allowRequest(req: NextRequest, allowOrigin: string) {
-  const authResult = await authenticateRequest(req);
+async function allowRequest(
+  req: NextRequest,
+  allowOrigin: string,
+  auth: {
+    authenticateRequest: typeof import("@/auth/getUser").authenticateRequest;
+    getRequiredAccessRole: typeof import("@/auth/permissions").getRequiredAccessRole;
+    hasRequiredAccess: typeof import("@/auth/roles").hasRequiredAccess;
+    logAuthAudit: typeof import("@/auth/audit").logAuthAudit;
+  },
+) {
+  const authResult = await auth.authenticateRequest(req);
   if (!authResult.ok) {
-    logAuthAudit(req, "deny", null, getRequiredAccessRole(req.nextUrl.pathname, req.method), {
+    auth.logAuthAudit(req, "deny", null, auth.getRequiredAccessRole(req.nextUrl.pathname, req.method), {
       error: authResult.error,
     });
     return jsonWithCors({ ok: false, error: authResult.error }, authResult.status, allowOrigin);
   }
 
-  const requiredRole = getRequiredAccessRole(req.nextUrl.pathname, req.method);
-  if (requiredRole && !hasRequiredAccess(authResult.identity.accessRole, requiredRole)) {
-    logAuthAudit(req, "deny", authResult.identity, requiredRole, {
+  const requiredRole = auth.getRequiredAccessRole(req.nextUrl.pathname, req.method);
+  if (requiredRole && !auth.hasRequiredAccess(authResult.identity.accessRole, requiredRole)) {
+    auth.logAuthAudit(req, "deny", authResult.identity, requiredRole, {
       error: `insufficient role: requires ${requiredRole}`,
     });
     return jsonWithCors(
@@ -99,7 +144,7 @@ async function allowRequest(req: NextRequest, allowOrigin: string) {
   res.headers.set("x-auth-user-id", authResult.identity.userId);
   res.headers.set("x-auth-role", authResult.identity.authRole);
 
-  logAuthAudit(req, "allow", authResult.identity, requiredRole);
+  auth.logAuthAudit(req, "allow", authResult.identity, requiredRole);
 
   return res;
 }

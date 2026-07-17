@@ -15,24 +15,37 @@ export async function updateSession(request: NextRequest): Promise<NextResponse>
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim() ?? "";
   if (!url || !anonKey) return response;
 
-  const supabase = createServerClient(url, anonKey, {
-    cookies: {
-      getAll() {
-        return request.cookies.getAll();
+  try {
+    const supabase = createServerClient(url, anonKey, {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll();
+        },
+        setAll(cookiesToSet: CookieToSet[]) {
+          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
+          response = NextResponse.next({ request });
+          cookiesToSet.forEach(({ name, value, options }) =>
+            response.cookies.set(name, value, options),
+          );
+        },
       },
-      setAll(cookiesToSet: CookieToSet[]) {
-        cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
-        response = NextResponse.next({ request });
-        cookiesToSet.forEach(({ name, value, options }) =>
-          response.cookies.set(name, value, options),
-        );
-      },
-    },
-  });
+    });
 
-  // Touch the session so an expired access token is refreshed via the
-  // refresh token and the rotated cookie is written to `response`.
-  await supabase.auth.getUser();
+    // Refresh the session opportunistically. Page-level layouts still own the
+    // actual access decision, so middleware should not 500 if token refresh
+    // fails in Edge/runtime environments.
+    await supabase.auth.getUser();
+  } catch (error) {
+    console.warn(
+      JSON.stringify({
+        scope: "middleware",
+        event: "supabase_session_refresh_failed",
+        pathname: request.nextUrl.pathname,
+        error: error instanceof Error ? error.message : String(error),
+      }),
+    );
+    return NextResponse.next({ request });
+  }
 
   return response;
 }
