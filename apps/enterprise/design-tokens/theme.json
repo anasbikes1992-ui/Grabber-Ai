@@ -1,0 +1,36 @@
+{
+  "colors": {
+    "background": "#06080f",
+    "backgroundElevated": "#0b0f1a",
+    "surface": "rgba(15, 21, 36, 0.62)",
+    "text": "#e8edf7",
+    "muted": "#8ea3c0",
+    "border": "rgba(148, 163, 184, 0.12)",
+    "primary": "#38bdf8",
+    "secondary": "#a78bfa",
+    "success": "#34d399",
+    "warn": "#fbbf24",
+    "danger": "#f87171"
+  },
+  "radius": {
+    "card": "14px",
+    "control": "10px",
+    "pill": "999px"
+  },
+  "motion": {
+    "ease": [0.22, 1, 0.36, 1],
+    "spring": {
+      "stiffness": 420,
+      "damping": 28
+    },
+    "duration": {
+      "fast": 140,
+      "base": 300,
+      "slow": 520
+    }
+  },
+  "shadow": {
+    "panel": "0 12px 40px rgba(0, 0, 0, 0.35)",
+    "glow": "0 0 40px rgba(56, 189, 248, 0.15)"
+  }
+}

@@ -1,7 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   Empty,
   Metric,
@@ -9,6 +11,8 @@ import {
   Section,
   StatusPill,
 } from "@/components/ui";
+import { DESIGN_TOKENS } from "@/lib/design-tokens";
+import { createFadeUpVariant, createStaggerVariant } from "@/lib/motion";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type View = any;
@@ -23,6 +27,7 @@ type Tab =
   | "meetings";
 
 export default function ClientPortalPage() {
+  const searchParams = useSearchParams();
   const [client, setClient] = useState("");
   const [clients, setClients] = useState<string[]>([]);
   const [view, setView] = useState<View | null>(null);
@@ -35,6 +40,25 @@ export default function ClientPortalPage() {
   const [error, setError] = useState("");
   const [msg, setMsg] = useState("");
   const [busy, setBusy] = useState(false);
+  const prefersReducedMotion = useReducedMotion() ?? true;
+  const containerVariant = useMemo(
+    () =>
+      createStaggerVariant(
+        prefersReducedMotion,
+        0.06,
+        DESIGN_TOKENS.motion.duration.fast,
+      ),
+    [prefersReducedMotion],
+  );
+  const cardVariant = useMemo(
+    () =>
+      createFadeUpVariant(
+        prefersReducedMotion,
+        14,
+        DESIGN_TOKENS.motion.duration.base,
+      ),
+    [prefersReducedMotion],
+  );
 
   const loadClients = useCallback(async () => {
     const res = await fetch("/api/portal").then((r) => r.json());
@@ -44,6 +68,14 @@ export default function ClientPortalPage() {
   useEffect(() => {
     void loadClients();
   }, [loadClients]);
+
+  useEffect(() => {
+    const seededClient = searchParams.get("client") || "";
+    if (!seededClient.trim()) return;
+    setClient(seededClient);
+    void load(seededClient);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   async function load(name = client) {
     if (!name.trim()) return;
@@ -101,7 +133,7 @@ export default function ClientPortalPage() {
   ];
 
   return (
-    <div>
+    <motion.div variants={containerVariant} initial="hidden" animate="visible">
       <PageHeader
         title="Client Portal"
         description="Your project status, documents, invoices, approvals, and support — transparent end to end."
@@ -112,9 +144,10 @@ export default function ClientPortalPage() {
         }
       />
 
-      <Section title="Sign in as client">
+      <motion.div variants={cardVariant}>
+        <Section title="Sign in as client">
         <div className="flex flex-wrap items-end gap-2">
-          <div className="min-w-[200px] flex-1">
+          <div className="min-w-50 flex-1">
             <label className="label">Client name</label>
             {clients.length > 0 ? (
               <select
@@ -153,28 +186,32 @@ export default function ClientPortalPage() {
         {msg ? (
           <p className="mt-3 text-sm text-emerald-300">{msg}</p>
         ) : null}
-      </Section>
+        </Section>
+      </motion.div>
 
       {!view ? (
-        <div className="mt-4">
+        <motion.div variants={cardVariant} className="mt-4">
           <Empty>
             Open a client with an engagement (seed from Command Center, or create
             one in Business OS). Example: Harbor Hotel.
           </Empty>
-        </div>
+        </motion.div>
       ) : (
         <>
           {/* Hero status */}
-          <div className="mt-4 rounded-2xl border border-sky-500/20 bg-gradient-to-br from-sky-500/10 via-transparent to-violet-500/10 p-5">
+          <motion.div
+            variants={cardVariant}
+            className="mt-4 rounded-2xl border border-sky-500/20 bg-linear-to-br from-sky-500/10 via-transparent to-violet-500/10 p-5"
+          >
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
-                <p className="text-xs uppercase tracking-wide text-[var(--muted)]">
+                <p className="text-xs uppercase tracking-wide text-(--muted)">
                   Project status
                 </p>
                 <h2 className="mt-1 text-2xl font-semibold tracking-tight">
                   {view.project_status?.label}
                 </h2>
-                <p className="mt-2 max-w-xl text-sm text-[var(--muted)]">
+                <p className="mt-2 max-w-xl text-sm text-(--muted)">
                   {view.trust_message}
                 </p>
               </div>
@@ -182,12 +219,12 @@ export default function ClientPortalPage() {
                 <p className="text-3xl font-semibold">
                   {view.progress_pct ?? 0}%
                 </p>
-                <p className="text-xs text-[var(--muted)]">overall progress</p>
+                <p className="text-xs text-(--muted)">overall progress</p>
               </div>
             </div>
             <div className="mt-4 h-2 overflow-hidden rounded-full bg-black/30">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-sky-400 to-violet-500 transition-all"
+                className="h-full rounded-full bg-linear-to-r from-sky-400 to-violet-500 transition-all"
                 style={{ width: `${view.progress_pct || 0}%` }}
               />
             </div>
@@ -204,9 +241,22 @@ export default function ClientPortalPage() {
                 <StatusPill status="in_delivery" />
               ) : null}
             </div>
-          </div>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <Link href={`/consult?client=${encodeURIComponent(view.client || client)}`} className="btn btn-ghost text-xs">
+                Back to consultant view
+              </Link>
+              {engId ? (
+                <Link
+                  href={`/business?id=${encodeURIComponent(engId)}`}
+                  className="btn btn-primary text-xs"
+                >
+                  Open factory workspace
+                </Link>
+              ) : null}
+            </div>
+          </motion.div>
 
-          <div className="mt-4 grid-metrics">
+          <motion.div variants={cardVariant} className="mt-4 grid-metrics">
             <Metric
               label="Proposal"
               value={
@@ -230,24 +280,29 @@ export default function ClientPortalPage() {
               label="Deployments"
               value={(view.builds || []).length}
             />
-          </div>
+          </motion.div>
 
           {/* Tabs */}
-          <div className="mt-4 flex flex-wrap gap-2 border-b border-[var(--border)] pb-3">
+          <motion.div
+            variants={cardVariant}
+            className="mt-4 flex flex-wrap gap-2 border-b border-(--border) pb-3"
+          >
             {tabs.map((t) => (
-              <button
+              <motion.button
                 key={t.id}
                 type="button"
                 className={`btn text-xs ${tab === t.id ? "btn-primary" : "btn-ghost"}`}
                 onClick={() => setTab(t.id)}
+                whileHover={prefersReducedMotion ? undefined : { y: -1 }}
+                whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
               >
                 {t.label}
-              </button>
+              </motion.button>
             ))}
-          </div>
+          </motion.div>
 
           {tab === "overview" ? (
-            <div className="mt-4 grid gap-4 lg:grid-cols-2">
+            <motion.div variants={containerVariant} className="mt-4 grid gap-4 lg:grid-cols-2">
               <Section title="Engagements">
                 <ul className="space-y-2 text-sm">
                   {(view.engagements || []).map(
@@ -260,7 +315,7 @@ export default function ClientPortalPage() {
                     }) => (
                       <li
                         key={e.id}
-                        className="flex items-center justify-between rounded-lg border border-[var(--border)] px-3 py-2"
+                        className="flex items-center justify-between rounded-lg border border-(--border) px-3 py-2"
                       >
                         <div>
                           <p>
@@ -289,7 +344,7 @@ export default function ClientPortalPage() {
                   ].map(([label, ok]) => (
                     <li
                       key={String(label)}
-                      className="flex justify-between rounded-lg border border-[var(--border)] px-3 py-2"
+                      className="flex justify-between rounded-lg border border-(--border) px-3 py-2"
                     >
                       <span>{label}</span>
                       <span className={ok ? "text-emerald-300" : "muted"}>
@@ -359,9 +414,9 @@ export default function ClientPortalPage() {
                     ) => (
                       <li
                         key={`${ev.at}-${i}`}
-                        className="flex gap-3 border-b border-[var(--border)] py-2 text-sm"
+                        className="flex gap-3 border-b border-(--border) py-2 text-sm"
                       >
-                        <span className="w-36 shrink-0 font-mono text-[10px] text-[var(--muted)]">
+                        <span className="w-36 shrink-0 font-mono text-[10px] text-(--muted)">
                           {ev.at?.slice(0, 16)?.replace("T", " ")}
                         </span>
                         <span className="badge shrink-0">{ev.kind}</span>
@@ -371,11 +426,11 @@ export default function ClientPortalPage() {
                   )}
                 </ul>
               </Section>
-            </div>
+            </motion.div>
           ) : null}
 
           {tab === "proposal" ? (
-            <div className="mt-4 grid gap-4 lg:grid-cols-2">
+            <motion.div variants={containerVariant} className="mt-4 grid gap-4 lg:grid-cols-2">
               <Section title="Proposal">
                 {(view.proposals || []).length === 0 ? (
                   <p className="text-sm muted">
@@ -404,7 +459,7 @@ export default function ClientPortalPage() {
                         <p className="mt-3 text-3xl font-semibold">
                           ${Number(p.total || 0).toLocaleString()}
                         </p>
-                        <p className="mt-2 text-sm text-[var(--muted)]">
+                        <p className="mt-2 text-sm text-(--muted)">
                           Deposit ${Number(p.deposit || 0).toLocaleString()} ·{" "}
                           {p.weeks || "—"} weeks
                           {p.blueprint ? ` · ${p.blueprint}` : ""}
@@ -450,7 +505,7 @@ export default function ClientPortalPage() {
                       }) => (
                         <li
                           key={inv.id}
-                          className="flex items-center justify-between rounded-lg border border-[var(--border)] px-3 py-3 text-sm"
+                          className="flex items-center justify-between rounded-lg border border-(--border) px-3 py-3 text-sm"
                         >
                           <div>
                             <p className="font-medium">{inv.label}</p>
@@ -481,7 +536,7 @@ export default function ClientPortalPage() {
                       }) => (
                         <div
                           key={c.id}
-                          className="rounded-lg border border-[var(--border)] px-3 py-3 text-sm"
+                          className="rounded-lg border border-(--border) px-3 py-3 text-sm"
                         >
                           <div className="flex justify-between gap-2">
                             <span className="font-medium">{c.title}</span>
@@ -496,11 +551,11 @@ export default function ClientPortalPage() {
                   </div>
                 )}
               </Section>
-            </div>
+            </motion.div>
           ) : null}
 
           {tab === "documents" ? (
-            <div className="mt-4 grid gap-4 lg:grid-cols-2">
+            <motion.div variants={containerVariant} className="mt-4 grid gap-4 lg:grid-cols-2">
               {["business", "scope", "technical", "commercial"].map((cat) => (
                 <Section key={cat} title={cat}>
                   <ul className="max-h-56 space-y-1 overflow-auto text-sm">
@@ -513,7 +568,7 @@ export default function ClientPortalPage() {
                       }) => (
                         <li
                           key={d.key}
-                          className="rounded-lg border border-[var(--border)] px-3 py-2"
+                          className="rounded-lg border border-(--border) px-3 py-2"
                         >
                           <div className="flex justify-between gap-2">
                             <span>{d.title}</span>
@@ -572,11 +627,11 @@ export default function ClientPortalPage() {
                   )}
                 </ul>
               </Section>
-            </div>
+            </motion.div>
           ) : null}
 
           {tab === "timeline" ? (
-            <div className="mt-4 grid gap-4 lg:grid-cols-2">
+            <motion.div variants={containerVariant} className="mt-4 grid gap-4 lg:grid-cols-2">
               <Section title="Delivery milestones">
                 <ul className="space-y-2">
                   {(view.milestones || []).map(
@@ -588,7 +643,7 @@ export default function ClientPortalPage() {
                     }) => (
                       <li
                         key={`${m.week}-${m.name}`}
-                        className="flex items-center justify-between rounded-lg border border-[var(--border)] px-3 py-2 text-sm"
+                        className="flex items-center justify-between rounded-lg border border-(--border) px-3 py-2 text-sm"
                       >
                         <span>
                           Week {m.week}: {m.name}
@@ -622,11 +677,11 @@ export default function ClientPortalPage() {
                   )}
                 </ul>
               </Section>
-            </div>
+            </motion.div>
           ) : null}
 
           {tab === "deployments" ? (
-            <div className="mt-4">
+            <motion.div variants={cardVariant} className="mt-4">
               <Section title="Environments & monitoring">
                 {(view.builds || []).length === 0 ? (
                   <Empty>
@@ -650,7 +705,7 @@ export default function ClientPortalPage() {
                       }) => (
                         <div
                           key={b.id}
-                          className="rounded-xl border border-[var(--border)] p-4 text-sm"
+                          className="rounded-xl border border-(--border) p-4 text-sm"
                         >
                           <div className="flex justify-between gap-2">
                             <span className="font-medium">
@@ -687,11 +742,11 @@ export default function ClientPortalPage() {
                   </div>
                 )}
               </Section>
-            </div>
+            </motion.div>
           ) : null}
 
           {tab === "meetings" ? (
-            <div className="mt-4 grid gap-4 lg:grid-cols-2">
+            <motion.div variants={containerVariant} className="mt-4 grid gap-4 lg:grid-cols-2">
               <Section title="Scheduled / available">
                 <ul className="space-y-2 text-sm">
                   {(view.meetings || []).map(
@@ -703,7 +758,7 @@ export default function ClientPortalPage() {
                     }) => (
                       <li
                         key={m.id}
-                        className="flex justify-between rounded-lg border border-[var(--border)] px-3 py-2"
+                        className="flex justify-between rounded-lg border border-(--border) px-3 py-2"
                       >
                         <div>
                           <p className="font-medium">{m.title}</p>
@@ -742,11 +797,11 @@ export default function ClientPortalPage() {
                   Request meeting
                 </button>
               </Section>
-            </div>
+            </motion.div>
           ) : null}
 
           {tab === "support" ? (
-            <div className="mt-4 grid gap-4 lg:grid-cols-2">
+            <motion.div variants={containerVariant} className="mt-4 grid gap-4 lg:grid-cols-2">
               <Section title="New support ticket">
                 <div className="space-y-2">
                   <input
@@ -787,7 +842,7 @@ export default function ClientPortalPage() {
                     (t: { id: string; subject: string; status: string }) => (
                       <li
                         key={t.id}
-                        className="flex justify-between rounded-lg border border-[var(--border)] px-3 py-2"
+                        className="flex justify-between rounded-lg border border-(--border) px-3 py-2"
                       >
                         <span>{t.subject}</span>
                         <StatusPill status={t.status} />
@@ -831,7 +886,7 @@ export default function ClientPortalPage() {
                     ) => (
                       <li
                         key={`${c.at}-${i}`}
-                        className="rounded-lg border border-[var(--border)] px-3 py-2"
+                        className="rounded-lg border border-(--border) px-3 py-2"
                       >
                         <p className="text-xs muted">
                           {c.author} · {c.at?.slice(0, 16)?.replace("T", " ")}
@@ -842,10 +897,10 @@ export default function ClientPortalPage() {
                   )}
                 </ul>
               </Section>
-            </div>
+            </motion.div>
           ) : null}
         </>
       )}
-    </div>
+    </motion.div>
   );
 }
