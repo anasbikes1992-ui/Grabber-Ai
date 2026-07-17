@@ -33,11 +33,9 @@ export async function verifySupabaseJwt(token: string): Promise<VerifiedJwtUser 
       return null;
     }
 
-    const roleRaw =
-      jwtPayload.app_metadata?.role ||
-      jwtPayload.user_metadata?.role ||
-      jwtPayload.role ||
-      "viewer";
+    // Authorization comes only from server-controlled claims. `user_metadata`
+    // is user-editable in Supabase and must never grant a role.
+    const roleRaw = jwtPayload.app_metadata?.role || jwtPayload.role || "viewer";
 
     const role = normalizeAuthRole(roleRaw) || "viewer";
 

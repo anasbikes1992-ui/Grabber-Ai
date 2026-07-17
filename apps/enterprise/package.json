@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@grabber/enterprise": "file:../../packages/enterprise",
+    "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.56.0",
     "clsx": "^2.1.1",
     "framer-motion": "^12.42.2",
