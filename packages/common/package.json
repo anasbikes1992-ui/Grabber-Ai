@@ -1,0 +1,12 @@
+{
+  "name": "@grabber/common",
+  "version": "0.1.0",
+  "description": "Shared types, manifests, and errors for Grabber AI Studio Core",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "license": "UNLICENSED",
+  "engines": { "node": ">=20" }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "@grabber/cli",
+  "version": "2.0.0",
+  "description": "grabber CLI v2.0 — Product Factory on frozen Grabber Core",
+  "type": "module",
+  "bin": {
+    "grabber": "./bin/grabber.js"
+  },
+  "main": "src/cli.js",
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "@grabber/common": "0.1.0",
+    "@grabber/sdk": "0.1.0",
+    "@grabber/skill-sdk": "0.1.0",
+    "@grabber/plugin-sdk": "0.1.0"
+  },
+  "license": "UNLICENSED",
+  "engines": { "node": ">=20" }
+}

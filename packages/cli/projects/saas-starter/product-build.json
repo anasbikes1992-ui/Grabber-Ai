@@ -1,0 +1,82 @@
+{
+  "productFingerprint": "86fddd7852ee9c56b15dbfc9669be34d7ca8998a108dfba89c315c2ec2f933b3",
+  "fingerprints": {
+    "discovery": "8269bf3de0155905fb63aa48435440e58e5f52cff9cf1d03b60a6371cffa4bdf",
+    "requirements": "724e77f63ff1f2a1925b16bb46ba77cbcef299f8a03f1097f78c0f93752b7af9",
+    "architecture": "e032012e0c818db5512fff15cd0f7ba969e318b9ed3b0f4ecb0d4d04e94868f5",
+    "api": "a5b339f538051180ec5a9663bdc45e54379b2e17c0425c3ea2fa832825871841",
+    "database": "166c8896ab3f3d3969819e9d8fc0481063972b0a9e1dca98a76f78c6575c41ca",
+    "frontend": "528736b5c1775e959d172b0e64d220d4560cb956f525be5d7ae391b84b0379de",
+    "backend": "4b10a22a864abb567d6a0f3ee52e01412bddda30a0d2d03161c5ea17960df4a7",
+    "tests": "c10daefea6380dc764685b05c14bcdcdede5db9ba0cc6eee80880d50767caeb6",
+    "security": "8bc0020abc7ebc734461db1af659749410c3910ded527b407e66226ab977617c",
+    "deployment": "6ac94e53c335ced07bcbd001b382f92003fd08195d34c698942530eeb96bdaab",
+    "documentation": "91728f39fb405f7c1d280788c815e3e2f21f48e4d098db8ed214ecaabcfb32f4"
+  },
+  "files": [
+    "app/layout.tsx",
+    "app/page.tsx",
+    "app/sign-up/page.tsx",
+    "app/create-tenant/page.tsx",
+    "app/invite-member/page.tsx",
+    "app/upgrade-plan/page.tsx",
+    "src/server.ts",
+    "src/routes/index.ts",
+    "src/routes/tenants.ts",
+    "src/routes/users.ts",
+    "src/routes/billing.ts",
+    "src/routes/core.ts",
+    "Dockerfile",
+    "docker-compose.yml",
+    ".github/workflows/ci.yml",
+    "README.md",
+    "docs/ARCHITECTURE.md",
+    "docs/API.md",
+    "docs/DEPLOYMENT.md"
+  ],
+  "release": {
+    "deployable": true,
+    "security_score": 96,
+    "environments": [
+      "development",
+      "staging",
+      "production"
+    ],
+    "docs": [
+      "README.md",
+      "docs/ARCHITECTURE.md",
+      "docs/API.md",
+      "docs/DEPLOYMENT.md"
+    ]
+  },
+  "metrics": {
+    "durationMs": 7,
+    "totalTokens": 2069,
+    "cost": {
+      "executions": 11,
+      "actual_cost": 0,
+      "estimated_cost": 0,
+      "actual_tokens": 2069,
+      "estimated_tokens": 8800
+    },
+    "interventions": 0,
+    "builders": 11,
+    "executionIds": [
+      "exec_11880a2c-535f-4505-bcf6-19c2e98eb5b4",
+      "exec_e60b4750-40d2-48f6-9a99-878ff7723f36",
+      "exec_f5204a8f-8562-4122-bdad-a047b4408b29",
+      "exec_306a5614-6e9e-4d41-abd4-412f1a9d27ba",
+      "exec_7fb8e238-a0ea-488a-b8de-186d75e1d056",
+      "exec_987757a9-3ee8-4431-900d-ab644ef2cfb3",
+      "exec_12d997b1-0bc7-438e-8e0b-23f0e5d8225d",
+      "exec_c49aa24e-44e2-4222-8360-77827e38df68",
+      "exec_b212978c-449e-40ee-86c6-5219c0d2120b",
+      "exec_038694ac-53c8-4c8b-b339-774decadddbf",
+      "exec_1cb7a7df-5db7-4024-8746-58fff3bbe50f"
+    ],
+    "withinBudget": true,
+    "validation_pass_rate": 1,
+    "human_intervention_rate": 0,
+    "replayable": true
+  }
+}
