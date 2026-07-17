@@ -1,0 +1,7 @@
+{
+  "module": "teams",
+  "entities": [
+    "teams",
+    "team_members"
+  ]
+}

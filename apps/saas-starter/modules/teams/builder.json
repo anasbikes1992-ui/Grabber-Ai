@@ -1,0 +1,47 @@
+{
+  "id": "module.teams",
+  "name": "teams",
+  "title": "Teams",
+  "version": "1.0.0",
+  "kind": "business_module",
+  "requires": [
+    "authentication",
+    "rbac"
+  ],
+  "optional": [
+    "notifications"
+  ],
+  "conflicts": [],
+  "supports": [
+    "saas",
+    "crm",
+    "booking"
+  ],
+  "surfaces": {
+    "schema": "schema/",
+    "api": "api/",
+    "frontend": "frontend/",
+    "backend": "backend/",
+    "tests": "tests/",
+    "docs": "docs/"
+  },
+  "artifacts": {
+    "entities": [
+      "teams",
+      "team_members"
+    ],
+    "endpoints": [
+      "GET /teams",
+      "POST /teams",
+      "POST /teams/:id/invite"
+    ],
+    "ui": [
+      "TeamList",
+      "InviteMember"
+    ],
+    "permissions": [
+      "teams.read",
+      "teams.invite"
+    ]
+  }
+}

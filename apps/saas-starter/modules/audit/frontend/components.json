@@ -1,0 +1,6 @@
+{
+  "module": "audit",
+  "components": [
+    "AuditLogTable"
+  ]
+}

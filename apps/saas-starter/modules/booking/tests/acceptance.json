@@ -1,0 +1,20 @@
+{
+  "module": "booking",
+  "cases": [
+    {
+      "id": "booking-get",
+      "endpoint": "GET /bookings",
+      "expect": "2xx_authenticated"
+    },
+    {
+      "id": "booking-post",
+      "endpoint": "POST /bookings",
+      "expect": "2xx_authenticated"
+    },
+    {
+      "id": "booking-post",
+      "endpoint": "POST /bookings/:id/cancel",
+      "expect": "2xx_authenticated"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "module": "payments",
+  "cases": [
+    {
+      "id": "payments-post",
+      "endpoint": "POST /payments/intent",
+      "expect": "2xx_authenticated"
+    },
+    {
+      "id": "payments-post",
+      "endpoint": "POST /webhooks/stripe",
+      "expect": "2xx_authenticated"
+    }
+  ]
+}

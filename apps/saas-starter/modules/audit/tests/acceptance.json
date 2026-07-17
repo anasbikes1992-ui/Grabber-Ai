@@ -1,0 +1,10 @@
+{
+  "module": "audit",
+  "cases": [
+    {
+      "id": "audit-get",
+      "endpoint": "GET /audit",
+      "expect": "2xx_authenticated"
+    }
+  ]
+}

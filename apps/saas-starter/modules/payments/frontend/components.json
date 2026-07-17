@@ -1,0 +1,6 @@
+{
+  "module": "payments",
+  "components": [
+    "CheckoutButton"
+  ]
+}

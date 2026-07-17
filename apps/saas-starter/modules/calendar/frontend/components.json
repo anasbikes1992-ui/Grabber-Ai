@@ -1,0 +1,7 @@
+{
+  "module": "calendar",
+  "components": [
+    "WeekView",
+    "AvailabilityEditor"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "module": "products",
+  "cases": [
+    {
+      "id": "products-get",
+      "endpoint": "GET /products",
+      "expect": "2xx_authenticated"
+    },
+    {
+      "id": "products-post",
+      "endpoint": "POST /products",
+      "expect": "2xx_authenticated"
+    }
+  ]
+}

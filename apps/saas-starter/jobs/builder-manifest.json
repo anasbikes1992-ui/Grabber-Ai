@@ -1,0 +1,19 @@
+{
+  "version": "1.0.0",
+  "product": "saas-starter",
+  "description": "Job types submitted to Grabber Core IEP / Product Factory — product does not execute them.",
+  "submit_to": "grabber-core/product-factory",
+  "builders": [
+    { "type": "builder.discovery", "stage": "discovery", "dependsOn": [] },
+    { "type": "builder.requirements", "stage": "requirements", "dependsOn": ["builder.discovery"] },
+    { "type": "builder.architecture", "stage": "architecture", "dependsOn": ["builder.requirements"] },
+    { "type": "builder.api", "stage": "development", "dependsOn": ["builder.architecture"] },
+    { "type": "builder.database", "stage": "development", "dependsOn": ["builder.architecture"] },
+    { "type": "builder.frontend", "stage": "development", "dependsOn": ["builder.api"] },
+    { "type": "builder.backend", "stage": "development", "dependsOn": ["builder.api", "builder.database"] },
+    { "type": "builder.tests", "stage": "verification", "dependsOn": ["builder.frontend", "builder.backend"] },
+    { "type": "builder.security", "stage": "security", "dependsOn": ["builder.backend", "builder.api"] },
+    { "type": "builder.deployment", "stage": "deployment", "dependsOn": ["builder.tests", "builder.security"] },
+    { "type": "builder.documentation", "stage": "deployment", "dependsOn": ["builder.deployment", "builder.api"] }
+  ]
+}

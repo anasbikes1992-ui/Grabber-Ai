@@ -1,0 +1,15 @@
+{
+  "module": "files",
+  "cases": [
+    {
+      "id": "files-post",
+      "endpoint": "POST /files/upload",
+      "expect": "2xx_authenticated"
+    },
+    {
+      "id": "files-get",
+      "endpoint": "GET /files/:id",
+      "expect": "2xx_authenticated"
+    }
+  ]
+}

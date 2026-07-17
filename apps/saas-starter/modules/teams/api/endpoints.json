@@ -1,0 +1,8 @@
+{
+  "module": "teams",
+  "endpoints": [
+    "GET /teams",
+    "POST /teams",
+    "POST /teams/:id/invite"
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "module": "audit",
+  "endpoints": [
+    "GET /audit"
+  ]
+}

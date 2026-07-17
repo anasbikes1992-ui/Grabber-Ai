@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "saas-starter/handoffs/requirements-to-dna",
+  "title": "RequirementsToDna",
+  "type": "object",
+  "required": ["kind", "version", "requirements", "classification"],
+  "properties": {
+    "kind": { "const": "requirements-to-dna" },
+    "version": { "type": "string" },
+    "requirements": { "type": "object" },
+    "classification": { "type": "object" }
+  }
+}

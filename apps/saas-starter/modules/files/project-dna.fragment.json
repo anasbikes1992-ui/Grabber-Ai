@@ -1,0 +1,25 @@
+{
+  "module": "files",
+  "version": "1.0.0",
+  "contributes": {
+    "modules": [
+      "files"
+    ],
+    "entities": [
+      "files"
+    ],
+    "endpoints": [
+      "POST /files/upload",
+      "GET /files/:id"
+    ],
+    "ui": [
+      "FileUploader"
+    ],
+    "permissions": [
+      "files.upload"
+    ],
+    "integrations": [
+      "supabase"
+    ]
+  }
+}

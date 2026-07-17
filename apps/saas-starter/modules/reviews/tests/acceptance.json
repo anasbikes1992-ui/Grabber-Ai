@@ -1,0 +1,15 @@
+{
+  "module": "reviews",
+  "cases": [
+    {
+      "id": "reviews-get",
+      "endpoint": "GET /reviews",
+      "expect": "2xx_authenticated"
+    },
+    {
+      "id": "reviews-post",
+      "endpoint": "POST /reviews",
+      "expect": "2xx_authenticated"
+    }
+  ]
+}

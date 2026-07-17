@@ -1,0 +1,8 @@
+{
+  "module": "crm",
+  "endpoints": [
+    "GET /crm/deals",
+    "POST /crm/deals",
+    "PATCH /crm/deals/:id/stage"
+  ]
+}

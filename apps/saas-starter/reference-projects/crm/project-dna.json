@@ -1,0 +1,38 @@
+{
+  "product": {
+    "type": "crm",
+    "name": "crm-reference",
+    "blueprint": "crm",
+    "version": "1.0.0"
+  },
+  "project": {
+    "name": "crm-reference",
+    "type": "crm",
+    "industry": "sales",
+    "goals": ["Manage contacts and deal pipeline", "Team workflows"],
+    "users": [
+      { "role": "sales-rep", "goals": ["manage pipeline"] },
+      { "role": "manager", "goals": ["forecast", "coach team"] }
+    ],
+    "critical_flows": [
+      "create contact",
+      "create deal",
+      "move deal stage",
+      "log activity"
+    ],
+    "standards_version": "stds-1.0.0"
+  },
+  "modules": [
+    "authentication",
+    "rbac",
+    "teams",
+    "customers",
+    "crm",
+    "notifications",
+    "analytics"
+  ],
+  "integrations": ["supabase", "github", "vercel"],
+  "deployment": { "provider": "vercel" },
+  "quality": { "security": "standard", "testing": "required" },
+  "meta": { "kind": "golden_reference", "regression": true }
+}

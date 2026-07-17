@@ -1,0 +1,7 @@
+{
+  "module": "notifications",
+  "endpoints": [
+    "GET /notifications",
+    "POST /notifications/send"
+  ]
+}

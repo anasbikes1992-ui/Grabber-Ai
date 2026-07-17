@@ -1,0 +1,7 @@
+{
+  "module": "inventory",
+  "entities": [
+    "stock_items",
+    "stock_movements"
+  ]
+}

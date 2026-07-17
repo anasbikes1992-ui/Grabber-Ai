@@ -1,0 +1,6 @@
+{
+  "module": "crm",
+  "components": [
+    "PipelineBoard"
+  ]
+}

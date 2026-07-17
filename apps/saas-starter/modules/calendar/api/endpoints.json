@@ -1,0 +1,7 @@
+{
+  "module": "calendar",
+  "endpoints": [
+    "GET /calendar",
+    "PUT /calendar/availability"
+  ]
+}

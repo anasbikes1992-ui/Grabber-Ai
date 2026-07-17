@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "saas-starter/handoffs/discovery-to-requirements",
+  "title": "DiscoveryToRequirements",
+  "type": "object",
+  "required": ["kind", "version", "discovery"],
+  "properties": {
+    "kind": { "const": "discovery-to-requirements" },
+    "version": { "type": "string" },
+    "discovery": { "type": "object" },
+    "prompt_id": { "type": "string" },
+    "prompt_version": { "type": "string" }
+  }
+}

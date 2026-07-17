@@ -1,0 +1,7 @@
+{
+  "module": "rbac",
+  "services": [
+    "rolesService",
+    "permissionsService"
+  ]
+}

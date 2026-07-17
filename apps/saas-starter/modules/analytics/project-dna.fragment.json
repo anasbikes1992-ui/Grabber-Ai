@@ -1,0 +1,22 @@
+{
+  "module": "analytics",
+  "version": "1.0.0",
+  "contributes": {
+    "modules": [
+      "analytics"
+    ],
+    "entities": [
+      "events_analytics"
+    ],
+    "endpoints": [
+      "GET /analytics/summary"
+    ],
+    "ui": [
+      "AnalyticsDashboard"
+    ],
+    "permissions": [
+      "analytics.read"
+    ],
+    "integrations": []
+  }
+}

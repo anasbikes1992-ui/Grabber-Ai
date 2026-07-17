@@ -1,0 +1,6 @@
+{
+  "module": "analytics",
+  "endpoints": [
+    "GET /analytics/summary"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "module": "inventory",
+  "services": [
+    "stock_itemsService",
+    "stock_movementsService"
+  ]
+}

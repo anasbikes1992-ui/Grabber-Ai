@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "saas-starter/schemas/project-dna",
+  "title": "ProjectDNA",
+  "type": "object",
+  "required": ["project"],
+  "properties": {
+    "project": {
+      "type": "object",
+      "required": [
+        "name",
+        "industry",
+        "goals",
+        "constraints",
+        "architecture",
+        "stack",
+        "standards_version"
+      ],
+      "properties": {
+        "name": { "type": "string" },
+        "template": { "type": "string" },
+        "industry": { "type": "string" },
+        "business_model": { "type": "string" },
+        "goals": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+        "users": { "type": "array" },
+        "constraints": { "type": "object" },
+        "architecture": {
+          "type": "object",
+          "required": ["style", "modules"],
+          "properties": {
+            "style": { "type": "string" },
+            "modules": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "stack": { "type": "string" },
+        "integrations": { "type": "array", "items": { "type": "string" } },
+        "critical_flows": { "type": "array", "items": { "type": "string" } },
+        "standards_version": { "type": "string" },
+        "decision_registry": { "type": "array", "items": { "type": "string" } },
+        "intelligence": { "type": "object" }
+      }
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "id": "module.files",
+  "name": "files",
+  "title": "Files",
+  "version": "1.0.0",
+  "kind": "business_module",
+  "requires": [
+    "authentication"
+  ],
+  "optional": [
+    "products",
+    "booking"
+  ],
+  "conflicts": [],
+  "supports": [
+    "saas",
+    "crm",
+    "marketplace",
+    "booking"
+  ],
+  "surfaces": {
+    "schema": "schema/",
+    "api": "api/",
+    "frontend": "frontend/",
+    "backend": "backend/",
+    "tests": "tests/",
+    "docs": "docs/"
+  },
+  "artifacts": {
+    "entities": [
+      "files"
+    ],
+    "endpoints": [
+      "POST /files/upload",
+      "GET /files/:id"
+    ],
+    "ui": [
+      "FileUploader"
+    ],
+    "permissions": [
+      "files.upload"
+    ]
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "project": {
+    "name": "saas-starter",
+    "template": "saas-starter",
+    "industry": "saas",
+    "business_model": "b2b-saas",
+    "users": [
+      { "role": "owner", "goals": ["configure tenant", "invite team"] },
+      { "role": "member", "goals": ["use core features"] }
+    ],
+    "goals": [
+      "multi-tenant SaaS baseline",
+      "auth and RBAC",
+      "billing-ready account model"
+    ],
+    "constraints": {
+      "must": ["derive every artifact from this DNA", "multi-tenant isolation"],
+      "should": ["Next.js + Supabase stack"],
+      "may": ["defer advanced analytics"],
+      "must_not": ["invent features not in goals"],
+      "assumptions": ["Sprint 1 foundation app under apps/saas-starter"],
+      "unknowns": [],
+      "risks": ["tenant isolation bugs"]
+    },
+    "integrations": ["supabase", "github"],
+    "architecture": {
+      "style": "modular-monolith",
+      "modules": ["tenants", "users", "billing", "core"]
+    },
+    "stack": "crud-dashboard (Next.js + Supabase)",
+    "conventions": {
+      "db_naming": "plural",
+      "api_envelope": "data/error+trace_id",
+      "breakpoints": ["sm", "md", "lg"]
+    },
+    "security_level": "standard",
+    "authorization": { "model": "rbac", "roles": ["owner", "admin", "member"] },
+    "accessibility_level": "WCAG-2.1-AA",
+    "performance_targets": { "lcp_ms": 2500, "inp_ms": 200, "api_p95_ms": 400 },
+    "data": { "retention": "account-lifetime", "regulated": false },
+    "deployment_targets": {
+      "environments": ["development", "staging", "production"],
+      "uptime_target": "99.9%",
+      "backup_schedule": "daily"
+    },
+    "critical_flows": ["sign up", "sign in", "open dashboard", "sign out"],
+    "standards_version": "stds-1.0.0",
+    "decision_registry": ["EDR-007"],
+    "app_path": "apps/saas-starter"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "module": "authentication",
+  "components": [
+    "LoginForm",
+    "SignupForm"
+  ]
+}

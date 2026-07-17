@@ -1,0 +1,15 @@
+{
+  "module": "notifications",
+  "cases": [
+    {
+      "id": "notifications-get",
+      "endpoint": "GET /notifications",
+      "expect": "2xx_authenticated"
+    },
+    {
+      "id": "notifications-post",
+      "endpoint": "POST /notifications/send",
+      "expect": "2xx_authenticated"
+    }
+  ]
+}

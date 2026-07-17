@@ -1,0 +1,6 @@
+{
+  "module": "search",
+  "components": [
+    "SearchBox"
+  ]
+}

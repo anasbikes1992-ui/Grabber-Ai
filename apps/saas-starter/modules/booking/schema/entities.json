@@ -1,0 +1,7 @@
+{
+  "module": "booking",
+  "entities": [
+    "bookings",
+    "resources"
+  ]
+}

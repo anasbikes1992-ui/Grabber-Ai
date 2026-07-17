@@ -1,0 +1,8 @@
+{
+  "module": "crm",
+  "services": [
+    "dealsService",
+    "activitiesService",
+    "pipelinesService"
+  ]
+}

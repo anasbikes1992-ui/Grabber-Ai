@@ -1,0 +1,43 @@
+{
+  "product": {
+    "type": "saas",
+    "name": "saas-reference",
+    "blueprint": "saas",
+    "version": "1.0.0"
+  },
+  "project": {
+    "name": "saas-reference",
+    "type": "saas",
+    "template": "saas-starter",
+    "industry": "saas",
+    "business_model": "b2b-saas",
+    "goals": [
+      "Multi-tenant SaaS baseline",
+      "Auth, teams, billing, analytics"
+    ],
+    "users": [
+      { "role": "owner", "goals": ["configure tenant", "invite team"] },
+      { "role": "member", "goals": ["use core features"] }
+    ],
+    "critical_flows": [
+      "sign up",
+      "sign in",
+      "invite member",
+      "upgrade plan",
+      "view analytics"
+    ],
+    "standards_version": "stds-1.0.0"
+  },
+  "modules": [
+    "authentication",
+    "rbac",
+    "teams",
+    "billing",
+    "notifications",
+    "analytics"
+  ],
+  "integrations": ["supabase", "stripe", "github", "vercel"],
+  "deployment": { "provider": "vercel" },
+  "quality": { "security": "standard", "testing": "required" },
+  "meta": { "kind": "golden_reference", "regression": true }
+}

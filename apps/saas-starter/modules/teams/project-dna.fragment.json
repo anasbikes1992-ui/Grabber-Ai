@@ -1,0 +1,27 @@
+{
+  "module": "teams",
+  "version": "1.0.0",
+  "contributes": {
+    "modules": [
+      "teams"
+    ],
+    "entities": [
+      "teams",
+      "team_members"
+    ],
+    "endpoints": [
+      "GET /teams",
+      "POST /teams",
+      "POST /teams/:id/invite"
+    ],
+    "ui": [
+      "TeamList",
+      "InviteMember"
+    ],
+    "permissions": [
+      "teams.read",
+      "teams.invite"
+    ],
+    "integrations": []
+  }
+}

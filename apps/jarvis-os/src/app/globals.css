@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+:root {
+  --bg-deep: #07090f;
+  --bg-panel: rgba(16, 20, 32, 0.72);
+  --bg-glass: rgba(255, 255, 255, 0.04);
+  --border-glass: rgba(255, 255, 255, 0.08);
+  --text: #e8ecf8;
+  --text-muted: #8b93a7;
+  --cyan: #22d3ee;
+  --violet: #a78bfa;
+  --blue: #60a5fa;
+  --glow: 0 0 40px rgba(34, 211, 238, 0.15);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+@theme inline {
+  --color-background: var(--bg-deep);
+  --color-foreground: var(--text);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-deep);
+  color: var(--text);
+  font-family: var(--font-sans);
+  overflow: hidden;
+}
+
+/* Ambient gradient mesh */
+.jarvis-bg {
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(99, 102, 241, 0.22), transparent 55%),
+    radial-gradient(900px 500px at 90% 0%, rgba(34, 211, 238, 0.12), transparent 50%),
+    radial-gradient(800px 400px at 50% 100%, rgba(168, 85, 247, 0.1), transparent 55%),
+    var(--bg-deep);
+}
+
+.glass {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-glass);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+.glass-soft {
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+  backdrop-filter: blur(12px);
+}
+
+.glow-cyan {
+  box-shadow: var(--glow);
+}
+
+.text-gradient {
+  background: linear-gradient(120deg, #22d3ee, #818cf8 45%, #c084fc);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.pipeline-node-active {
+  box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.5), 0 0 24px rgba(34, 211, 238, 0.35);
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.4), 0 0 16px rgba(34, 211, 238, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 0 1px rgba(167, 139, 250, 0.55), 0 0 28px rgba(167, 139, 250, 0.35);
+  }
+}
+
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.float {
+  animation: float-y 5s ease-in-out infinite;
+}
+
+/* Scrollbars */
+.jarvis-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.jarvis-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 99px;
+}
+.jarvis-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* React Flow dark overrides */
+.react-flow__attribution {
+  display: none !important;
+}

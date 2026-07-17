@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "saas-starter/schemas/requirements",
+  "title": "Requirements",
+  "type": "object",
+  "required": ["goals", "users", "critical_flows", "acceptance"],
+  "properties": {
+    "goals": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "users": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["role", "goals"],
+        "properties": {
+          "role": { "type": "string" },
+          "goals": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "critical_flows": { "type": "array", "items": { "type": "string" } },
+    "acceptance": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "statement"],
+        "properties": {
+          "id": { "type": "string" },
+          "statement": { "type": "string" }
+        }
+      }
+    },
+    "unknowns": { "type": "array", "items": { "type": "string" } },
+    "risks": { "type": "array", "items": { "type": "string" } }
+  }
+}

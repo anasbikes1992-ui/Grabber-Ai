@@ -1,0 +1,52 @@
+{
+  "id": "blueprint.booking",
+  "version": "1.0.0",
+  "title": "Booking",
+  "product_type": "booking",
+  "description": "Service/hospitality booking — Sprint 6 golden reference product. Assembled almost entirely from catalog modules.",
+  "modules": {
+    "required": [
+      "authentication",
+      "teams",
+      "rbac",
+      "calendar",
+      "booking",
+      "payments",
+      "notifications",
+      "reviews",
+      "search",
+      "files",
+      "analytics"
+    ],
+    "optional": ["customers", "audit", "billing"]
+  },
+  "integrations": {
+    "recommended": ["supabase", "stripe", "github", "vercel"],
+    "required": ["supabase", "stripe", "github", "vercel"]
+  },
+  "deployment": {
+    "provider": "vercel",
+    "environments": ["development", "staging", "production"]
+  },
+  "quality": {
+    "security": "high",
+    "testing": "required",
+    "min_dna_confidence": 80,
+    "min_dna_completeness": 75,
+    "min_module_reuse_rate": 0.98
+  },
+  "kpis": [
+    "dna_completeness",
+    "dna_confidence",
+    "module_reuse_rate",
+    "validation_pass",
+    "regeneration_equivalence",
+    "deployment_success",
+    "manual_interventions"
+  ],
+  "reference": {
+    "dna": "../../reference-projects/booking/project-dna.json",
+    "regression": true,
+    "sprint": 6
+  }
+}

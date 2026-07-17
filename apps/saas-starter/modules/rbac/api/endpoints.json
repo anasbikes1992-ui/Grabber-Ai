@@ -1,0 +1,7 @@
+{
+  "module": "rbac",
+  "endpoints": [
+    "GET /rbac/roles",
+    "PUT /rbac/assignments"
+  ]
+}

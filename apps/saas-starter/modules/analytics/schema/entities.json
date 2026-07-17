@@ -1,0 +1,6 @@
+{
+  "module": "analytics",
+  "entities": [
+    "events_analytics"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "id": "module.analytics",
+  "name": "analytics",
+  "title": "Analytics",
+  "version": "1.0.0",
+  "kind": "business_module",
+  "requires": [
+    "authentication",
+    "rbac"
+  ],
+  "optional": [
+    "billing",
+    "orders",
+    "booking"
+  ],
+  "conflicts": [],
+  "supports": [
+    "saas",
+    "crm",
+    "marketplace",
+    "booking"
+  ],
+  "surfaces": {
+    "schema": "schema/",
+    "api": "api/",
+    "frontend": "frontend/",
+    "backend": "backend/",
+    "tests": "tests/",
+    "docs": "docs/"
+  },
+  "artifacts": {
+    "entities": [
+      "events_analytics"
+    ],
+    "endpoints": [
+      "GET /analytics/summary"
+    ],
+    "ui": [
+      "AnalyticsDashboard"
+    ],
+    "permissions": [
+      "analytics.read"
+    ]
+  }
+}

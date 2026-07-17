@@ -1,0 +1,7 @@
+{
+  "module": "rbac",
+  "entities": [
+    "roles",
+    "permissions"
+  ]
+}

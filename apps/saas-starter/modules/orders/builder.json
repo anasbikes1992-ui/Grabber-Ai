@@ -1,0 +1,47 @@
+{
+  "id": "module.orders",
+  "name": "orders",
+  "title": "Orders",
+  "version": "1.0.0",
+  "kind": "business_module",
+  "requires": [
+    "authentication",
+    "products",
+    "payments"
+  ],
+  "optional": [
+    "notifications",
+    "inventory"
+  ],
+  "conflicts": [],
+  "supports": [
+    "marketplace",
+    "ecommerce"
+  ],
+  "surfaces": {
+    "schema": "schema/",
+    "api": "api/",
+    "frontend": "frontend/",
+    "backend": "backend/",
+    "tests": "tests/",
+    "docs": "docs/"
+  },
+  "artifacts": {
+    "entities": [
+      "orders",
+      "order_items"
+    ],
+    "endpoints": [
+      "GET /orders",
+      "POST /orders"
+    ],
+    "ui": [
+      "OrderList",
+      "OrderDetail"
+    ],
+    "permissions": [
+      "orders.read",
+      "orders.create"
+    ]
+  }
+}

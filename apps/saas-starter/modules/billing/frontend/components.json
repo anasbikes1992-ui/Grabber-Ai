@@ -1,0 +1,7 @@
+{
+  "module": "billing",
+  "components": [
+    "PlanPicker",
+    "BillingPortal"
+  ]
+}

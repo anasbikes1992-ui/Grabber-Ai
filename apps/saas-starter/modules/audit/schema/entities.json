@@ -1,0 +1,6 @@
+{
+  "module": "audit",
+  "entities": [
+    "audit_logs"
+  ]
+}

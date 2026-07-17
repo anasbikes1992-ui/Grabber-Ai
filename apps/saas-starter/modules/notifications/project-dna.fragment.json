@@ -1,0 +1,24 @@
+{
+  "module": "notifications",
+  "version": "1.0.0",
+  "contributes": {
+    "modules": [
+      "notifications"
+    ],
+    "entities": [
+      "notifications",
+      "notification_prefs"
+    ],
+    "endpoints": [
+      "GET /notifications",
+      "POST /notifications/send"
+    ],
+    "ui": [
+      "NotificationBell"
+    ],
+    "permissions": [
+      "notifications.read"
+    ],
+    "integrations": []
+  }
+}

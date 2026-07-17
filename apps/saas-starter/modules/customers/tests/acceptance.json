@@ -1,0 +1,15 @@
+{
+  "module": "customers",
+  "cases": [
+    {
+      "id": "customers-get",
+      "endpoint": "GET /customers",
+      "expect": "2xx_authenticated"
+    },
+    {
+      "id": "customers-post",
+      "endpoint": "POST /customers",
+      "expect": "2xx_authenticated"
+    }
+  ]
+}

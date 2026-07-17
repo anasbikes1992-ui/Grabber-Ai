@@ -1,0 +1,7 @@
+{
+  "module": "notifications",
+  "services": [
+    "notificationsService",
+    "notification_prefsService"
+  ]
+}

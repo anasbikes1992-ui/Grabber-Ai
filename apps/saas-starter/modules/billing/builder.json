@@ -1,0 +1,46 @@
+{
+  "id": "module.billing",
+  "name": "billing",
+  "title": "Billing",
+  "version": "1.2.0",
+  "kind": "business_module",
+  "requires": [
+    "authentication"
+  ],
+  "optional": [
+    "notifications",
+    "analytics"
+  ],
+  "conflicts": [],
+  "supports": [
+    "saas",
+    "crm",
+    "marketplace",
+    "booking"
+  ],
+  "surfaces": {
+    "schema": "schema/",
+    "api": "api/",
+    "frontend": "frontend/",
+    "backend": "backend/",
+    "tests": "tests/",
+    "docs": "docs/"
+  },
+  "artifacts": {
+    "entities": [
+      "plans",
+      "subscriptions"
+    ],
+    "endpoints": [
+      "GET /billing/plans",
+      "POST /billing/checkout"
+    ],
+    "ui": [
+      "PlanPicker",
+      "BillingPortal"
+    ],
+    "permissions": [
+      "billing.manage"
+    ]
+  }
+}

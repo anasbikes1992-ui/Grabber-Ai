@@ -1,0 +1,7 @@
+{
+  "module": "calendar",
+  "entities": [
+    "events",
+    "availability_slots"
+  ]
+}

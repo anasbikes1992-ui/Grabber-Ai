@@ -1,0 +1,10 @@
+{
+  "module": "analytics",
+  "cases": [
+    {
+      "id": "analytics-get",
+      "endpoint": "GET /analytics/summary",
+      "expect": "2xx_authenticated"
+    }
+  ]
+}

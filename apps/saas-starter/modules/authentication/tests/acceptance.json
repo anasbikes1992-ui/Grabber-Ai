@@ -1,0 +1,20 @@
+{
+  "module": "authentication",
+  "cases": [
+    {
+      "id": "authentication-post",
+      "endpoint": "POST /auth/signup",
+      "expect": "2xx_authenticated"
+    },
+    {
+      "id": "authentication-post",
+      "endpoint": "POST /auth/login",
+      "expect": "2xx_authenticated"
+    },
+    {
+      "id": "authentication-post",
+      "endpoint": "POST /auth/logout",
+      "expect": "2xx_authenticated"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "id": "blueprint.marketplace",
+  "version": "1.0.0",
+  "title": "Marketplace",
+  "product_type": "marketplace",
+  "description": "Two-sided marketplace — golden reference product.",
+  "modules": {
+    "required": [
+      "authentication",
+      "rbac",
+      "products",
+      "search",
+      "inventory",
+      "orders",
+      "payments",
+      "notifications",
+      "files",
+      "reviews"
+    ],
+    "optional": ["analytics", "teams", "audit"]
+  },
+  "integrations": {
+    "recommended": ["supabase", "stripe", "github", "vercel"],
+    "required": ["supabase", "stripe", "github", "vercel"]
+  },
+  "deployment": {
+    "provider": "vercel",
+    "environments": ["development", "staging", "production"]
+  },
+  "quality": {
+    "security": "high",
+    "testing": "required",
+    "min_dna_confidence": 80,
+    "min_dna_completeness": 75,
+    "min_module_reuse_rate": 0.95
+  },
+  "kpis": [
+    "dna_completeness",
+    "dna_confidence",
+    "module_reuse_rate",
+    "validation_pass",
+    "deployment_success"
+  ],
+  "reference": {
+    "dna": "../../reference-projects/marketplace/project-dna.json",
+    "regression": true
+  }
+}

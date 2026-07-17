@@ -1,0 +1,41 @@
+{
+  "id": "module.audit",
+  "name": "audit",
+  "title": "Audit",
+  "version": "1.0.0",
+  "kind": "business_module",
+  "requires": [
+    "authentication",
+    "rbac"
+  ],
+  "optional": [],
+  "conflicts": [],
+  "supports": [
+    "saas",
+    "crm",
+    "marketplace",
+    "booking"
+  ],
+  "surfaces": {
+    "schema": "schema/",
+    "api": "api/",
+    "frontend": "frontend/",
+    "backend": "backend/",
+    "tests": "tests/",
+    "docs": "docs/"
+  },
+  "artifacts": {
+    "entities": [
+      "audit_logs"
+    ],
+    "endpoints": [
+      "GET /audit"
+    ],
+    "ui": [
+      "AuditLogTable"
+    ],
+    "permissions": [
+      "audit.read"
+    ]
+  }
+}

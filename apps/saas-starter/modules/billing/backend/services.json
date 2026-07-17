@@ -1,0 +1,7 @@
+{
+  "module": "billing",
+  "services": [
+    "plansService",
+    "subscriptionsService"
+  ]
+}

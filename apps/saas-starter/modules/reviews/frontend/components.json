@@ -1,0 +1,7 @@
+{
+  "module": "reviews",
+  "components": [
+    "ReviewList",
+    "ReviewForm"
+  ]
+}

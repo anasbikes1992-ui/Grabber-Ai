@@ -1,0 +1,7 @@
+{
+  "module": "orders",
+  "components": [
+    "OrderList",
+    "OrderDetail"
+  ]
+}

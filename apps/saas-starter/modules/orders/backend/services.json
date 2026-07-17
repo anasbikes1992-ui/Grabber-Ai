@@ -1,0 +1,7 @@
+{
+  "module": "orders",
+  "services": [
+    "ordersService",
+    "order_itemsService"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "module": "search",
+  "cases": [
+    {
+      "id": "search-get",
+      "endpoint": "GET /search",
+      "expect": "2xx_authenticated"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "id": "module.customers",
+  "name": "customers",
+  "title": "Customers",
+  "version": "1.0.0",
+  "kind": "business_module",
+  "requires": [
+    "authentication"
+  ],
+  "optional": [
+    "crm",
+    "notifications"
+  ],
+  "conflicts": [],
+  "supports": [
+    "crm",
+    "saas",
+    "booking",
+    "marketplace"
+  ],
+  "surfaces": {
+    "schema": "schema/",
+    "api": "api/",
+    "frontend": "frontend/",
+    "backend": "backend/",
+    "tests": "tests/",
+    "docs": "docs/"
+  },
+  "artifacts": {
+    "entities": [
+      "customers"
+    ],
+    "endpoints": [
+      "GET /customers",
+      "POST /customers"
+    ],
+    "ui": [
+      "CustomerList"
+    ],
+    "permissions": [
+      "customers.read"
+    ]
+  }
+}

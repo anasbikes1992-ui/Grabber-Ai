@@ -1,0 +1,26 @@
+{
+  "module": "payments",
+  "version": "1.1.0",
+  "contributes": {
+    "modules": [
+      "payments"
+    ],
+    "entities": [
+      "payments",
+      "payment_methods"
+    ],
+    "endpoints": [
+      "POST /payments/intent",
+      "POST /webhooks/stripe"
+    ],
+    "ui": [
+      "CheckoutButton"
+    ],
+    "permissions": [
+      "payments.create"
+    ],
+    "integrations": [
+      "stripe"
+    ]
+  }
+}

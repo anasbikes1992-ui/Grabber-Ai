@@ -1,0 +1,26 @@
+{
+  "module": "products",
+  "version": "1.0.0",
+  "contributes": {
+    "modules": [
+      "products"
+    ],
+    "entities": [
+      "products",
+      "categories"
+    ],
+    "endpoints": [
+      "GET /products",
+      "POST /products"
+    ],
+    "ui": [
+      "ProductGrid",
+      "ProductForm"
+    ],
+    "permissions": [
+      "products.read",
+      "products.write"
+    ],
+    "integrations": []
+  }
+}

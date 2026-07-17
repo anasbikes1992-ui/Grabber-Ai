@@ -1,0 +1,7 @@
+{
+  "module": "reviews",
+  "endpoints": [
+    "GET /reviews",
+    "POST /reviews"
+  ]
+}
