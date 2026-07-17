@@ -23,7 +23,7 @@ export async function runAi(input: AiGatewayInput): Promise<AiGatewayOutput> {
   }
 
   const provider: AiProvider = input.provider || "anthropic";
-  const model = input.model || process.env.AI_GATEWAY_DEFAULT_MODEL || "claude-sonnet-4-5";
+  const model = input.model || process.env.AI_GATEWAY_DEFAULT_MODEL || "claude-sonnet-5";
 
   // Placeholder deterministic response so callers can integrate now.
   // Runtime provider adapters can replace this without API changes.
