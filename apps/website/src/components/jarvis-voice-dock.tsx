@@ -2,7 +2,9 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { MessageCircle, Mic, MicOff, Send, Volume2, VolumeX, Sparkles } from "lucide-react";
+import { createPanelMotion } from "@/lib/motion";
 
 type SpeechResultEvent = {
   results: ArrayLike<ArrayLike<{ transcript: string }>>;
@@ -185,6 +187,9 @@ export function JarvisVoiceDock() {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const startingRef = useRef(false);
   const greetedRef = useRef(false);
+  const prefersReducedMotion = useReducedMotion();
+  const reducedMotion = prefersReducedMotion ?? true;
+  const panelMotion = useMemo(() => createPanelMotion(reducedMotion), [reducedMotion]);
 
   const context = useMemo(() => resolveContext(pathname), [pathname]);
   const summary = useMemo(() => pageSummary(pathname), [pathname]);
@@ -382,77 +387,83 @@ export function JarvisVoiceDock() {
         Jarvis
       </button>
 
-      {open ? (
-        <div
-          id="jarvis-voice-panel-website"
-          className="jarvis-voice-panel"
-          role="dialog"
-          aria-label="Jarvis voice assistant"
-          aria-live="polite"
-        >
-          <p className="jarvis-voice-title">
-            <MessageCircle className="h-4 w-4" /> Global Voice Assistant
-          </p>
-          <p className="jarvis-voice-note">{context.label}</p>
-          <p className="jarvis-voice-note">{notice}</p>
-          <p className="jarvis-voice-reply">{reply}</p>
-          <p className="jarvis-voice-note">{context.knowledge}</p>
+      <AnimatePresence>
+        {open ? (
+          <motion.div
+            id="jarvis-voice-panel-website"
+            className="jarvis-voice-panel"
+            role="dialog"
+            aria-label="Jarvis voice assistant"
+            aria-live="polite"
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            variants={panelMotion}
+          >
+            <p className="jarvis-voice-title">
+              <MessageCircle className="h-4 w-4" /> Global Voice Assistant
+            </p>
+            <p className="jarvis-voice-note">{context.label}</p>
+            <p className="jarvis-voice-note">{notice}</p>
+            <p className="jarvis-voice-reply">{reply}</p>
+            <p className="jarvis-voice-note">{context.knowledge}</p>
 
-          <div className="jarvis-voice-actions">
-            <button
-              type="button"
-              className="btn btn-ghost"
-              onClick={toggleListening}
-              disabled={!supported}
-              aria-pressed={listening}
-              aria-label={listening ? "Stop listening" : "Start listening"}
-            >
-              {listening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
-              {listening ? "Stop" : "Listen"}
-            </button>
-            <button
-              type="button"
-              className="btn btn-ghost"
-              onClick={() => (speaking ? stopSpeech() : speak(summary))}
-              aria-pressed={speaking}
-              aria-label={speaking ? "Mute speech" : "Read page summary"}
-            >
-              {speaking ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
-              {speaking ? "Mute" : "Read"}
-            </button>
-          </div>
-
-          <div className="jarvis-voice-actions">
-            {context.quickActions.map((action) => (
+            <div className="jarvis-voice-actions">
               <button
-                key={action.href}
                 type="button"
                 className="btn btn-ghost"
-                onClick={() => router.push(action.href)}
+                onClick={toggleListening}
+                disabled={!supported}
+                aria-pressed={listening}
+                aria-label={listening ? "Stop listening" : "Start listening"}
               >
-                {action.label}
+                {listening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                {listening ? "Stop" : "Listen"}
               </button>
-            ))}
-          </div>
+              <button
+                type="button"
+                className="btn btn-ghost"
+                onClick={() => (speaking ? stopSpeech() : speak(summary))}
+                aria-pressed={speaking}
+                aria-label={speaking ? "Mute speech" : "Read page summary"}
+              >
+                {speaking ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+                {speaking ? "Mute" : "Read"}
+              </button>
+            </div>
 
-          <div className="jarvis-voice-input-row">
-            <input
-              ref={inputRef}
-              className="input"
-              value={input}
-              onChange={(event) => setInput(event.target.value)}
-              placeholder="Type command"
-              aria-label="Jarvis command"
-              onKeyDown={(event) => {
-                if (event.key === "Enter") submitText();
-              }}
-            />
-            <button type="button" className="btn btn-primary" onClick={submitText}>
-              <Send className="h-4 w-4" />
-            </button>
-          </div>
-        </div>
-      ) : null}
+            <div className="jarvis-voice-actions">
+              {context.quickActions.map((action) => (
+                <button
+                  key={action.href}
+                  type="button"
+                  className="btn btn-ghost"
+                  onClick={() => router.push(action.href)}
+                >
+                  {action.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="jarvis-voice-input-row">
+              <input
+                ref={inputRef}
+                className="input"
+                value={input}
+                onChange={(event) => setInput(event.target.value)}
+                placeholder="Type command"
+                aria-label="Jarvis command"
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") submitText();
+                }}
+              />
+              <button type="button" className="btn btn-primary" onClick={submitText}>
+                <Send className="h-4 w-4" />
+              </button>
+            </div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </div>
   );
 }

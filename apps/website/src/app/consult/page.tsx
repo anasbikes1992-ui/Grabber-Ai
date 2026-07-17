@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   ArrowRight,
   CheckCircle2,
@@ -17,6 +17,8 @@ import {
   VolumeX,
 } from "lucide-react";
 import { ENTERPRISE_URL } from "@/lib/config";
+import { DESIGN_TOKENS, MOTION_EASE } from "@/lib/design-tokens";
+import { createFadeUpVariant, createStaggerVariant } from "@/lib/motion";
 
 const EXAMPLE = `I own a textile raw material wholesale business in Sri Lanka. I want to modernize my operations. Help me design the best system for my business. Interview me thoroughly until you understand. Challenge my assumptions. Recommend industry best practices. Separate essential features from optional enhancements. Produce a complete business blueprint before any software is designed.`;
 
@@ -158,6 +160,42 @@ export default function ConsultPage() {
   const [speaking, setSpeaking] = useState(false);
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
   const shouldAnimateScene = !session && !done;
+  const prefersReducedMotion = useReducedMotion();
+  const reducedMotion = prefersReducedMotion ?? true;
+
+  const motionDuration = DESIGN_TOKENS.motion.duration;
+  const spring = DESIGN_TOKENS.motion.spring;
+
+  const pageIn = useMemo(
+    () =>
+      reducedMotion
+        ? {
+            hidden: { opacity: 1, y: 0 },
+            visible: { opacity: 1, y: 0 },
+          }
+        : {
+            hidden: { opacity: 0, y: 24 },
+            visible: {
+              opacity: 1,
+              y: 0,
+              transition: {
+                duration: motionDuration.slow / 1000,
+                ease: MOTION_EASE,
+              },
+            },
+          },
+    [reducedMotion, motionDuration.slow],
+  );
+
+  const stagger = useMemo(
+    () => createStaggerVariant(reducedMotion, 0.07, motionDuration.fast),
+    [reducedMotion, motionDuration.fast],
+  );
+
+  const fadeUp = useMemo(
+    () => createFadeUpVariant(reducedMotion, 16, motionDuration.base),
+    [reducedMotion, motionDuration.base],
+  );
 
   const progress = useMemo(() => {
     const checks = [
@@ -422,10 +460,20 @@ export default function ConsultPage() {
   }
 
   return (
-    <div className="section pt-10 pb-24">
+    <motion.div
+      className="section pt-10 pb-24"
+      variants={pageIn}
+      initial="hidden"
+      animate="visible"
+    >
       <div className="container-x max-w-6xl">
-        <div className="grid gap-8 lg:grid-cols-[1.25fr_0.75fr]">
-          <div>
+        <motion.div
+          className="grid gap-8 lg:grid-cols-[1.25fr_0.75fr]"
+          variants={stagger}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.div variants={fadeUp}>
             <p className="badge mb-4">
               <Shield className="h-3 w-3 text-emerald-300" />
               Step 3 of journey - Jarvis intelligence session
@@ -645,15 +693,22 @@ export default function ConsultPage() {
                 )}
               </div>
             )}
-          </div>
+          </motion.div>
 
-          <div className="space-y-4">
+          <motion.div className="space-y-4" variants={fadeUp}>
             <motion.div
               className="card jarvis-world-panel"
               animate={{
                 boxShadow: `0 0 0 1px hsla(${activeScene.hue} 90% 65% / 0.24), 0 24px 80px hsla(${activeScene.hue} 90% 50% / 0.18)`,
               }}
-              transition={{ duration: 1.4, ease: "easeInOut" }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : {
+                      duration: motionDuration.slow / 1000,
+                      ease: MOTION_EASE,
+                    }
+              }
             >
               <p className="text-xs uppercase tracking-wider text-[var(--muted)]">Global to domain context</p>
               <h3 className="mt-2 flex items-center gap-2 text-lg font-semibold">
@@ -666,17 +721,29 @@ export default function ConsultPage() {
                 <motion.div
                   className="jarvis-world-globe"
                   animate={{ rotate: 360 }}
-                  transition={{ duration: 70, repeat: Infinity, ease: "linear" }}
+                  transition={
+                    prefersReducedMotion
+                      ? { duration: 0 }
+                      : { duration: 70, repeat: Infinity, ease: "linear" }
+                  }
                 >
                   <motion.div
                     className="jarvis-world-ring"
                     animate={{ rotate: -360 }}
-                    transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
+                    transition={
+                      prefersReducedMotion
+                        ? { duration: 0 }
+                        : { duration: 24, repeat: Infinity, ease: "linear" }
+                    }
                   />
                   <motion.div
                     className="jarvis-world-ring ring-2"
                     animate={{ rotate: 360 }}
-                    transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                    transition={
+                      prefersReducedMotion
+                        ? { duration: 0 }
+                        : { duration: 30, repeat: Infinity, ease: "linear" }
+                    }
                   />
                   <div className="jarvis-world-grid" />
                   <div className="jarvis-world-pulse" />
@@ -744,8 +811,18 @@ export default function ConsultPage() {
                 {DISCOVERY_TODO.map((item, idx) => {
                   const complete = idx < progress;
                   return (
-                    <li
+                    <motion.li
                       key={item}
+                      layout={!reducedMotion}
+                      transition={
+                        reducedMotion
+                          ? { duration: 0 }
+                          : {
+                              type: "spring",
+                              stiffness: spring.stiffness,
+                              damping: spring.damping,
+                            }
+                      }
                       className={`flex items-center gap-2 rounded-lg border px-3 py-2 text-sm ${
                         complete
                           ? "border-emerald-400/30 bg-emerald-500/10"
@@ -756,14 +833,14 @@ export default function ConsultPage() {
                         className={`h-4 w-4 ${complete ? "text-emerald-300" : "text-slate-500"}`}
                       />
                       {item}
-                    </li>
+                    </motion.li>
                   );
                 })}
               </ul>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 }
