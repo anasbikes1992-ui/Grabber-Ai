@@ -10,7 +10,7 @@ import { createFadeUpVariant, createStaggerVariant } from "@/lib/motion";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Any = any;
 
-const DEFAULT_STORY = `I own a textile raw material wholesale business in Sri Lanka. I want to modernize my operations. Help me design the best system for my business — act as senior consultant, industry specialist, architect, UX designer, CTO, security expert, and operations manager. Interview me thoroughly. Challenge assumptions. Recommend best practices. Separate essential from optional. Produce a complete business blueprint before any software is designed.`;
+const DEFAULT_STORY = `I own a textile raw material wholesale business in Sri Lanka. I want to modernize my operations. Help me design the best system for my business - act as senior consultant, industry specialist, architect, UX designer, CTO, security expert, and operations manager. Interview me thoroughly. Challenge assumptions. Recommend best practices. Separate essential from optional. Produce a complete business blueprint before any software is designed.`;
 
 async function readApiResponse(response: Response) {
   const contentType = response.headers.get("content-type") || "";
@@ -100,11 +100,21 @@ export default function ConsultPage() {
   const [proposalSteps, setProposalSteps] = useState<string[]>([]);
   const prefersReducedMotion = useReducedMotion() ?? true;
   const containerVariant = useMemo(
-    () => createStaggerVariant(prefersReducedMotion, 0.08, DESIGN_TOKENS.motion.duration.fast),
+    () =>
+      createStaggerVariant(
+        prefersReducedMotion,
+        0.08,
+        DESIGN_TOKENS.motion.duration.fast,
+      ),
     [prefersReducedMotion],
   );
   const cardVariant = useMemo(
-    () => createFadeUpVariant(prefersReducedMotion, 18, DESIGN_TOKENS.motion.duration.base),
+    () =>
+      createFadeUpVariant(
+        prefersReducedMotion,
+        18,
+        DESIGN_TOKENS.motion.duration.base,
+      ),
     [prefersReducedMotion],
   );
 
@@ -197,7 +207,17 @@ export default function ConsultPage() {
       `}</style>
       <PageHeader
         title="Jarvis Consulting"
-        description="Describe your business — not software. Jarvis interviews, benchmarks patterns (never copies), gaps, multi-agent review, then a full blueprint. Factory only after governance."
+        description="Describe your business - not software. Jarvis interviews, benchmarks patterns, identifies gaps, and shapes the blueprint before any factory work starts."
+        actions={
+          <>
+            <Link href="/signup" className="btn btn-primary">
+              Sign up
+            </Link>
+            <Link href="/login" className="btn btn-ghost">
+              Login
+            </Link>
+          </>
+        }
       />
 
       <motion.div
@@ -212,14 +232,14 @@ export default function ConsultPage() {
             One operating system, connected use-cases
           </h2>
           <p className="mt-2 max-w-2xl text-sm text-(--muted)">
-            Consulting discovers strategy, package locks commercial scope, and portal/factory execute with full continuity by engagement ID.
+            Start in consulting, structure the business blueprint, and move into delivery only when the engagement is ready.
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
             <Link href="/portal" className="btn btn-primary">
               Open client portal
             </Link>
-            <Link href="/business" className="btn btn-ghost">
-              Open factory cockpit
+            <Link href="/login" className="btn btn-ghost">
+              Owner sign in
             </Link>
           </div>
         </div>
@@ -237,21 +257,21 @@ export default function ConsultPage() {
 
       <motion.div variants={cardVariant}>
         <Section title="Business story">
-        <input
-          className="input mb-2 max-w-md"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Business name"
-        />
-        <textarea
-          className="textarea font-mono text-xs"
-          value={story}
-          onChange={(e) => setStory(e.target.value)}
-          rows={8}
-        />
-        <button className="btn btn-primary mt-3" disabled={busy} onClick={start}>
-          {busy ? "…" : "Start discovery interview"}
-        </button>
+          <input
+            className="input mb-2 max-w-md"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Business name"
+          />
+          <textarea
+            className="textarea font-mono text-xs"
+            value={story}
+            onChange={(e) => setStory(e.target.value)}
+            rows={8}
+          />
+          <button className="btn btn-primary mt-3" disabled={busy} onClick={start}>
+            {busy ? "..." : "Start discovery interview"}
+          </button>
         </Section>
       </motion.div>
 
@@ -259,143 +279,128 @@ export default function ConsultPage() {
         <motion.div variants={containerVariant} className="mt-4 space-y-4">
           <motion.div variants={cardVariant}>
             <Section title="Session">
-            <div className="flex flex-wrap gap-2 text-sm">
-              <StatusPill status={engagement.consulting?.stage || "discovery"} />
-              <span className="muted">
-                Confidence:{" "}
-                {Math.round((engagement.consulting?.confidence || 0) * 100)}% /
-                {Math.round(
-                  (engagement.consulting?.confidence_threshold || 0.8) * 100,
-                )}
-                %
-              </span>
-              <span className="muted text-xs">{engagement.id}</span>
-            </div>
-            <p className="mt-2 text-xs text-(--muted)">
-              {engagement.consulting?.legal_boundary}
-            </p>
+              <div className="flex flex-wrap gap-2 text-sm">
+                <StatusPill status={engagement.consulting?.stage || "discovery"} />
+                <span className="muted">
+                  Confidence: {Math.round((engagement.consulting?.confidence || 0) * 100)}% /
+                  {Math.round((engagement.consulting?.confidence_threshold || 0.8) * 100)}%
+                </span>
+                <span className="muted text-xs">{engagement.id}</span>
+              </div>
+              <p className="mt-2 text-xs text-(--muted)">
+                {engagement.consulting?.legal_boundary}
+              </p>
             </Section>
           </motion.div>
 
           <motion.div variants={cardVariant}>
-            <Section title="Interview (Jarvis asks — you answer)">
-            {nextQs.length === 0 ? (
-              <p className="text-sm text-emerald-300">
-                Discovery threshold met (or no pending). Run intelligence → package.
-              </p>
-            ) : (
-              <div className="space-y-3">
-                {nextQs.map((q: Any) => (
-                  <div key={q.id}>
-                    <label className="label">{q.prompt}</label>
-                    <textarea
-                      className="textarea text-sm"
-                      value={answers[q.id] || ""}
-                      onChange={(e) =>
-                        setAnswers((a) => ({ ...a, [q.id]: e.target.value }))
-                      }
-                    />
-                  </div>
-                ))}
-                <button
-                  className="btn btn-primary"
-                  disabled={busy}
-                  onClick={submitAnswers}
-                >
-                  Submit answers
-                </button>
-              </div>
-            )}
+            <Section title="Interview (Jarvis asks - you answer)">
+              {nextQs.length === 0 ? (
+                <p className="text-sm text-emerald-300">
+                  Discovery threshold met (or no pending). Run intelligence to package.
+                </p>
+              ) : (
+                <div className="space-y-3">
+                  {nextQs.map((q: Any) => (
+                    <div key={q.id}>
+                      <label className="label">{q.prompt}</label>
+                      <textarea
+                        className="textarea text-sm"
+                        value={answers[q.id] || ""}
+                        onChange={(e) =>
+                          setAnswers((current) => ({
+                            ...current,
+                            [q.id]: e.target.value,
+                          }))
+                        }
+                      />
+                    </div>
+                  ))}
+                  <button className="btn btn-primary" disabled={busy} onClick={submitAnswers}>
+                    Submit answers
+                  </button>
+                </div>
+              )}
             </Section>
           </motion.div>
 
           <motion.div variants={cardVariant}>
             <Section title="Consulting pipeline">
-            <button className="btn btn-primary" disabled={busy} onClick={runRest}>
-              Run intelligence → gaps → review → package
-            </button>
-            <p className="mt-2 text-xs muted">
-              Blocked until discovery confidence ≥ threshold. Never starts factory.
-            </p>
+              <button className="btn btn-primary" disabled={busy} onClick={runRest}>
+                Run intelligence to package
+              </button>
+              <p className="mt-2 text-xs muted">
+                Blocked until discovery confidence reaches threshold. Factory work stays gated.
+              </p>
             </Section>
           </motion.div>
 
           {pkg ? (
             <motion.div variants={cardVariant}>
               <Section title="Solution package (pre-factory)">
-              <div className="space-y-4 text-sm">
-                <div>
-                  <p className="text-xs uppercase text-(--muted)">Business</p>
-                  <p>{pkg.business?.executive_summary || "—"}</p>
-                </div>
-                <div>
-                  <p className="text-xs uppercase text-(--muted)">Essential</p>
-                  <p>
-                    {pkg.functional?.requirements
-                      ?.filter((r: Any) => r.class === "essential")
-                      .map((r: Any) => r.capability)
-                      .join(", ") || "—"}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs uppercase text-(--muted)">Recommended</p>
-                  <p>
-                    {pkg.functional?.requirements
-                      ?.filter((r: Any) => r.class === "recommended")
-                      .map((r: Any) => r.capability)
-                      .slice(0, 6)
-                      .join(", ") || "—"}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs uppercase text-(--muted)">Proposal steps</p>
-                  {proposalSteps.length ? (
-                    <ol className="mt-2 space-y-2">
-                      {proposalSteps.slice(0, 6).map((step, index) => (
-                        <li
-                          key={`${index}-${step}`}
-                          className="rounded-xl border border-white/10 bg-black/20 px-3 py-2"
-                        >
-                          {step}
-                        </li>
-                      ))}
-                    </ol>
-                  ) : (
-                    <p>—</p>
-                  )}
-                </div>
-                <div>
-                  <p className="text-xs uppercase text-(--muted)">Commercial total</p>
-                  <p>
-                    {pkg.commercial?.pricing?.total != null
-                      ? `$${pkg.commercial.pricing.total.toLocaleString()}`
-                      : "—"}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs uppercase text-(--muted)">Factory</p>
-                  <p>{pkg.factory ? JSON.stringify(pkg.factory, null, 2) : "—"}</p>
-                </div>
-                <div className="rounded-2xl border border-sky-500/20 bg-sky-500/5 p-4">
-                  <p className="text-xs uppercase tracking-[0.14em] text-(--muted)">
-                    Continue with the same engagement
-                  </p>
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    <Link
-                      href={`/portal?client=${encodeURIComponent(name)}`}
-                      className="btn btn-primary"
-                    >
-                      Client portal view
-                    </Link>
-                    <Link
-                      href={`/business?id=${encodeURIComponent(engagement.id)}`}
-                      className="btn btn-ghost"
-                    >
-                      Factory business workspace
-                    </Link>
+                <div className="space-y-4 text-sm">
+                  <div>
+                    <p className="text-xs uppercase text-(--muted)">Business</p>
+                    <p>{pkg.business?.executive_summary || "-"}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs uppercase text-(--muted)">Essential</p>
+                    <p>
+                      {pkg.functional?.requirements
+                        ?.filter((r: Any) => r.class === "essential")
+                        .map((r: Any) => r.capability)
+                        .join(", ") || "-"}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs uppercase text-(--muted)">Recommended</p>
+                    <p>
+                      {pkg.functional?.requirements
+                        ?.filter((r: Any) => r.class === "recommended")
+                        .map((r: Any) => r.capability)
+                        .slice(0, 6)
+                        .join(", ") || "-"}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs uppercase text-(--muted)">Proposal steps</p>
+                    {proposalSteps.length ? (
+                      <ol className="mt-2 space-y-2">
+                        {proposalSteps.slice(0, 6).map((step, index) => (
+                          <li
+                            key={`${index}-${step}`}
+                            className="rounded-xl border border-white/10 bg-black/20 px-3 py-2"
+                          >
+                            {step}
+                          </li>
+                        ))}
+                      </ol>
+                    ) : (
+                      <p>-</p>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-xs uppercase text-(--muted)">Commercial total</p>
+                    <p>
+                      {pkg.commercial?.pricing?.total != null
+                        ? `$${pkg.commercial.pricing.total.toLocaleString()}`
+                        : "-"}
+                    </p>
+                  </div>
+                  <div className="rounded-2xl border border-sky-500/20 bg-sky-500/5 p-4">
+                    <p className="text-xs uppercase tracking-[0.14em] text-(--muted)">
+                      Continue with the same engagement
+                    </p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      <Link href={`/portal?client=${encodeURIComponent(name)}`} className="btn btn-primary">
+                        Client portal view
+                      </Link>
+                      <Link href="/login" className="btn btn-ghost">
+                        Sign in to internal workspace
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </div>
               </Section>
             </motion.div>
           ) : null}

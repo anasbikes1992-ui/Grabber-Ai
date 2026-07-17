@@ -16,7 +16,7 @@ import {
 import { cn } from "@/lib/cn";
 
 const NAV = [
-  { href: "/", label: "Command Center", icon: LayoutDashboard },
+  { href: "/command-center", label: "Command Center", icon: LayoutDashboard },
   { href: "/consult", label: "Jarvis Consulting", icon: Briefcase },
   { href: "/business", label: "Business OS · Pipeline", icon: Briefcase },
   { href: "/portal", label: "Client Portal · Trust", icon: Users },
@@ -32,13 +32,13 @@ export function EnterpriseShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-screen">
-      <aside className="sticky top-0 flex h-screen w-64 shrink-0 flex-col border-r border-[var(--border)] bg-[rgba(7,9,15,0.85)] p-4 backdrop-blur">
+      <aside className="sticky top-0 flex h-screen w-64 shrink-0 flex-col border-r border-(--border) bg-[rgba(7,9,15,0.85)] p-4 backdrop-blur">
         <div className="mb-6 px-2">
           <div className="flex items-center gap-2 text-sm font-semibold tracking-wide">
             <Factory className="h-4 w-4 text-sky-400" />
             Grabber Enterprise
           </div>
-          <p className="mt-1 text-xs text-[var(--muted)]">
+          <p className="mt-1 text-xs text-(--muted)">
             v3.0 · Track B · Core frozen
           </p>
         </div>
@@ -46,8 +46,8 @@ export function EnterpriseShell({ children }: { children: React.ReactNode }) {
           {NAV.map((item) => {
             const Icon = item.icon;
             const active =
-              item.href === "/"
-                ? pathname === "/"
+              item.href === "/command-center"
+                ? pathname === "/command-center"
                 : pathname.startsWith(item.href);
             return (
               <Link
@@ -61,14 +61,14 @@ export function EnterpriseShell({ children }: { children: React.ReactNode }) {
             );
           })}
         </nav>
-        <div className="mt-4 rounded-xl border border-[var(--border)] bg-[rgba(255,255,255,0.02)] p-3 text-xs text-[var(--muted)]">
-          <div className="mb-1 font-medium text-[var(--text)]">Feature filter</div>
+        <div className="mt-4 rounded-xl border border-(--border) bg-[rgba(255,255,255,0.02)] p-3 text-xs text-(--muted)">
+          <div className="mb-1 font-medium text-foreground">Feature filter</div>
           Discovery · Conversion · Delivery · Margin · Reuse
         </div>
       </aside>
       <div className="min-w-0 flex-1">
-        <header className="sticky top-0 z-10 flex items-center justify-between border-b border-[var(--border)] bg-[rgba(7,9,15,0.7)] px-6 py-3 backdrop-blur">
-          <div className="text-sm text-[var(--muted)]">
+        <header className="sticky top-0 z-10 flex items-center justify-between border-b border-(--border) bg-[rgba(7,9,15,0.7)] px-6 py-3 backdrop-blur">
+          <div className="text-sm text-(--muted)">
             AI-native software company OS
           </div>
           <div className="flex items-center gap-2">

@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { createSupabaseServerClient, isSupabaseConfigured } from "@/lib/supabase/server";
 import { getSessionUser } from "@/lib/auth/session";
 
-export type AuthState = { error?: string };
+export type AuthState = { error?: string; success?: string };
 
 function isRedirectError(e: unknown): boolean {
   return Boolean(e && typeof e === "object" && "digest" in e);
@@ -36,7 +36,43 @@ export async function signIn(_prev: AuthState, formData: FormData): Promise<Auth
 
   const user = await getSessionUser();
   if (user?.role === "client") redirect("/portal");
-  redirect("/");
+  redirect("/command-center");
+}
+
+export async function signUp(_prev: AuthState, formData: FormData): Promise<AuthState> {
+  const email = String(formData.get("email") ?? "").trim().toLowerCase();
+  const password = String(formData.get("password") ?? "");
+
+  if (!email || !email.includes("@")) return { error: "Enter a valid email address." };
+  if (password.length < 6) return { error: "Password must be at least 6 characters." };
+
+  if (!isSupabaseConfigured()) {
+    return { error: "Authentication is not configured. Set Supabase env vars." };
+  }
+
+  try {
+    const supabase = await createSupabaseServerClient();
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          role: "client",
+        },
+      },
+    });
+
+    if (error) return { error: error.message };
+
+    if (data.session) {
+      redirect("/portal");
+    }
+
+    return { success: "Account created. Check your email, then sign in." };
+  } catch (e) {
+    if (isRedirectError(e)) throw e;
+    return { error: "Sign-up failed. Check Supabase configuration." };
+  }
 }
 
 export async function signOut(): Promise<void> {
@@ -48,5 +84,5 @@ export async function signOut(): Promise<void> {
       // ignore — cookie clears on next refresh
     }
   }
-  redirect("/login");
+  redirect("/consult");
 }

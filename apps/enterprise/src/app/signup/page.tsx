@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { useActionState } from "react";
-import { signIn, type AuthState } from "@/app/actions/auth";
+import { signUp, type AuthState } from "@/app/actions/auth";
 
 const initialState: AuthState = {};
 
-export default function LoginPage() {
-  const [state, formAction, pending] = useActionState(signIn, initialState);
+export default function SignupPage() {
+  const [state, formAction, pending] = useActionState(signUp, initialState);
 
   return (
     <main
@@ -18,14 +18,14 @@ export default function LoginPage() {
         padding: "2rem",
       }}
     >
-      <div className="card" style={{ width: "100%", maxWidth: 380, padding: "2rem" }}>
+      <div className="card" style={{ width: "100%", maxWidth: 420, padding: "2rem" }}>
         <div style={{ marginBottom: "1.5rem" }}>
           <div className="badge">Grabber Enterprise</div>
           <h1 style={{ fontSize: "1.5rem", fontWeight: 600, marginTop: "0.75rem" }}>
-            Sign in
+            Create client account
           </h1>
           <p className="muted" style={{ marginTop: "0.25rem", fontSize: "0.875rem" }}>
-            Owner console and client portal access.
+            Start with Jarvis consulting, then track progress in your portal.
           </p>
         </div>
 
@@ -53,34 +53,34 @@ export default function LoginPage() {
               id="password"
               name="password"
               type="password"
-              autoComplete="current-password"
+              autoComplete="new-password"
               required
               minLength={6}
               className="input"
-              placeholder="••••••••"
+              placeholder="At least 6 characters"
             />
           </div>
 
           {state.error ? (
-            <p
-              role="alert"
-              style={{ color: "var(--danger)", fontSize: "0.8125rem", margin: 0 }}
-            >
+            <p role="alert" style={{ color: "var(--danger)", fontSize: "0.8125rem", margin: 0 }}>
               {state.error}
             </p>
           ) : null}
 
+          {state.success ? (
+            <p style={{ color: "var(--success)", fontSize: "0.8125rem", margin: 0 }}>
+              {state.success}
+            </p>
+          ) : null}
+
           <button type="submit" className="btn btn-primary" disabled={pending}>
-            {pending ? "Signing in…" : "Sign in"}
+            {pending ? "Creating account…" : "Sign up"}
           </button>
         </form>
 
-        <div style={{ marginTop: "1rem", display: "grid", gap: "0.75rem" }}>
-          <Link href="/signup" className="btn btn-ghost" style={{ width: "100%" }}>
-            Create client account
-          </Link>
-          <Link href="/consult" className="btn btn-ghost" style={{ width: "100%" }}>
-            Back to consultant page
+        <div style={{ marginTop: "1rem" }}>
+          <Link href="/login" className="btn btn-ghost" style={{ width: "100%" }}>
+            Already have an account? Sign in
           </Link>
         </div>
       </div>

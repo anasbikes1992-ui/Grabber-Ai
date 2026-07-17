@@ -72,7 +72,7 @@ export default function GovernancePage() {
             <Link href="/business" className="btn btn-primary">
               Run engagement workflow
             </Link>
-            <Link href="/" className="btn btn-ghost">
+            <Link href="/command-center" className="btn btn-ghost">
               Seed full demo path
             </Link>
           </div>
