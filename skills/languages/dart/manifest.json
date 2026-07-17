@@ -1,0 +1,26 @@
+{
+  "id": "skill.language.dart",
+  "version": "0.1.0",
+  "type": "skill",
+  "displayName": "Dart",
+  "description": "First-party skill: Dart (EDR-005 shortlist)",
+  "capabilities": [
+    "lang.dart"
+  ],
+  "permissions": [
+    "filesystem"
+  ],
+  "hooks": [],
+  "dependencies": [],
+  "entry": "./index.js",
+  "metadata": {
+    "category": "language",
+    "knowledge": [],
+    "patterns": [],
+    "examples": [],
+    "tests": [
+      "manifest-valid"
+    ],
+    "firstParty": true
+  }
+}

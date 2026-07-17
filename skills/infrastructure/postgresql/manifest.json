@@ -1,0 +1,26 @@
+{
+  "id": "skill.infra.postgresql",
+  "version": "0.1.0",
+  "type": "skill",
+  "displayName": "PostgreSQL",
+  "description": "First-party skill: PostgreSQL (EDR-005 shortlist)",
+  "capabilities": [
+    "db.postgresql"
+  ],
+  "permissions": [
+    "filesystem"
+  ],
+  "hooks": [],
+  "dependencies": [],
+  "entry": "./index.js",
+  "metadata": {
+    "category": "infrastructure",
+    "knowledge": [],
+    "patterns": [],
+    "examples": [],
+    "tests": [
+      "manifest-valid"
+    ],
+    "firstParty": true
+  }
+}

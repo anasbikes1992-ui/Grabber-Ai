@@ -1,0 +1,26 @@
+{
+  "id": "skill.framework.nextjs",
+  "version": "0.1.0",
+  "type": "skill",
+  "displayName": "Next.js",
+  "description": "First-party skill: Next.js (EDR-005 shortlist)",
+  "capabilities": [
+    "fw.nextjs"
+  ],
+  "permissions": [
+    "filesystem"
+  ],
+  "hooks": [],
+  "dependencies": [],
+  "entry": "./index.js",
+  "metadata": {
+    "category": "framework",
+    "knowledge": [],
+    "patterns": [],
+    "examples": [],
+    "tests": [
+      "manifest-valid"
+    ],
+    "firstParty": true
+  }
+}

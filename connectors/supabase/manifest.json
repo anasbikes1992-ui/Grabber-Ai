@@ -1,0 +1,15 @@
+{
+  "id": "connector.supabase",
+  "version": "0.1.0",
+  "type": "connector",
+  "displayName": "Supabase",
+  "description": "Thin Supabase connector — auth + REST/realtime transport",
+  "capabilities": ["auth", "transport", "subscribe"],
+  "permissions": ["network", "secrets"],
+  "hooks": [],
+  "dependencies": [],
+  "metadata": {
+    "transports": ["REST", "realtime"],
+    "priority": 2
+  }
+}

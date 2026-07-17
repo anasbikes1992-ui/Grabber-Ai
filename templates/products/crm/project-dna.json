@@ -1,0 +1,56 @@
+{
+  "project": {
+    "name": "crm",
+    "template": "crm",
+    "industry": "sales",
+    "business_model": "b2b-saas",
+    "users": [
+      { "role": "sales-rep", "goals": ["manage pipeline", "log activities"] },
+      { "role": "manager", "goals": ["forecast revenue", "coach team"] }
+    ],
+    "goals": [
+      "manage contacts and companies",
+      "track deals through pipeline stages",
+      "activity timeline and workflows"
+    ],
+    "constraints": {
+      "must": ["derive every artifact from this DNA", "audit activity log"],
+      "should": ["workflow automation hooks"],
+      "may": ["email sync later"],
+      "must_not": ["invent CRM modules not in goals"],
+      "assumptions": ["Product Factory CRM template"],
+      "unknowns": [],
+      "risks": ["pipeline stage drift"]
+    },
+    "integrations": ["supabase", "github", "stripe"],
+    "architecture": {
+      "style": "modular-monolith",
+      "modules": ["contacts", "companies", "deals", "activities", "workflows"]
+    },
+    "stack": "crud-dashboard (Next.js + Supabase)",
+    "conventions": {
+      "db_naming": "plural",
+      "api_envelope": "data/error+trace_id",
+      "breakpoints": ["sm", "md", "lg"]
+    },
+    "security_level": "standard",
+    "authorization": { "model": "rbac", "roles": ["rep", "manager", "admin"] },
+    "accessibility_level": "WCAG-2.1-AA",
+    "performance_targets": { "lcp_ms": 2500, "inp_ms": 200, "api_p95_ms": 400 },
+    "data": { "retention": "7-years", "regulated": false },
+    "deployment_targets": {
+      "environments": ["development", "staging", "production"],
+      "uptime_target": "99.5%",
+      "backup_schedule": "daily"
+    },
+    "critical_flows": [
+      "create contact",
+      "create deal",
+      "move deal stage",
+      "log activity",
+      "run workflow"
+    ],
+    "standards_version": "stds-1.0.0",
+    "decision_registry": ["EDR-007"]
+  }
+}

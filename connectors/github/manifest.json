@@ -1,0 +1,16 @@
+{
+  "id": "connector.github",
+  "version": "0.1.0",
+  "type": "connector",
+  "displayName": "GitHub",
+  "description": "Thin GitHub connector — auth + REST transport only",
+  "capabilities": ["auth", "transport", "webhooks"],
+  "permissions": ["network", "secrets"],
+  "hooks": [],
+  "dependencies": [],
+  "metadata": {
+    "transports": ["REST", "webhooks"],
+    "oauth": true,
+    "priority": 1
+  }
+}

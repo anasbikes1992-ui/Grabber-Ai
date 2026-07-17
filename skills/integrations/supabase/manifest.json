@@ -1,0 +1,27 @@
+{
+  "id": "skill.integration.supabase",
+  "version": "0.1.0",
+  "type": "skill",
+  "displayName": "Supabase",
+  "description": "First-party skill: Supabase (EDR-005 shortlist)",
+  "capabilities": [
+    "int.supabase"
+  ],
+  "permissions": [
+    "network",
+    "secrets"
+  ],
+  "hooks": [],
+  "dependencies": [],
+  "entry": "./index.js",
+  "metadata": {
+    "category": "integration",
+    "knowledge": [],
+    "patterns": [],
+    "examples": [],
+    "tests": [
+      "manifest-valid"
+    ],
+    "firstParty": true
+  }
+}

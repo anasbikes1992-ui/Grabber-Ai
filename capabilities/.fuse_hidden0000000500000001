@@ -1,0 +1,97 @@
+# CAPABILITY REGISTRY
+
+Instead of asking "Can Jarvis do this?" — Jarvis knows. Every platform
+capability is documented with dependencies, owner, and status. Jarvis
+consults this registry before accepting a task; a task requiring a
+non-Complete capability is either escalated or scheduled, never attempted
+blind.
+
+Major version bumps of a dependency (GT-07) flag every capability that
+depends on it for re-validation.
+
+## Entry format
+
+```yaml
+capability:
+  name: ""
+  status: Planned | In Development | Complete | Degraded
+  owner: ""            # owning agent or human role
+  version: ""          # semver
+  depends_on: []       # standards, engines, other capabilities
+  validated_by: ""     # which validator + rubric
+  metrics: []          # how its effectiveness is measured (01-OS §6)
+```
+
+## Registry
+
+```yaml
+- capability:
+    name: Foundation Documentation
+    status: Complete
+    owner: Platform
+    version: 1.0.0
+    depends_on: [MASTER, 00-VISION, 01-OPERATING-SYSTEM, 02-JARVIS-CORE, 03-KNOWLEDGE-ENGINE]
+    validated_by: Documentation validator (13-DOCUMENTATION)
+    metrics: [doc completeness, link integrity]
+
+- capability:
+    name: Engineering Standards
+    status: Complete
+    owner: Platform
+    version: 1.0.0
+    depends_on: [Foundation Documentation]
+    validated_by: standards format check (00-STANDARDS-INDEX)
+    metrics: [rubric coverage, exception count]
+
+- capability:
+    name: Prompt OS
+    status: Planned
+    owner: Jarvis Core
+    version: —
+    depends_on: [Engineering Standards (18-PROMPT), Knowledge Engine, Constraint Engine]
+    validated_by: Prompt validator (18-PROMPT rubric)
+    metrics: [prompt success rate, correction rate]
+
+- capability:
+    name: Agent OS
+    status: Planned
+    owner: Jarvis Core
+    version: —
+    depends_on: [Prompt OS, Engineering Standards, Capability Registry, EDR Registry]
+    validated_by: agent spec conformance (AGENT-SPEC-TEMPLATE)
+    metrics: [agent correction rate, escalation rate]
+
+- capability:
+    name: Requirements Analysis
+    status: Planned
+    owner: Business Analyst
+    version: —
+    depends_on: [Agent OS, Knowledge Engine, Prompt OS, Validation Engine]
+    validated_by: Requirements validator
+    metrics: [PRD completeness, change-request rate]
+
+- capability:
+    name: Validation Engine
+    status: Planned
+    owner: Jarvis Core
+    version: —
+    depends_on: [Engineering Standards, Prompt OS]
+    validated_by: meta-validation (gate score audit)
+    metrics: [gate accuracy, false-pass rate]
+
+- capability:
+    name: Development Factory
+    status: Planned
+    owner: Engineering Lead
+    version: —
+    depends_on: [Agent OS, Validation Engine, Pattern Library, Project DNA]
+    validated_by: full gate sequence (01-OS §3)
+    metrics: [build success rate, manual intervention rate]
+```
+
+- capability:
+    name: Engineering Constitution
+    status: Complete
+    owner: Platform
+    version: 1.0.0
+    depends

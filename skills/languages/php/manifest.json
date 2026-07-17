@@ -1,0 +1,26 @@
+{
+  "id": "skill.language.php",
+  "version": "0.1.0",
+  "type": "skill",
+  "displayName": "PHP",
+  "description": "First-party skill: PHP (EDR-005 shortlist)",
+  "capabilities": [
+    "lang.php"
+  ],
+  "permissions": [
+    "filesystem"
+  ],
+  "hooks": [],
+  "dependencies": [],
+  "entry": "./index.js",
+  "metadata": {
+    "category": "language",
+    "knowledge": [],
+    "patterns": [],
+    "examples": [],
+    "tests": [
+      "manifest-valid"
+    ],
+    "firstParty": true
+  }
+}

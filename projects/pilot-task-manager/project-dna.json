@@ -1,0 +1,32 @@
+{
+  "project": {
+    "name": "pilot-task-manager",
+    "industry": "productivity",
+    "business_model": "internal-tool",
+    "users": [{ "role": "team-member", "goals": ["track tasks", "see team workload"] }],
+    "goals": ["validate the SEOS runtime end-to-end (EDR-003)", "manage tasks with statuses and assignees"],
+    "constraints": {
+      "must": ["derive every artifact from this DNA", "single-tenant"],
+      "should": ["keep scope minimal"],
+      "may": ["defer notifications"],
+      "must_not": ["invent features not in goals", "call external services"],
+      "assumptions": ["synthetic pilot: agents are deterministic stand-ins"],
+      "unknowns": [],
+      "risks": ["pilot may hide model-behavior issues (accepted, EDR-003)"]
+    },
+    "integrations": [],
+    "architecture": { "style": "modular-monolith", "modules": ["tasks", "users", "reporting"] },
+    "stack": "crud-dashboard (01-OS §7 decision rule: Next.js + Supabase)",
+    "conventions": { "db_naming": "plural", "api_envelope": "data/error+trace_id", "breakpoints": ["sm", "md", "lg"] },
+    "security_level": "standard",
+    "authorization": { "model": "rbac", "roles": ["member", "admin"] },
+    "accessibility_level": "WCAG-2.1-AA",
+    "performance_targets": { "lcp_ms": 2500, "inp_ms": 200, "api_p95_ms": 400 },
+    "data": { "retention": "indefinite (internal)", "regulated": false },
+    "deployment_targets": { "environments": ["development", "staging", "production"], "uptime_target": "99.5%", "backup_schedule": "daily" },
+    "critical_flows": ["create task", "assign task", "complete task"],
+    "risks": [],
+    "standards_version": "stds-1.0.0",
+    "decision_registry": ["EDR-003"]
+  }
+}

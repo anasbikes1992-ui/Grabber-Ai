@@ -1,0 +1,15 @@
+{
+  "id": "connector.stripe",
+  "version": "0.1.0",
+  "type": "connector",
+  "displayName": "Stripe",
+  "description": "Thin Stripe connector — auth + REST + webhooks",
+  "capabilities": ["auth", "transport", "webhooks"],
+  "permissions": ["network", "secrets"],
+  "hooks": [],
+  "dependencies": [],
+  "metadata": {
+    "transports": ["REST", "webhooks"],
+    "priority": 3
+  }
+}

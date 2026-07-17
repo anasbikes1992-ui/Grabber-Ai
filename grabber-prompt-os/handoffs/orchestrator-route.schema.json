@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "grabber-prompt-os/handoffs/orchestrator-route",
+  "title": "OrchestratorRoute",
+  "type": "object",
+  "required": ["next_agent", "task", "inputs", "constraints"],
+  "additionalProperties": false,
+  "properties": {
+    "next_agent": {
+      "type": "string",
+      "enum": [
+        "business-analyst",
+        "architect",
+        "developer",
+        "qa",
+        "security",
+        "human"
+      ]
+    },
+    "task": { "type": "string", "minLength": 1 },
+    "inputs": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "constraints": {
+      "type": "object",
+      "required": [
+        "must",
+        "should",
+        "may",
+        "must_not",
+        "assumptions",
+        "unknowns",
+        "risks"
+      ],
+      "properties": {
+        "must": { "type": "array", "items": { "type": "string" } },
+        "should": { "type": "array", "items": { "type": "string" } },
+        "may": { "type": "array", "items": { "type": "string" } },
+        "must_not": { "type": "array", "items": { "type": "string" } },
+        "assumptions": { "type": "array", "items": { "type": "string" } },
+        "unknowns": { "type": "array", "items": { "type": "string" } },
+        "risks": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "related_standards": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

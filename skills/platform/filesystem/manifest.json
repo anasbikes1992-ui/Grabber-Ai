@@ -1,0 +1,29 @@
+{
+  "id": "skill.platform.filesystem",
+  "version": "0.1.0",
+  "type": "skill",
+  "displayName": "Filesystem",
+  "description": "First-party skill: Filesystem (EDR-005 shortlist)",
+  "capabilities": [
+    "fs.read",
+    "fs.write",
+    "fs.list"
+  ],
+  "permissions": [
+    "filesystem",
+    "shell"
+  ],
+  "hooks": [],
+  "dependencies": [],
+  "entry": "./index.js",
+  "metadata": {
+    "category": "platform",
+    "knowledge": [],
+    "patterns": [],
+    "examples": [],
+    "tests": [
+      "manifest-valid"
+    ],
+    "firstParty": true
+  }
+}

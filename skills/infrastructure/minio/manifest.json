@@ -1,0 +1,26 @@
+{
+  "id": "skill.infra.minio",
+  "version": "0.1.0",
+  "type": "skill",
+  "displayName": "MinIO",
+  "description": "First-party skill: MinIO (EDR-005 shortlist)",
+  "capabilities": [
+    "object.minio"
+  ],
+  "permissions": [
+    "filesystem"
+  ],
+  "hooks": [],
+  "dependencies": [],
+  "entry": "./index.js",
+  "metadata": {
+    "category": "infrastructure",
+    "knowledge": [],
+    "patterns": [],
+    "examples": [],
+    "tests": [
+      "manifest-valid"
+    ],
+    "firstParty": true
+  }
+}

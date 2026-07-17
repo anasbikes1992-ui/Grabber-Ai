@@ -1,0 +1,26 @@
+{
+  "id": "skill.framework.flutter",
+  "version": "0.1.0",
+  "type": "skill",
+  "displayName": "Flutter",
+  "description": "First-party skill: Flutter (EDR-005 shortlist)",
+  "capabilities": [
+    "fw.flutter"
+  ],
+  "permissions": [
+    "filesystem"
+  ],
+  "hooks": [],
+  "dependencies": [],
+  "entry": "./index.js",
+  "metadata": {
+    "category": "framework",
+    "knowledge": [],
+    "patterns": [],
+    "examples": [],
+    "tests": [
+      "manifest-valid"
+    ],
+    "firstParty": true
+  }
+}

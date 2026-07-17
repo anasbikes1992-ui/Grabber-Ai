@@ -1,0 +1,26 @@
+{
+  "id": "skill.framework.react",
+  "version": "0.1.0",
+  "type": "skill",
+  "displayName": "React",
+  "description": "First-party skill: React (EDR-005 shortlist)",
+  "capabilities": [
+    "fw.react"
+  ],
+  "permissions": [
+    "filesystem"
+  ],
+  "hooks": [],
+  "dependencies": [],
+  "entry": "./index.js",
+  "metadata": {
+    "category": "framework",
+    "knowledge": [],
+    "patterns": [],
+    "examples": [],
+    "tests": [
+      "manifest-valid"
+    ],
+    "firstParty": true
+  }
+}

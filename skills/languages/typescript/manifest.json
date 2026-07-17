@@ -1,0 +1,26 @@
+{
+  "id": "skill.language.typescript",
+  "version": "0.1.0",
+  "type": "skill",
+  "displayName": "TypeScript",
+  "description": "First-party skill: TypeScript (EDR-005 shortlist)",
+  "capabilities": [
+    "lang.typescript"
+  ],
+  "permissions": [
+    "filesystem"
+  ],
+  "hooks": [],
+  "dependencies": [],
+  "entry": "./index.js",
+  "metadata": {
+    "category": "language",
+    "knowledge": [],
+    "patterns": [],
+    "examples": [],
+    "tests": [
+      "manifest-valid"
+    ],
+    "firstParty": true
+  }
+}

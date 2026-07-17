@@ -1,0 +1,27 @@
+{
+  "version": "1.0.0",
+  "policy": "First-party shortlist (EDR-005). Full action bodies deepen with Development Factory; manifests define the contract now.",
+  "skills": [
+    { "id": "skill.platform.git", "category": "platform", "path": "platform/git", "capabilities": ["git.status", "git.commit", "git.diff"] },
+    { "id": "skill.platform.filesystem", "category": "platform", "path": "platform/filesystem", "capabilities": ["fs.read", "fs.write", "fs.list"] },
+    { "id": "skill.platform.docker", "category": "platform", "path": "platform/docker", "capabilities": ["docker.build", "docker.run"] },
+    { "id": "skill.platform.terminal", "category": "platform", "path": "platform/terminal", "capabilities": ["shell.exec"] },
+    { "id": "skill.platform.http", "category": "platform", "path": "platform/http", "capabilities": ["http.request"] },
+    { "id": "skill.language.typescript", "category": "language", "path": "languages/typescript", "capabilities": ["lang.typescript"] },
+    { "id": "skill.language.python", "category": "language", "path": "languages/python", "capabilities": ["lang.python"] },
+    { "id": "skill.language.php", "category": "language", "path": "languages/php", "capabilities": ["lang.php"] },
+    { "id": "skill.language.dart", "category": "language", "path": "languages/dart", "capabilities": ["lang.dart"] },
+    { "id": "skill.framework.nextjs", "category": "framework", "path": "frameworks/nextjs", "capabilities": ["fw.nextjs"] },
+    { "id": "skill.framework.laravel", "category": "framework", "path": "frameworks/laravel", "capabilities": ["fw.laravel"] },
+    { "id": "skill.framework.flutter", "category": "framework", "path": "frameworks/flutter", "capabilities": ["fw.flutter"] },
+    { "id": "skill.framework.react", "category": "framework", "path": "frameworks/react", "capabilities": ["fw.react"] },
+    { "id": "skill.infra.postgresql", "category": "infrastructure", "path": "infrastructure/postgresql", "capabilities": ["db.postgresql"] },
+    { "id": "skill.infra.redis", "category": "infrastructure", "path": "infrastructure/redis", "capabilities": ["cache.redis"] },
+    { "id": "skill.infra.qdrant", "category": "infrastructure", "path": "infrastructure/qdrant", "capabilities": ["vector.qdrant"] },
+    { "id": "skill.infra.minio", "category": "infrastructure", "path": "infrastructure/minio", "capabilities": ["object.minio"] },
+    { "id": "skill.integration.supabase", "category": "integration", "path": "integrations/supabase", "capabilities": ["int.supabase"] },
+    { "id": "skill.integration.stripe", "category": "integration", "path": "integrations/stripe", "capabilities": ["int.stripe"] },
+    { "id": "skill.integration.openai", "category": "integration", "path": "integrations/openai", "capabilities": ["int.openai"] },
+    { "id": "skill.integration.github", "category": "integration", "path": "integrations/github", "capabilities": ["int.github"] }
+  ]
+}

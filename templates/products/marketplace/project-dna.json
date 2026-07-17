@@ -1,0 +1,78 @@
+{
+  "project": {
+    "name": "marketplace",
+    "template": "marketplace",
+    "industry": "marketplace",
+    "business_model": "two-sided-marketplace",
+    "users": [
+      { "role": "buyer", "goals": ["search products", "checkout", "track orders"] },
+      { "role": "seller", "goals": ["list inventory", "fulfill orders", "get paid"] },
+      { "role": "admin", "goals": ["moderate listings", "resolve disputes"] }
+    ],
+    "goals": [
+      "two-sided marketplace with search",
+      "payments and payouts",
+      "inventory and order lifecycle",
+      "notifications and file assets",
+      "RBAC across buyer seller admin"
+    ],
+    "constraints": {
+      "must": [
+        "derive every artifact from this DNA",
+        "payment isolation",
+        "inventory consistency"
+      ],
+      "should": ["full-text search", "webhook events"],
+      "may": ["AI recommendations later"],
+      "must_not": ["skip security review on payments"],
+      "assumptions": ["Stripe + Supabase + Next.js"],
+      "unknowns": [],
+      "risks": ["payment race conditions", "inventory oversell"]
+    },
+    "integrations": ["stripe", "supabase", "github", "docker"],
+    "architecture": {
+      "style": "modular-monolith",
+      "modules": [
+        "users",
+        "catalog",
+        "search",
+        "inventory",
+        "orders",
+        "payments",
+        "notifications",
+        "files",
+        "permissions"
+      ]
+    },
+    "stack": "crud-dashboard (Next.js + Supabase + Stripe)",
+    "conventions": {
+      "db_naming": "plural",
+      "api_envelope": "data/error+trace_id",
+      "breakpoints": ["sm", "md", "lg"]
+    },
+    "security_level": "elevated",
+    "authorization": {
+      "model": "rbac",
+      "roles": ["buyer", "seller", "admin"]
+    },
+    "accessibility_level": "WCAG-2.1-AA",
+    "performance_targets": { "lcp_ms": 2500, "inp_ms": 200, "api_p95_ms": 400 },
+    "data": { "retention": "order-7-years", "regulated": false },
+    "deployment_targets": {
+      "environments": ["development", "staging", "production"],
+      "uptime_target": "99.9%",
+      "backup_schedule": "daily"
+    },
+    "critical_flows": [
+      "search products",
+      "add to cart",
+      "checkout pay",
+      "seller list item",
+      "fulfill order",
+      "upload asset",
+      "admin moderate"
+    ],
+    "standards_version": "stds-1.0.0",
+    "decision_registry": ["EDR-007"]
+  }
+}

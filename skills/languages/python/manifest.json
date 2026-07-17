@@ -1,0 +1,26 @@
+{
+  "id": "skill.language.python",
+  "version": "0.1.0",
+  "type": "skill",
+  "displayName": "Python",
+  "description": "First-party skill: Python (EDR-005 shortlist)",
+  "capabilities": [
+    "lang.python"
+  ],
+  "permissions": [
+    "filesystem"
+  ],
+  "hooks": [],
+  "dependencies": [],
+  "entry": "./index.js",
+  "metadata": {
+    "category": "language",
+    "knowledge": [],
+    "patterns": [],
+    "examples": [],
+    "tests": [
+      "manifest-valid"
+    ],
+    "firstParty": true
+  }
+}

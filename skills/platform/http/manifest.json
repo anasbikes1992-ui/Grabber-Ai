@@ -1,0 +1,27 @@
+{
+  "id": "skill.platform.http",
+  "version": "0.1.0",
+  "type": "skill",
+  "displayName": "HTTP",
+  "description": "First-party skill: HTTP (EDR-005 shortlist)",
+  "capabilities": [
+    "http.request"
+  ],
+  "permissions": [
+    "filesystem",
+    "shell"
+  ],
+  "hooks": [],
+  "dependencies": [],
+  "entry": "./index.js",
+  "metadata": {
+    "category": "platform",
+    "knowledge": [],
+    "patterns": [],
+    "examples": [],
+    "tests": [
+      "manifest-valid"
+    ],
+    "firstParty": true
+  }
+}

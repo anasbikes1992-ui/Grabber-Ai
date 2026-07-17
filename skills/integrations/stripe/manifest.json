@@ -1,0 +1,27 @@
+{
+  "id": "skill.integration.stripe",
+  "version": "0.1.0",
+  "type": "skill",
+  "displayName": "Stripe",
+  "description": "First-party skill: Stripe (EDR-005 shortlist)",
+  "capabilities": [
+    "int.stripe"
+  ],
+  "permissions": [
+    "network",
+    "secrets"
+  ],
+  "hooks": [],
+  "dependencies": [],
+  "entry": "./index.js",
+  "metadata": {
+    "category": "integration",
+    "knowledge": [],
+    "patterns": [],
+    "examples": [],
+    "tests": [
+      "manifest-valid"
+    ],
+    "firstParty": true
+  }
+}

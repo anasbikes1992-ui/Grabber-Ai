@@ -1,0 +1,26 @@
+{
+  "id": "skill.framework.laravel",
+  "version": "0.1.0",
+  "type": "skill",
+  "displayName": "Laravel",
+  "description": "First-party skill: Laravel (EDR-005 shortlist)",
+  "capabilities": [
+    "fw.laravel"
+  ],
+  "permissions": [
+    "filesystem"
+  ],
+  "hooks": [],
+  "dependencies": [],
+  "entry": "./index.js",
+  "metadata": {
+    "category": "framework",
+    "knowledge": [],
+    "patterns": [],
+    "examples": [],
+    "tests": [
+      "manifest-valid"
+    ],
+    "firstParty": true
+  }
+}

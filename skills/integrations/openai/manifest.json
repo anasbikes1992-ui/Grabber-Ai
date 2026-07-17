@@ -1,0 +1,27 @@
+{
+  "id": "skill.integration.openai",
+  "version": "0.1.0",
+  "type": "skill",
+  "displayName": "OpenAI",
+  "description": "First-party skill: OpenAI (EDR-005 shortlist)",
+  "capabilities": [
+    "int.openai"
+  ],
+  "permissions": [
+    "network",
+    "secrets"
+  ],
+  "hooks": [],
+  "dependencies": [],
+  "entry": "./index.js",
+  "metadata": {
+    "category": "integration",
+    "knowledge": [],
+    "patterns": [],
+    "examples": [],
+    "tests": [
+      "manifest-valid"
+    ],
+    "firstParty": true
+  }
+}

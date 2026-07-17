@@ -1,0 +1,53 @@
+# PROJECT DNA — the single structured definition every project starts from.
+# Everything derives from this file: PRD, architecture, database, API,
+# frontend, backend, tests, documentation, deployment. Artifacts regenerate
+# from DNA changes (AR-11, DC-08) — they are never hand-patched into drift.
+#
+# Location: projects/<client>/project-dna.yaml
+# Changes to this file after approval require an EDR.
+
+project:
+  name: ""
+  industry: ""                  # must map to knowledge/industries/
+  business_model: ""            # e.g. b2b-saas, marketplace, internal-tool
+  users:                        # audiences and their goals
+    - role: ""
+      goals: []
+  goals: []                     # measurable business outcomes
+  constraints:                  # Constraint Engine seed (18-PROMPT PR-04)
+    must: []
+    should: []
+    may: []
+    must_not: []
+    assumptions: []
+    unknowns: []
+    risks: []
+  integrations: []              # each must have a playbook or an EDR
+  architecture:
+    style: ""                   # AR-01: layered | modular-monolith | services
+    modules: []
+  stack: ""                     # must match a decision rule (01-OS §7) or cite EDR
+  conventions:
+    db_naming: ""               # DB-03: singular | plural
+    api_envelope: ""            # AP-05
+    breakpoints: []             # UI-04
+  security_level: "standard"    # standard | elevated (drives AN-11, extended discovery)
+  authorization:
+    model: ""                   # AZ-01: rbac | abac | hybrid
+    roles: []                   # role/permission matrix
+  accessibility_level: "WCAG-2.1-AA"   # AC-01
+  performance_targets:          # PF-01
+    lcp_ms: 2500
+    inp_ms: 200
+    api_p95_ms: 400
+  data:
+    retention: ""               # DB-11
+    regulated: false            # true → extended discovery (01-OS §9)
+  deployment_targets:           # DO-10
+    environments: [development, staging, production]
+    uptime_target: ""
+    backup_schedule: ""
+  critical_flows: []            # TS-04 E2E coverage; UX-01 flow docs
+  risks: []
+  standards_version: ""         # standards set this project is pinned to (GT-07)
+  decision_registry: []         # EDR ids governing this project

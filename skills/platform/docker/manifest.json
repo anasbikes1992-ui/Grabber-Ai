@@ -1,0 +1,28 @@
+{
+  "id": "skill.platform.docker",
+  "version": "0.1.0",
+  "type": "skill",
+  "displayName": "Docker",
+  "description": "First-party skill: Docker (EDR-005 shortlist)",
+  "capabilities": [
+    "docker.build",
+    "docker.run"
+  ],
+  "permissions": [
+    "filesystem",
+    "shell"
+  ],
+  "hooks": [],
+  "dependencies": [],
+  "entry": "./index.js",
+  "metadata": {
+    "category": "platform",
+    "knowledge": [],
+    "patterns": [],
+    "examples": [],
+    "tests": [
+      "manifest-valid"
+    ],
+    "firstParty": true
+  }
+}

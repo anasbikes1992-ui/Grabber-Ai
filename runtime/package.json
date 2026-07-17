@@ -1,0 +1,9 @@
+{
+  "name": "@grabber-ai-studio/runtime",
+  "version": "0.5.0",
+  "description": "Grabber AI Studio Core runtime — IEP + Product Factory + extensions (EDR-001..007)",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": { "test": "node --test test/*.test.js" },
+  "license": "UNLICENSED"
+}
