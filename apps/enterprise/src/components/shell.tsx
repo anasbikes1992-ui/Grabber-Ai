@@ -9,22 +9,43 @@ import {
   Factory,
   Headphones,
   LayoutDashboard,
+  LogOut,
   Megaphone,
   ShieldCheck,
+  Sparkles,
   Users,
 } from "lucide-react";
 import { cn } from "@/lib/cn";
+import { signOut } from "@/app/actions/auth";
 
-const NAV = [
-  { href: "/command-center", label: "Command Center", icon: LayoutDashboard },
-  { href: "/consult", label: "Jarvis Consulting", icon: Briefcase },
-  { href: "/business", label: "Business OS · Pipeline", icon: Briefcase },
-  { href: "/portal", label: "Client Portal · Trust", icon: Users },
-  { href: "/ops", label: "Operations", icon: Building2 },
-  { href: "/delivery", label: "Delivery & Support", icon: Headphones },
-  { href: "/marketing", label: "Marketing Intel", icon: Megaphone },
-  { href: "/kpis", label: "Business KPIs", icon: ChartLine },
-  { href: "/governance", label: "Delivery Governance", icon: ShieldCheck },
+const NAV_GROUPS: {
+  label: string;
+  items: { href: string; label: string; icon: typeof LayoutDashboard }[];
+}[] = [
+  {
+    label: "Overview",
+    items: [
+      { href: "/command-center", label: "Command Center", icon: LayoutDashboard },
+      { href: "/kpis", label: "Business KPIs", icon: ChartLine },
+    ],
+  },
+  {
+    label: "Engagements",
+    items: [
+      { href: "/consult", label: "Jarvis Consulting", icon: Sparkles },
+      { href: "/business", label: "Business OS · Pipeline", icon: Briefcase },
+      { href: "/governance", label: "Delivery Governance", icon: ShieldCheck },
+      { href: "/portal", label: "Client Portal", icon: Users },
+    ],
+  },
+  {
+    label: "Operate",
+    items: [
+      { href: "/ops", label: "Operations", icon: Building2 },
+      { href: "/delivery", label: "Delivery & Support", icon: Headphones },
+      { href: "/marketing", label: "Marketing Intel", icon: Megaphone },
+    ],
+  },
 ];
 
 export function EnterpriseShell({ children }: { children: React.ReactNode }) {
@@ -32,53 +53,63 @@ export function EnterpriseShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-screen">
-      <aside className="sticky top-0 flex h-screen w-64 shrink-0 flex-col border-r border-(--border) bg-[rgba(7,9,15,0.85)] p-4 backdrop-blur">
-        <div className="mb-6 px-2">
-          <div className="flex items-center gap-2 text-sm font-semibold tracking-wide">
-            <Factory className="h-4 w-4 text-sky-400" />
-            Grabber Enterprise
+      <aside className="sticky top-0 flex h-screen w-64 shrink-0 flex-col border-r border-(--border) bg-[rgba(6,8,15,0.72)] p-4 backdrop-blur-xl">
+        <div className="mb-5 flex items-center gap-2.5 px-1">
+          <span className="brand-mark">
+            <Factory className="h-4 w-4" />
+          </span>
+          <div className="leading-tight">
+            <div className="text-sm font-semibold tracking-tight">
+              Grabber <span className="text-gradient">Enterprise</span>
+            </div>
+            <p className="text-[0.68rem] text-(--muted)">Core 1.8 · frozen</p>
           </div>
-          <p className="mt-1 text-xs text-(--muted)">
-            v3.0 · Track B · Core frozen
-          </p>
         </div>
-        <nav className="flex flex-1 flex-col gap-1">
-          {NAV.map((item) => {
-            const Icon = item.icon;
-            const active =
-              item.href === "/command-center"
-                ? pathname === "/command-center"
-                : pathname.startsWith(item.href);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn("nav-link", active && "active")}
-              >
-                <Icon className="h-4 w-4" />
-                {item.label}
-              </Link>
-            );
-          })}
+
+        <nav className="flex flex-1 flex-col overflow-y-auto">
+          {NAV_GROUPS.map((group) => (
+            <div key={group.label}>
+              <div className="nav-group">{group.label}</div>
+              {group.items.map((item) => {
+                const Icon = item.icon;
+                const active =
+                  item.href === "/command-center"
+                    ? pathname === "/command-center"
+                    : pathname.startsWith(item.href);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={cn("nav-link", active && "active")}
+                  >
+                    <Icon className="h-4 w-4 shrink-0" />
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </div>
+          ))}
         </nav>
-        <div className="mt-4 rounded-xl border border-(--border) bg-[rgba(255,255,255,0.02)] p-3 text-xs text-(--muted)">
-          <div className="mb-1 font-medium text-foreground">Feature filter</div>
-          Discovery · Conversion · Delivery · Margin · Reuse
-        </div>
+
+        <form action={signOut} className="mt-3">
+          <button type="submit" className="nav-link w-full text-left">
+            <LogOut className="h-4 w-4 shrink-0" />
+            Sign out
+          </button>
+        </form>
       </aside>
+
       <div className="min-w-0 flex-1">
-        <header className="sticky top-0 z-10 flex items-center justify-between border-b border-(--border) bg-[rgba(7,9,15,0.7)] px-6 py-3 backdrop-blur">
-          <div className="text-sm text-(--muted)">
-            AI-native software company OS
-          </div>
+        <header className="sticky top-0 z-10 flex items-center justify-between border-b border-(--border) bg-[rgba(6,8,15,0.6)] px-6 py-3 backdrop-blur-xl">
+          <div className="eyebrow">AI-native software company OS</div>
           <div className="flex items-center gap-2">
-            <span className="badge">
-              <span className="stage-dot" /> Core 1.8 frozen
+            <span className="badge gap-1.5">
+              <span className="stage-dot" /> Core 1.8
             </span>
             <span className="badge">Factory 2.0</span>
           </div>
         </header>
-        <main className="p-6 md:p-8">{children}</main>
+        <main className="mx-auto max-w-[1400px] p-6 md:p-8">{children}</main>
       </div>
     </div>
   );
