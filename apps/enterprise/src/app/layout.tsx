@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { EnterpriseShell } from "@/components/shell";
-import { JarvisVoiceDock } from "@/components/jarvis-voice-dock";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -30,8 +28,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <EnterpriseShell>{children}</EnterpriseShell>
-        <JarvisVoiceDock />
+        {children}
       </body>
     </html>
   );

@@ -35,9 +35,7 @@ export async function signIn(_prev: AuthState, formData: FormData): Promise<Auth
   }
 
   const user = await getSessionUser();
-  if (user?.role === "client") {
-    redirect(user.engagementId ? `/portal/${user.engagementId}` : "/portal");
-  }
+  if (user?.role === "client") redirect("/portal");
   redirect("/");
 }
 

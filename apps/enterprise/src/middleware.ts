@@ -4,14 +4,16 @@ import { authenticateRequest } from "@/auth/getUser";
 import { getRequiredAccessRole } from "@/auth/permissions";
 import { hasRequiredAccess } from "@/auth/roles";
 import { logAuthAudit } from "@/auth/audit";
+import { updateSession } from "@/lib/supabase/middleware";
 
 /**
- * Allow public website (:3003) to call consulting APIs during Launch Phase 1 local dev.
- * Production: set CORS_ORIGINS env (comma-separated).
+ * API routes: service/JWT auth + CORS (Launch Phase 1 allows the public site).
+ * Page routes: refresh the Supabase session cookie (gating lives in layouts).
+ * Production CORS: set CORS_ORIGINS (comma-separated).
  */
 export async function middleware(req: NextRequest) {
   if (!req.nextUrl.pathname.startsWith("/api/")) {
-    return NextResponse.next();
+    return updateSession(req);
   }
 
   const origin = req.headers.get("origin") || "";
@@ -124,5 +126,8 @@ function corsHeaders(origin: string) {
 }
 
 export const config = {
-  matcher: "/api/:path*",
+  // API routes (auth/CORS) + page routes (session refresh), excluding static assets.
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
+  ],
 };
