@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import { GitBranch, LineChart, Network, ShieldAlert } from "lucide-react";
 import { PageHeader, Section, StatusPill } from "@/components/ui";
 import { DESIGN_TOKENS } from "@/lib/design-tokens";
 import { createFadeUpVariant, createStaggerVariant } from "@/lib/motion";
@@ -25,63 +26,58 @@ async function readApiResponse(response: Response) {
   };
 }
 
-function JarvisWorldPanel({
-  prefersReducedMotion,
-  engagementId,
-}: {
-  prefersReducedMotion: boolean;
-  engagementId?: string;
-}) {
-  const orbitDuration = prefersReducedMotion ? "0s" : "18s";
-  const pulseDuration = prefersReducedMotion ? "0s" : "3.5s";
+const JARVIS_NODES = [
+  { icon: Network, label: "Industry graph", desc: "Sector patterns & benchmarks" },
+  { icon: ShieldAlert, label: "Risk lattice", desc: "Compliance & failure modes" },
+  { icon: LineChart, label: "Commercial sim", desc: "ROI, pricing, payback" },
+  { icon: GitBranch, label: "Execution path", desc: "Phased delivery plan" },
+];
 
+function JarvisWorldPanel({ engagementId }: { engagementId?: string }) {
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-(--border) bg-black/30 p-4">
+    <div className="card relative overflow-hidden">
       <div
-        className="pointer-events-none absolute -left-10 -top-10 h-36 w-36 rounded-full"
+        className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full"
         style={{
-          background: "radial-gradient(circle, rgba(56,189,248,0.35), transparent 70%)",
-          filter: "blur(8px)",
-          animation: `jarvisPulse ${pulseDuration} ease-in-out infinite`,
+          background: "radial-gradient(circle, rgba(56,189,248,0.16), transparent 70%)",
         }}
       />
-      <div
-        className="pointer-events-none absolute -bottom-14 -right-10 h-44 w-44 rounded-full"
-        style={{
-          background: "radial-gradient(circle, rgba(167,139,250,0.32), transparent 70%)",
-          filter: "blur(10px)",
-          animation: `jarvisOrbit ${orbitDuration} linear infinite`,
-        }}
-      />
-
-      <div className="relative z-10">
-        <p className="text-xs uppercase tracking-[0.18em] text-(--muted)">
-          Jarvis 3D consultant world
+      <div className="relative">
+        <div className="eyebrow">Consulting intelligence</div>
+        <h3 className="mt-2 text-lg font-semibold tracking-tight text-balance">
+          What Jarvis maps before the factory
+        </h3>
+        <p className="mt-1.5 text-sm leading-relaxed text-(--muted)">
+          Business context, constraints, and executive priorities — resolved
+          before any software is designed.
         </p>
-        <h3 className="mt-2 text-lg font-semibold">Strategic intelligence sphere</h3>
-        <p className="mt-2 text-sm text-(--muted)">
-          This node is exclusive to consulting. It maps business context,
-          constraints, and executive priorities before anything reaches factory.
-        </p>
-        <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
-          {[
-            "Industry graph",
-            "Risk lattice",
-            "Commercial sim",
-            "Execution path",
-          ].map((chip) => (
-            <span
-              key={chip}
-              className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-center"
-            >
-              {chip}
-            </span>
-          ))}
+        <div className="mt-4 grid gap-2">
+          {JARVIS_NODES.map((node) => {
+            const Icon = node.icon;
+            return (
+              <div
+                key={node.label}
+                className="flex items-center gap-3 rounded-xl border border-(--border) bg-white/[0.02] p-2.5 transition-colors hover:border-(--border-strong)"
+              >
+                <span
+                  className="grid h-9 w-9 shrink-0 place-items-center rounded-lg text-sky-300"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, rgba(56,189,248,0.16), rgba(167,139,250,0.16))",
+                  }}
+                >
+                  <Icon className="h-4 w-4" />
+                </span>
+                <div className="min-w-0">
+                  <div className="text-sm font-medium">{node.label}</div>
+                  <div className="text-xs text-(--muted)">{node.desc}</div>
+                </div>
+              </div>
+            );
+          })}
         </div>
         {engagementId ? (
-          <p className="mt-3 text-xs text-(--muted)">
-            Synced engagement: {engagementId}
-          </p>
+          <p className="mt-3 text-xs text-(--muted)">Synced engagement: {engagementId}</p>
         ) : null}
       </div>
     </div>
@@ -193,18 +189,12 @@ export default function ConsultPage() {
     [];
 
   return (
-    <motion.div variants={containerVariant} initial="hidden" animate="visible">
-      <style jsx>{`
-        @keyframes jarvisOrbit {
-          0% { transform: rotate(0deg) translateY(0); }
-          50% { transform: rotate(180deg) translateY(-6px); }
-          100% { transform: rotate(360deg) translateY(0); }
-        }
-        @keyframes jarvisPulse {
-          0%, 100% { transform: scale(1); opacity: 0.72; }
-          50% { transform: scale(1.08); opacity: 1; }
-        }
-      `}</style>
+    <motion.div
+      variants={containerVariant}
+      initial="hidden"
+      animate="visible"
+      className="mx-auto max-w-6xl px-5 py-8 md:px-8 md:py-12"
+    >
       <PageHeader
         title="Jarvis Consulting"
         description="Describe your business - not software. Jarvis interviews, benchmarks patterns, identifies gaps, and shapes the blueprint before any factory work starts."
@@ -243,10 +233,7 @@ export default function ConsultPage() {
             </Link>
           </div>
         </div>
-        <JarvisWorldPanel
-          prefersReducedMotion={prefersReducedMotion}
-          engagementId={engagement?.id}
-        />
+        <JarvisWorldPanel engagementId={engagement?.id} />
       </motion.div>
 
       {error ? (

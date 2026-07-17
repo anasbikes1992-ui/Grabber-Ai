@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { Metric, PageHeader, Section, StatusPill } from "@/components/ui";
+import { Empty, Metric, PageHeader, Section, StatusPill } from "@/components/ui";
 
 type Kpis = {
   sales?: { leads: number; proposals: number; proposal_acceptance_rate: number };
@@ -88,9 +88,13 @@ export default function CommandCenter() {
 
         <Section title="Recent engagements" className="lg:col-span-2">
           {engagements.length === 0 ? (
-            <p className="text-sm text-(--muted)">
-              No engagements yet. Seed a demo or create one in Business OS.
-            </p>
+            <Empty>
+              No engagements yet.{" "}
+              <Link href="/business" className="text-sky-300 hover:underline">
+                Start one in Business OS
+              </Link>
+              .
+            </Empty>
           ) : (
             <table className="table">
               <thead>
