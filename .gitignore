@@ -11,6 +11,8 @@ apps/*/tsconfig.tsbuildinfo
 *.tsbuildinfo
 .DS_Store
 Thumbs.db
+# Local agent/editor tooling
+.claude/
 # Archives (prefer git history)
 *.zip
 dist/

@@ -5,7 +5,7 @@ const ADMIN_ONLY_SEGMENTS = ["govern", "commercial", "design", "analyze", "hando
 
 const PUBLIC_ROUTE_RULES: Array<{ path: string; methods: string[] }> = [
   { path: "/api/leads", methods: ["POST"] },
-  { path: "/api/consulting", methods: ["POST"] },
+  { path: "/api/consulting", methods: ["GET", "POST"] },
 ];
 
 export function isPublicRoute(pathname: string, method: string) {
@@ -17,6 +17,10 @@ export function isPublicRoute(pathname: string, method: string) {
 export function getRequiredAccessRole(pathname: string, method: string): AccessRole | null {
   const upperMethod = method.toUpperCase();
   if (upperMethod === "OPTIONS") {
+    return null;
+  }
+
+  if (isPublicRoute(pathname, upperMethod)) {
     return null;
   }
 

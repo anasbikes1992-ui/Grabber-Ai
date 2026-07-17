@@ -30,6 +30,7 @@ export default function EngagementDetailPage() {
     { id: string; prompt: string; section?: string }[]
   >([]);
   const [handoff, setHandoff] = useState<Eng | null>(null);
+  const [proposalSteps, setProposalSteps] = useState<string[]>([]);
   const [tab, setTab] = useState<
     "discovery" | "analysis" | "proposal" | "governance"
   >("discovery");
@@ -38,6 +39,12 @@ export default function EngagementDetailPage() {
     const res = await fetch(`/api/engagements/${id}`).then((r) => r.json());
     if (res.ok) {
       setE(res.engagement);
+      const steps =
+        res.engagement?.consulting?.executive_presentation?.sections?.next_steps ||
+        res.engagement?.consulting?.solution_package?.executive_presentation?.sections?.next_steps ||
+        res.engagement?.consulting?.solution_package?.next_steps ||
+        [];
+      setProposalSteps(Array.isArray(steps) ? steps : []);
       const answers = res.engagement.consulting?.interview?.answers || {};
       setAnswerMap((prev) => ({ ...answers, ...prev }));
       // seed next questions from pending
@@ -114,6 +121,12 @@ export default function EngagementDetailPage() {
           : `Completed: ${action}`,
       );
       if (action === "package") setTab("proposal");
+      const steps =
+        res.engagement?.consulting?.executive_presentation?.sections?.next_steps ||
+        res.engagement?.consulting?.solution_package?.executive_presentation?.sections?.next_steps ||
+        res.engagement?.consulting?.solution_package?.next_steps ||
+        [];
+      setProposalSteps(Array.isArray(steps) ? steps : []);
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
@@ -134,6 +147,12 @@ export default function EngagementDetailPage() {
         if (!res.ok) throw new Error(res.error || action);
         setE(res.engagement);
       }
+      const finalSteps =
+        e?.consulting?.executive_presentation?.sections?.next_steps ||
+        e?.consulting?.solution_package?.executive_presentation?.sections?.next_steps ||
+        e?.consulting?.solution_package?.next_steps ||
+        [];
+      setProposalSteps(Array.isArray(finalSteps) ? finalSteps : []);
       setMsg("Analysis → proposal complete");
       setTab("proposal");
     } catch (err) {
@@ -227,7 +246,7 @@ export default function EngagementDetailPage() {
       ) : null}
 
       {/* Tabs */}
-      <div className="mb-4 flex flex-wrap gap-2 border-b border-[var(--border)] pb-3">
+      <div className="mb-4 flex flex-wrap gap-2 border-b border-(--border) pb-3">
         {(
           [
             ["discovery", "1 · Discovery"],
@@ -250,21 +269,21 @@ export default function EngagementDetailPage() {
       {tab === "discovery" ? (
         <div className="grid gap-4 lg:grid-cols-5">
           <Section title="Business context" className="lg:col-span-2">
-            <p className="text-sm text-[var(--muted)]">
+            <p className="text-sm text-(--muted)">
               {e.consulting?.business_story || e.notes || "No story recorded."}
             </p>
             <div className="mt-4">
-              <div className="mb-1 flex justify-between text-xs text-[var(--muted)]">
+              <div className="mb-1 flex justify-between text-xs text-(--muted)">
                 <span>Discovery confidence</span>
                 <span>{confPct}%</span>
               </div>
               <div className="h-2 overflow-hidden rounded-full bg-white/5">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-sky-500 to-violet-500 transition-all"
+                  className="h-full rounded-full bg-linear-to-r from-sky-500 to-violet-500 transition-all"
                   style={{ width: `${Math.min(100, confPct)}%` }}
                 />
               </div>
-              <p className="mt-2 text-xs text-[var(--muted)]">
+              <p className="mt-2 text-xs text-(--muted)">
                 Threshold {Math.round((e.consulting?.confidence_threshold || 0.9) * 100)}%
                 before analysis package.
               </p>
@@ -326,7 +345,7 @@ export default function EngagementDetailPage() {
       {tab === "analysis" ? (
         <div className="grid gap-4 lg:grid-cols-2">
           <Section title="Run consulting analysis">
-            <p className="mb-3 text-sm text-[var(--muted)]">
+            <p className="mb-3 text-sm text-(--muted)">
               Industry intelligence → gap analysis → multi-department review →
               commercial package. Uses LLM when configured; otherwise deterministic.
             </p>
@@ -380,7 +399,7 @@ export default function EngagementDetailPage() {
                   }) => (
                     <li
                       key={b.recommendation}
-                      className="rounded-lg border border-[var(--border)] px-3 py-2 text-sm"
+                      className="rounded-lg border border-(--border) px-3 py-2 text-sm"
                     >
                       <div className="flex flex-wrap items-center justify-between gap-2">
                         <strong>{b.recommendation}</strong>
@@ -388,7 +407,7 @@ export default function EngagementDetailPage() {
                           status={b.classification || "recommended"}
                         />
                       </div>
-                      <p className="mt-1 text-xs text-[var(--muted)]">{b.reason}</p>
+                      <p className="mt-1 text-xs text-(--muted)">{b.reason}</p>
                       {b.confidence_pct != null ? (
                         <p className="mt-1 text-xs text-sky-300/80">
                           Confidence {b.confidence_pct}%
@@ -422,14 +441,14 @@ export default function EngagementDetailPage() {
               </div>
             ) : (
               <div className="space-y-4">
-                <div className="rounded-2xl border border-sky-500/20 bg-gradient-to-br from-sky-500/10 to-violet-500/10 p-5">
-                  <p className="text-xs uppercase tracking-wide text-[var(--muted)]">
+                <div className="rounded-2xl border border-sky-500/20 bg-linear-to-br from-sky-500/10 to-violet-500/10 p-5">
+                  <p className="text-xs uppercase tracking-wide text-(--muted)">
                     Investment
                   </p>
                   <p className="mt-1 text-3xl font-semibold tracking-tight">
                     {money(e.commercial.pricing?.total)}
                   </p>
-                  <p className="mt-2 text-sm text-[var(--muted)]">
+                  <p className="mt-2 text-sm text-(--muted)">
                     Deposit {money(e.commercial.pricing?.deposit)} ·{" "}
                     {e.commercial.pricing?.payment_terms}
                   </p>
@@ -450,6 +469,13 @@ export default function EngagementDetailPage() {
                       Validity {proposal.validity_days || 30} days · Modules:{" "}
                       {(e.solution?.modules || []).slice(0, 8).join(", ")}
                     </p>
+                      <ul className="mt-4 space-y-1 text-sm">
+                        {proposalSteps.map((step, index) => (
+                          <li key={index} className="flex justify-between">
+                            <span className="muted">{step}</span>
+                          </li>
+                        ))}
+                      </ul>
                   </div>
                 ) : null}
 
@@ -481,7 +507,7 @@ export default function EngagementDetailPage() {
                 .map((k) => (
                   <li
                     key={k}
-                    className="flex justify-between border-b border-[var(--border)] py-1.5"
+                    className="flex justify-between border-b border-(--border) py-1.5"
                   >
                     <span className="muted">{k.replaceAll("_", " ")}</span>
                     <span className="text-xs text-emerald-300/80">ready</span>
@@ -489,7 +515,7 @@ export default function EngagementDetailPage() {
                 ))}
             </ul>
             {e.consulting?.roi?.narrative ? (
-              <p className="mt-4 text-xs text-[var(--muted)]">
+              <p className="mt-4 text-xs text-(--muted)">
                 {e.consulting.roi.narrative}
               </p>
             ) : null}
@@ -500,7 +526,7 @@ export default function EngagementDetailPage() {
       {tab === "governance" ? (
         <div className="grid gap-4 lg:grid-cols-2">
           <Section title="Approvals">
-            <p className="mb-4 text-sm text-[var(--muted)]">
+            <p className="mb-4 text-sm text-(--muted)">
               Dual approval + deposit required before factory handoff. Client
               narrative: consulting team — factory stays internal.
             </p>

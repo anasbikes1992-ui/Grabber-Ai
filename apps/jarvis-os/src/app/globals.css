@@ -119,3 +119,72 @@ body {
 .react-flow__attribution {
   display: none !important;
 }
+
+.jarvis-voice-dock {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 80;
+  display: grid;
+  justify-items: end;
+  gap: 0.65rem;
+}
+
+.jarvis-voice-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border-radius: 999px;
+  border: 1px solid rgba(34, 211, 238, 0.4);
+  background: linear-gradient(135deg, rgba(8, 47, 73, 0.95), rgba(76, 29, 149, 0.85));
+  color: #e2e8f0;
+  padding: 0.55rem 0.9rem;
+  cursor: pointer;
+}
+
+.jarvis-voice-panel {
+  width: min(360px, calc(100vw - 1.5rem));
+  border-radius: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: rgba(7, 9, 15, 0.94);
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(10px);
+  padding: 0.85rem;
+}
+
+.jarvis-voice-title {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.jarvis-voice-note,
+.jarvis-voice-reply {
+  margin: 0.5rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.jarvis-voice-actions {
+  margin-top: 0.75rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem;
+}
+
+.jarvis-voice-input-row {
+  margin-top: 0.65rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.45rem;
+}
+
+@media (max-width: 640px) {
+  .jarvis-voice-dock {
+    right: 0.7rem;
+    bottom: 0.7rem;
+  }
+}

@@ -15,7 +15,9 @@ export async function middleware(req: NextRequest) {
   }
 
   const origin = req.headers.get("origin") || "";
-  const configuredOrigins = process.env.CORS_ORIGINS?.trim() || "";
+  const requestOrigin = req.nextUrl.origin;
+  const configuredOrigins =
+    process.env.CORS_ORIGINS?.trim() || process.env.ALLOWED_ORIGINS?.trim() || "";
   const fallbackDevOrigins =
     process.env.NODE_ENV === "production"
       ? ""
@@ -27,14 +29,17 @@ export async function middleware(req: NextRequest) {
     .filter(Boolean);
 
   if (allowed.length === 0) {
+    if (!origin || origin === requestOrigin) {
+      return allowRequest(req, requestOrigin);
+    }
     return new NextResponse("CORS not configured", { status: 500 });
   }
 
-  if (origin && !allowed.includes(origin)) {
+  if (origin && origin !== requestOrigin && !allowed.includes(origin)) {
     return new NextResponse("Forbidden", { status: 403 });
   }
 
-  const allowOrigin = origin || allowed[0];
+  const allowOrigin = origin || requestOrigin || allowed[0];
 
   if (req.method === "OPTIONS") {
     return new NextResponse(null, {
@@ -43,6 +48,10 @@ export async function middleware(req: NextRequest) {
     });
   }
 
+  return allowRequest(req, allowOrigin);
+}
+
+async function allowRequest(req: NextRequest, allowOrigin: string) {
   const authResult = await authenticateRequest(req);
   if (!authResult.ok) {
     logAuthAudit(req, "deny", null, getRequiredAccessRole(req.nextUrl.pathname, req.method), {

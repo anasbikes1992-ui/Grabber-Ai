@@ -1,5 +1,3 @@
-import { timingSafeEqual } from "node:crypto";
-
 export function extractBearerToken(authHeader: string | null) {
   if (!authHeader) return "";
 
@@ -30,12 +28,18 @@ export function isValidServiceApiKey(reqHeaders: Headers) {
 }
 
 function constantTimeEqual(candidate: string, secret: string) {
-  const candidateBuffer = Buffer.from(candidate);
-  const secretBuffer = Buffer.from(secret);
+  const encoder = new TextEncoder();
+  const candidateBytes = encoder.encode(candidate);
+  const secretBytes = encoder.encode(secret);
 
-  if (candidateBuffer.length !== secretBuffer.length) {
+  if (candidateBytes.length !== secretBytes.length) {
     return false;
   }
 
-  return timingSafeEqual(candidateBuffer, secretBuffer);
+  let diff = 0;
+  for (let i = 0; i < candidateBytes.length; i += 1) {
+    diff |= candidateBytes[i] ^ secretBytes[i];
+  }
+
+  return diff === 0;
 }

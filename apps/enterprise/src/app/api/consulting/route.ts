@@ -1,4 +1,5 @@
 import { ent, monorepoCwd, jsonOk, jsonErr } from "@/lib/enterprise";
+import { log } from "@/lib/production/logger";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -96,6 +97,10 @@ export async function POST(req: Request) {
 
     return jsonErr("unknown action");
   } catch (e) {
+    log("error", {
+      event: "consulting.route.post_failed",
+      details: { message: e instanceof Error ? e.message : String(e) },
+    });
     return jsonErr(e);
   }
 }
@@ -115,6 +120,10 @@ export async function GET(req: Request) {
     }
     return jsonOk({ llm: api.llmStatus() });
   } catch (e) {
+    log("error", {
+      event: "consulting.route.get_failed",
+      details: { message: e instanceof Error ? e.message : String(e) },
+    });
     return jsonErr(e, 500);
   }
 }

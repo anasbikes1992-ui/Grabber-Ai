@@ -8,6 +8,19 @@ type Any = any;
 
 const DEFAULT_STORY = `I own a textile raw material wholesale business in Sri Lanka. I want to modernize my operations. Help me design the best system for my business — act as senior consultant, industry specialist, architect, UX designer, CTO, security expert, and operations manager. Interview me thoroughly. Challenge assumptions. Recommend best practices. Separate essential from optional. Produce a complete business blueprint before any software is designed.`;
 
+async function readApiResponse(response: Response) {
+  const contentType = response.headers.get("content-type") || "";
+  if (contentType.includes("application/json")) {
+    return response.json();
+  }
+
+  const text = (await response.text()).trim();
+  return {
+    ok: response.ok,
+    error: text || `Request failed with status ${response.status}`,
+  };
+}
+
 export default function ConsultPage() {
   const [story, setStory] = useState(DEFAULT_STORY);
   const [name, setName] = useState("Lanka Textiles");
@@ -17,16 +30,18 @@ export default function ConsultPage() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [pkg, setPkg] = useState<Any>(null);
+  const [proposalSteps, setProposalSteps] = useState<string[]>([]);
 
   async function post(body: object) {
     setBusy(true);
     setError("");
     try {
-      const res = await fetch("/api/consulting", {
+      const response = await fetch("/api/consulting", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(body),
-      }).then((r) => r.json());
+      });
+      const res = await readApiResponse(response);
       if (!res.ok) throw new Error(res.error || "failed");
       return res;
     } catch (e) {
@@ -43,6 +58,7 @@ export default function ConsultPage() {
     setEngagement(res.engagement);
     setStatus(res.status);
     setPkg(null);
+    setProposalSteps([]);
   }
 
   async function submitAnswers() {
@@ -71,6 +87,14 @@ export default function ConsultPage() {
       if (res.package) setPkg(res.package);
       if (res.engagement?.consulting?.solution_package) {
         setPkg(res.engagement.consulting.solution_package);
+      }
+      if (action === "package") {
+        const steps =
+          res.package?.executive_presentation?.sections?.next_steps ||
+          res.engagement?.consulting?.executive_presentation?.sections?.next_steps ||
+          res.package?.next_steps ||
+          [];
+        setProposalSteps(Array.isArray(steps) ? steps : []);
       }
     }
   }
@@ -128,7 +152,7 @@ export default function ConsultPage() {
               </span>
               <span className="muted text-xs">{engagement.id}</span>
             </div>
-            <p className="mt-2 text-xs text-[var(--muted)]">
+            <p className="mt-2 text-xs text-(--muted)">
               {engagement.consulting?.legal_boundary}
             </p>
           </Section>
@@ -174,24 +198,60 @@ export default function ConsultPage() {
 
           {pkg ? (
             <Section title="Solution package (pre-factory)">
-              <pre className="max-h-96 overflow-auto rounded-lg bg-black/30 p-3 text-xs">
-                {JSON.stringify(
-                  {
-                    business: pkg.business?.executive_summary,
-                    essential: pkg.functional?.requirements
+              <div className="space-y-4 text-sm">
+                <div>
+                  <p className="text-xs uppercase text-(--muted)">Business</p>
+                  <p>{pkg.business?.executive_summary || "—"}</p>
+                </div>
+                <div>
+                  <p className="text-xs uppercase text-(--muted)">Essential</p>
+                  <p>
+                    {pkg.functional?.requirements
                       ?.filter((r: Any) => r.class === "essential")
-                      .map((r: Any) => r.capability),
-                    recommended: pkg.functional?.requirements
+                      .map((r: Any) => r.capability)
+                      .join(", ") || "—"}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs uppercase text-(--muted)">Recommended</p>
+                  <p>
+                    {pkg.functional?.requirements
                       ?.filter((r: Any) => r.class === "recommended")
-                      .map((r: Any) => r.capability),
-                    review: pkg.consulting_trail?.consolidated_review,
-                    commercial_total: pkg.commercial?.pricing?.total,
-                    factory: pkg.factory,
-                  },
-                  null,
-                  2,
-                )}
-              </pre>
+                      .map((r: Any) => r.capability)
+                      .slice(0, 6)
+                      .join(", ") || "—"}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs uppercase text-(--muted)">Proposal steps</p>
+                  {proposalSteps.length ? (
+                    <ol className="mt-2 space-y-2">
+                      {proposalSteps.slice(0, 6).map((step, index) => (
+                        <li
+                          key={`${index}-${step}`}
+                          className="rounded-xl border border-white/10 bg-black/20 px-3 py-2"
+                        >
+                          {step}
+                        </li>
+                      ))}
+                    </ol>
+                  ) : (
+                    <p>—</p>
+                  )}
+                </div>
+                <div>
+                  <p className="text-xs uppercase text-(--muted)">Commercial total</p>
+                  <p>
+                    {pkg.commercial?.pricing?.total != null
+                      ? `$${pkg.commercial.pricing.total.toLocaleString()}`
+                      : "—"}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs uppercase text-(--muted)">Factory</p>
+                  <p>{pkg.factory ? JSON.stringify(pkg.factory, null, 2) : "—"}</p>
+                </div>
+              </div>
             </Section>
           ) : null}
         </div>
