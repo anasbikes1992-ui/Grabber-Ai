@@ -1,0 +1,42 @@
+{
+  "industry": "hospitality",
+  "version": "1.0.0",
+  "questions": [
+    {
+      "id": "h-01",
+      "section": "business",
+      "prompt": "What do guests book — rooms, tables, services, or experiences?",
+      "required": true
+    },
+    {
+      "id": "h-02",
+      "section": "users",
+      "prompt": "Who operates the calendar — single provider, team, or multi-location staff?",
+      "required": true
+    },
+    {
+      "id": "h-03",
+      "section": "payments",
+      "prompt": "Deposit, full payment, or pay-on-arrival? Any refund rules?",
+      "required": true
+    },
+    {
+      "id": "h-04",
+      "section": "compliance",
+      "prompt": "Any regulated data or regional privacy constraints?",
+      "required": false
+    },
+    {
+      "id": "h-05",
+      "section": "integrations",
+      "prompt": "Existing PMS, channel manager, or accounting tools to integrate?",
+      "required": false
+    },
+    {
+      "id": "h-06",
+      "section": "success",
+      "prompt": "What does success look like in 90 days (bookings, occupancy, revenue)?",
+      "required": true
+    }
+  ]
+}

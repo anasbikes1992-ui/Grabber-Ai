@@ -1,0 +1,25 @@
+{
+  "questions": [
+    {
+      "id": "units",
+      "section": "industry",
+      "prompt": "Do you sell by weight, meters/yards, rolls, cartons, or mixed units?",
+      "required": true,
+      "weight": 0.08
+    },
+    {
+      "id": "import",
+      "section": "industry",
+      "prompt": "Do you import containers? Which currencies and Incoterms do you use?",
+      "required": false,
+      "weight": 0.06
+    },
+    {
+      "id": "qc",
+      "section": "industry",
+      "prompt": "What quality checks happen before stock is sellable?",
+      "required": false,
+      "weight": 0.05
+    }
+  ]
+}

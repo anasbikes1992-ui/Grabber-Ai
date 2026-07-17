@@ -1,0 +1,5 @@
+{
+  "required": ["supabase", "stripe", "github", "vercel"],
+  "optional": ["email", "sms"],
+  "notes": "Payments only via Stripe; no card data in app DB."
+}

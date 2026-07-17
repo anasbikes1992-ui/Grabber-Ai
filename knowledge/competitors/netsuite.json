@@ -1,0 +1,20 @@
+{
+  "id": "netsuite",
+  "name": "Oracle NetSuite",
+  "category": "cloud-erp",
+  "strengths": [
+    "Multi-subsidiary cloud ERP",
+    "Real-time financials",
+    "Strong suite of inventory + CRM"
+  ],
+  "weaknesses": [
+    "Expensive for SMEs",
+    "Implementation long if over-scoped"
+  ],
+  "modules": ["ERP", "Inventory", "CRM", "Ecommerce", "Analytics"],
+  "pattern_takeaways": [
+    "Cloud multi-company chart of accounts patterns",
+    "Saved searches / operational dashboards"
+  ],
+  "legal": "Public product knowledge — patterns only, no code copy"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "erpnext",
+  "name": "ERPNext",
+  "category": "open-source-erp",
+  "strengths": [
+    "Strong inventory and multi-warehouse",
+    "Manufacturing and BOM support",
+    "Integrated accounting",
+    "Buying / selling workflows"
+  ],
+  "weaknesses": [
+    "Mobile UX often needs customization",
+    "Complex for first-time ERP users"
+  ],
+  "modules": ["Stock", "Buying", "Selling", "Accounting", "Manufacturing", "CRM"],
+  "pattern_takeaways": [
+    "Warehouse + bin level stock model",
+    "Stock entry types for receive/transfer/issue"
+  ],
+  "legal": "Public product knowledge — patterns only, no code copy"
+}

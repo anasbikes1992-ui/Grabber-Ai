@@ -1,0 +1,27 @@
+{
+  "essential": [
+    "inventory",
+    "purchasing",
+    "sales_orders",
+    "customers",
+    "suppliers",
+    "warehouses"
+  ],
+  "recommended": [
+    "barcode_receiving",
+    "batch_lot_tracking",
+    "customer_credit_limits",
+    "landed_cost",
+    "warehouse_transfers",
+    "supplier_scorecards",
+    "quality_inspection",
+    "textile_roll_management"
+  ],
+  "advanced": [
+    "demand_forecasting",
+    "dynamic_pricing",
+    "multi_currency_purchasing",
+    "container_shipment_tracking",
+    "bi_dashboards"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "id": "sap-b1",
+  "name": "SAP Business One",
+  "category": "mid-market-erp",
+  "strengths": [
+    "Financial controls and reporting",
+    "Document flow discipline",
+    "Partner ecosystem"
+  ],
+  "weaknesses": [
+    "Higher total cost of ownership",
+    "Heavier UX for shop-floor users"
+  ],
+  "modules": ["Finance", "Sales", "Purchasing", "Inventory", "Banking"],
+  "pattern_takeaways": [
+    "Strict document numbering and audit trail",
+    "Credit limit enforcement before order release"
+  ],
+  "legal": "Public product knowledge — patterns only, no code copy"
+}

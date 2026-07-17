@@ -1,0 +1,22 @@
+{
+  "risks": [
+    {
+      "id": "r-double-book",
+      "severity": "high",
+      "description": "Double booking under concurrent requests",
+      "mitigation": "Transactional slot lock in booking module"
+    },
+    {
+      "id": "r-timezone",
+      "severity": "medium",
+      "description": "Timezone mismatches for multi-region properties",
+      "mitigation": "Store UTC; display local in calendar UI"
+    },
+    {
+      "id": "r-refund",
+      "severity": "medium",
+      "description": "Unclear refund policy",
+      "mitigation": "SOW + Stripe refund playbook before go-live"
+    }
+  ]
+}

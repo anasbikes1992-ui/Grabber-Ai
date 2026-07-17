@@ -1,0 +1,4 @@
+{
+  "systems": ["erpnext", "odoo", "sap-b1", "netsuite"],
+  "note": "Pattern cards only — see knowledge/competitors/"
+}

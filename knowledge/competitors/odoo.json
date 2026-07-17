@@ -1,0 +1,21 @@
+{
+  "id": "odoo",
+  "name": "Odoo",
+  "category": "modular-erp",
+  "strengths": [
+    "Excellent purchasing and inventory apps",
+    "CRM and sales pipeline",
+    "Accounting integration",
+    "App ecosystem"
+  ],
+  "weaknesses": [
+    "Customization complexity",
+    "Module sprawl without governance"
+  ],
+  "modules": ["Inventory", "Purchase", "Sales", "CRM", "Accounting", "Barcode"],
+  "pattern_takeaways": [
+    "Barcode-first warehouse operations",
+    "Purchase approval routes"
+  ],
+  "legal": "Public product knowledge — patterns only, no code copy"
+}

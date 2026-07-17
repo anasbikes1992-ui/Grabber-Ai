@@ -1,0 +1,18 @@
+{
+  "industry": "hospitality",
+  "required": [
+    "authentication",
+    "teams",
+    "rbac",
+    "calendar",
+    "booking",
+    "payments",
+    "notifications",
+    "reviews",
+    "search",
+    "files",
+    "analytics"
+  ],
+  "optional": ["customers", "audit", "billing"],
+  "blueprint": "booking"
+}

@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "kind": "grabber_knowledge_graph",
+    "version": "1.0.0",
+    "note": "Patterns only — no proprietary code/UI. Seed for consulting navigation."
+  },
+  "nodes": [
+    { "id": "deliverable:exec-summary", "type": "deliverable", "label": "Executive Summary" },
+    { "id": "deliverable:proposal", "type": "deliverable", "label": "Proposal" },
+    { "id": "deliverable:sow", "type": "deliverable", "label": "Statement of Work" },
+    { "id": "lesson:ci-loop", "type": "lesson", "label": "Closed projects feed playbooks and modules" }
+  ],
+  "edges": [
+    { "from": "deliverable:proposal", "to": "deliverable:sow", "type": "precedes" },
+    { "from": "lesson:ci-loop", "to": "deliverable:exec-summary", "type": "improves" }
+  ]
+}
