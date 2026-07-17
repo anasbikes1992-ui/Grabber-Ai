@@ -72,13 +72,11 @@ export default function GovernancePage() {
             <Link href="/business" className="btn btn-primary">
               Run engagement workflow
             </Link>
-            <Link href="/command-center" className="btn btn-ghost">
-              Seed full demo path
-            </Link>
           </div>
           <p className="mt-4 text-sm muted">
-            Factory Excellence (Program B) continues in saas-starter modules,
-            blueprints, and golden references — not redesigned here.
+            The factory builds only after governance approval and deposit —
+            never before. Factory Excellence (Program B) continues in the
+            runtime factory, modules, and golden references.
           </p>
         </Section>
       </div>

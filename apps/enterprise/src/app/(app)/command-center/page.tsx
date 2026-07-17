@@ -17,8 +17,6 @@ export default function CommandCenter() {
   const [engagements, setEngagements] = useState<
     { id: string; client_name: string; status: string; governance_stage: string; industry: string }[]
   >([]);
-  const [busy, setBusy] = useState(false);
-  const [msg, setMsg] = useState("");
 
   const load = useCallback(async () => {
     const [k, e] = await Promise.all([
@@ -33,26 +31,6 @@ export default function CommandCenter() {
     void load();
   }, [load]);
 
-  async function seedDemo() {
-    setBusy(true);
-    setMsg("");
-    try {
-      const res = await fetch("/api/demo/seed", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ name: "Harbor Hotel", industry: "hospitality" }),
-      });
-      const data = await res.json();
-      if (!data.ok) throw new Error(data.error);
-      setMsg(`Seeded ${data.engagement.client_name} -> factory_ready (fingerprint ${data.handoff.fingerprint})`);
-      await load();
-    } catch (e) {
-      setMsg(e instanceof Error ? e.message : String(e));
-    } finally {
-      setBusy(false);
-    }
-  }
-
   const pct = (n?: number) => (n == null ? "-" : `${Math.round(n * 100)}%`);
 
   return (
@@ -61,22 +39,11 @@ export default function CommandCenter() {
         title="Command Center"
         description="Internal command center. KPI that matters: full journeys lead to proposal to delivery to lessons."
         actions={
-          <>
-            <Link href="/business" className="btn btn-primary">
-              Business OS pipeline
-            </Link>
-            <button className="btn btn-ghost" disabled={busy} onClick={seedDemo}>
-              {busy ? "Seeding..." : "Seed demo engagement"}
-            </button>
-          </>
+          <Link href="/business" className="btn btn-primary">
+            Business OS pipeline
+          </Link>
         }
       />
-
-      {msg ? (
-        <div className="mb-4 rounded-xl border border-sky-500/30 bg-sky-500/10 px-4 py-3 text-sm">
-          {msg}
-        </div>
-      ) : null}
 
       <div className="grid-metrics mb-6">
         <Metric label="Leads" value={kpis?.sales?.leads ?? "-"} />
