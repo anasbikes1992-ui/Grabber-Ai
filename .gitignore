@@ -1,0 +1,19 @@
+﻿node_modules/
+.next/
+.grabber/
+.env
+.env.*
+!.env.example
+*.log
+apps/*/node_modules/
+apps/*/.next/
+apps/*/tsconfig.tsbuildinfo
+*.tsbuildinfo
+.DS_Store
+Thumbs.db
+# Archives (prefer git history)
+*.zip
+dist/
+coverage/
+.vercel
+.env*.local
