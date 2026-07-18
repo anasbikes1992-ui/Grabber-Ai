@@ -1,10 +1,31 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Metric, PageHeader, Section } from "@/components/ui";
+import { Empty, Metric, PageHeader, Section } from "@/components/ui";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type K = any;
+
+function humanize(key: string): string {
+  return key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+function KvList({ data }: { data: Record<string, unknown> | undefined | null }) {
+  const entries = Object.entries(data ?? {}).filter(([, v]) => v != null && v !== "");
+  if (entries.length === 0) return <Empty>No data yet.</Empty>;
+  return (
+    <dl className="grid gap-2">
+      {entries.map(([k, v]) => (
+        <div key={k} className="flex items-center justify-between gap-4 border-b border-(--border) pb-2 last:border-0">
+          <dt className="text-sm text-(--muted)">{humanize(k)}</dt>
+          <dd className="text-sm font-medium tabular-nums">
+            {typeof v === "number" ? v.toLocaleString() : String(v)}
+          </dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
 
 export default function KpisPage() {
   const [kpis, setKpis] = useState<K | null>(null);
@@ -63,32 +84,16 @@ export default function KpisPage() {
 
       <div className="grid gap-4 lg:grid-cols-2">
         <Section title="Finance">
-          <pre className="overflow-auto rounded-lg bg-black/30 p-3 text-xs">
-            {JSON.stringify(kpis?.finance || {}, null, 2)}
-          </pre>
+          <KvList data={kpis?.finance} />
         </Section>
         <Section title="Customer success">
-          <pre className="overflow-auto rounded-lg bg-black/30 p-3 text-xs">
-            {JSON.stringify(kpis?.customer_success || {}, null, 2)}
-          </pre>
+          <KvList data={kpis?.customer_success} />
         </Section>
         <Section title="Marketing">
-          <pre className="overflow-auto rounded-lg bg-black/30 p-3 text-xs">
-            {JSON.stringify(kpis?.marketing || {}, null, 2)}
-          </pre>
+          <KvList data={kpis?.marketing} />
         </Section>
         <Section title="Experience">
-          <pre className="overflow-auto rounded-lg bg-black/30 p-3 text-xs">
-            {JSON.stringify(
-              {
-                experience: kpis?.experience,
-                quality: kpis?.quality,
-                at: kpis?.at,
-              },
-              null,
-              2,
-            )}
-          </pre>
+          <KvList data={{ ...(kpis?.experience ?? {}), ...(kpis?.quality ?? {}) }} />
         </Section>
       </div>
     </div>

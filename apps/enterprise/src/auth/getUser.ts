@@ -1,8 +1,9 @@
 import type { NextRequest } from "next/server";
 import { isPublicRoute } from "@/auth/permissions";
 import { isValidServiceApiKey, extractBearerToken } from "@/auth/serviceAuth";
-import { toAccessRole, type AccessRole, type AuthRole } from "@/auth/roles";
+import { normalizeAuthRole, toAccessRole, type AccessRole, type AuthRole } from "@/auth/roles";
 import { verifySupabaseJwt } from "@/auth/verifyJwt";
+import { getCookieIdentity } from "@/lib/supabase/request-identity";
 
 export type RequestIdentity = {
   userId: string;
@@ -47,21 +48,37 @@ export async function authenticateRequest(req: NextRequest): Promise<RequestAuth
   const jwt = extractBearerToken(req.headers.get("authorization"));
   const verifiedUser = await verifySupabaseJwt(jwt);
 
-  if (!verifiedUser) {
+  if (verifiedUser) {
     return {
-      ok: false,
-      status: 401,
-      error: "unauthorized",
+      ok: true,
+      identity: {
+        userId: verifiedUser.userId,
+        authRole: verifiedUser.role,
+        accessRole: toAccessRole(verifiedUser.role),
+        source: "jwt",
+      },
+    };
+  }
+
+  // Cookie session (console pages fetch their APIs with the session cookie,
+  // not a Bearer token). Role derives from OWNER_EMAIL + app_metadata only.
+  const cookieIdentity = await getCookieIdentity(req);
+  if (cookieIdentity) {
+    const authRole = normalizeAuthRole(cookieIdentity.role) || "viewer";
+    return {
+      ok: true,
+      identity: {
+        userId: cookieIdentity.userId,
+        authRole,
+        accessRole: toAccessRole(authRole),
+        source: "jwt",
+      },
     };
   }
 
   return {
-    ok: true,
-    identity: {
-      userId: verifiedUser.userId,
-      authRole: verifiedUser.role,
-      accessRole: toAccessRole(verifiedUser.role),
-      source: "jwt",
-    },
+    ok: false,
+    status: 401,
+    error: "unauthorized",
   };
 }

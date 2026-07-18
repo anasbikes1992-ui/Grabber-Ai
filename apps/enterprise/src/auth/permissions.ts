@@ -1,6 +1,6 @@
 import type { AccessRole } from "@/auth/roles";
 
-const ADMIN_ONLY_PREFIXES = ["/api/demo/seed", "/api/playbooks", "/api/ops"];
+const ADMIN_ONLY_PREFIXES = ["/api/demo/seed", "/api/playbooks", "/api/ops", "/api/admin"];
 const ADMIN_ONLY_SEGMENTS = ["govern", "commercial", "design", "analyze", "handoff"];
 
 const PUBLIC_ROUTE_RULES: Array<{ path: string; methods: string[] }> = [

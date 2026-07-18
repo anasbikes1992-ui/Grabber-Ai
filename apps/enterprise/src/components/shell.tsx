@@ -13,6 +13,7 @@ import {
   Megaphone,
   ShieldCheck,
   Sparkles,
+  UserCog,
   Users,
 } from "lucide-react";
 import { cn } from "@/lib/cn";
@@ -36,6 +37,7 @@ const NAV_GROUPS: {
       { href: "/business", label: "Business OS · Pipeline", icon: Briefcase },
       { href: "/governance", label: "Delivery Governance", icon: ShieldCheck },
       { href: "/portal", label: "Client Portal", icon: Users },
+      { href: "/clients", label: "Clients & Access", icon: UserCog },
     ],
   },
   {
