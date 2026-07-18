@@ -119,6 +119,27 @@ export default function ClientPortalPage() {
     }
   }
 
+  async function payDeposit(engagementId: string, amount: number) {
+    setBusy(true);
+    setError("");
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ engagementId, amount, clientName: client }),
+      }).then((r) => r.json());
+      if (!res.ok) throw new Error(res.error || "Could not start checkout");
+      if (res.url) {
+        window.location.href = res.url as string;
+        return;
+      }
+      throw new Error("No checkout URL returned");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+      setBusy(false);
+    }
+  }
+
   const engId =
     view?.primary_engagement_id || view?.engagements?.[0]?.id || "";
 
@@ -491,6 +512,16 @@ export default function ClientPortalPage() {
                             }
                           >
                             Accept proposal
+                          </button>
+                        ) : null}
+                        {p.deposit && engId ? (
+                          <button
+                            type="button"
+                            className="btn btn-primary mt-4 sm:ml-2"
+                            disabled={busy}
+                            onClick={() => payDeposit(engId, Number(p.deposit))}
+                          >
+                            Approve &amp; pay deposit ${Number(p.deposit).toLocaleString()}
                           </button>
                         ) : null}
                       </div>

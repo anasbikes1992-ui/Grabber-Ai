@@ -6,6 +6,8 @@ const ADMIN_ONLY_SEGMENTS = ["govern", "commercial", "design", "analyze", "hando
 const PUBLIC_ROUTE_RULES: Array<{ path: string; methods: string[] }> = [
   { path: "/api/leads", methods: ["POST"] },
   { path: "/api/consulting", methods: ["GET", "POST"] },
+  { path: "/api/checkout", methods: ["GET", "POST"] },
+  { path: "/api/stripe/webhook", methods: ["POST"] },
 ];
 
 export function isPublicRoute(pathname: string, method: string) {
