@@ -1,4 +1,5 @@
 import { ent, monorepoCwd, jsonOk, jsonErr } from "@/lib/enterprise";
+import { mirrorEngagements } from "@/lib/enterprise";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -31,6 +32,7 @@ export async function POST(req: Request) {
         body.actor || "client",
         cwd,
       );
+      await mirrorEngagements();
       return jsonOk({ engagement });
     }
     if (body.action === "confirm_deposit") {
@@ -39,6 +41,7 @@ export async function POST(req: Request) {
         body.actor || "client",
         cwd,
       );
+      await mirrorEngagements();
       return jsonOk({ engagement });
     }
     if (body.action === "ticket") {
@@ -48,6 +51,7 @@ export async function POST(req: Request) {
         body.body || "",
         cwd,
       );
+      await mirrorEngagements();
       return jsonOk({ ticket });
     }
     if (body.action === "comment") {
@@ -57,6 +61,7 @@ export async function POST(req: Request) {
         body.text || "",
         cwd,
       );
+      await mirrorEngagements();
       return jsonOk({ engagement });
     }
     if (body.action === "upload") {
@@ -65,6 +70,7 @@ export async function POST(req: Request) {
         body.file_name || "upload.bin",
         cwd,
       );
+      await mirrorEngagements();
       return jsonOk({ engagement });
     }
     if (body.action === "meeting") {
@@ -77,6 +83,7 @@ export async function POST(req: Request) {
         },
         cwd,
       );
+      await mirrorEngagements();
       return jsonOk({ engagement });
     }
     return jsonErr("unknown action");

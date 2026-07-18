@@ -1,4 +1,5 @@
 import { ent, monorepoCwd, jsonOk, jsonErr } from "@/lib/enterprise";
+import { mirrorEngagements } from "@/lib/enterprise";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -20,6 +21,7 @@ export async function POST(
       },
       monorepoCwd(),
     );
+    await mirrorEngagements();
     return jsonOk({ engagement });
   } catch (e) {
     return jsonErr(e);

@@ -15,7 +15,13 @@ type Integration = {
 type Settings = {
   integrations: Integration[];
   llm: { available: boolean; model: string; key_present: boolean };
-  system: { environment: string; region: string; commit: string | null; supabase_configured: boolean };
+  system: {
+    environment: string;
+    region: string;
+    commit: string | null;
+    supabase_configured: boolean;
+    durable_store?: { engagements: boolean; deposits: boolean };
+  };
 };
 
 export default function SettingsPage() {
@@ -90,6 +96,17 @@ export default function SettingsPage() {
           label="Database"
           value={data?.system.supabase_configured ? "Connected" : "Not set"}
           hint={data?.system.commit ? `build ${data.system.commit}` : undefined}
+        />
+        <Metric
+          label="Durable store"
+          value={
+            data?.system.durable_store?.engagements && data.system.durable_store.deposits
+              ? "Active"
+              : data?.system.durable_store?.engagements || data?.system.durable_store?.deposits
+                ? "Partial"
+                : "Not set"
+          }
+          hint="engagements + deposits tables"
         />
       </div>
 

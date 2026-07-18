@@ -2,7 +2,7 @@ import type Stripe from "stripe";
 import { getStripe, isStripeConfigured } from "@/lib/stripe";
 import { recordDeposit } from "@/lib/deposits";
 import { notifyOwnerDeposit, sendDepositReceipt } from "@/lib/email";
-import { ent, monorepoCwd } from "@/lib/enterprise";
+import { ent, monorepoCwd, mirrorEngagements } from "@/lib/enterprise";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -20,6 +20,7 @@ async function advanceEngineGovernance(engagementId: string) {
         // stage may already be passed / engagement not on this instance — ignore
       }
     }
+    await mirrorEngagements();
   } catch {
     // engine unavailable in this invocation — Supabase deposit is the source of truth
   }

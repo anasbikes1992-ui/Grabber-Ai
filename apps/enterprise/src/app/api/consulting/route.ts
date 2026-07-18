@@ -1,6 +1,12 @@
-import { ent, monorepoCwd, jsonOk, jsonErr } from "@/lib/enterprise";
+import { ent, monorepoCwd, jsonOk, jsonErr, mirrorEngagements } from "@/lib/enterprise";
 import { log } from "@/lib/production/logger";
 import { notifyOwnerLead, sendBlueprintEmail } from "@/lib/email";
+
+/** Persist engine mutations to the durable store before responding. */
+async function okMirrored(data: unknown, status = 200) {
+  await mirrorEngagements();
+  return jsonOk(data, status);
+}
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -32,7 +38,7 @@ export async function POST(req: Request) {
         contactEmail: body.email,
         source: "consult discovery",
       });
-      return jsonOk(
+      return okMirrored(
         {
           engagement,
           status: api.getConsultingStatus(engagement.id, cwd),
@@ -43,22 +49,22 @@ export async function POST(req: Request) {
 
     if (action === "answer") {
       const result = await api.answerDiscovery(body.id, body.answers || {}, cwd);
-      return jsonOk(result);
+      return okMirrored(result);
     }
 
     if (action === "intelligence") {
       const engagement = api.runIndustryIntelligence(body.id, cwd);
-      return jsonOk({ engagement });
+      return okMirrored({ engagement });
     }
 
     if (action === "gaps") {
       const engagement = await api.runGapAnalysis(body.id, cwd);
-      return jsonOk({ engagement });
+      return okMirrored({ engagement });
     }
 
     if (action === "review") {
       const engagement = await api.runMultiAgentReview(body.id, cwd);
-      return jsonOk({ engagement });
+      return okMirrored({ engagement });
     }
 
     if (action === "package") {
@@ -74,7 +80,7 @@ export async function POST(req: Request) {
           // briefing render/send is best-effort
         }
       }
-      return jsonOk({
+      return okMirrored({
         engagement,
         package: engagement.consulting?.solution_package,
         executive_html: engagement.consulting?.executive_html,
@@ -91,7 +97,7 @@ export async function POST(req: Request) {
         body.answers || {},
         cwd,
       );
-      return jsonOk(result, 201);
+      return okMirrored(result, 201);
     }
 
     if (action === "status") {

@@ -57,11 +57,32 @@ export async function GET() {
     key_present: has("ANTHROPIC_API_KEY"),
   };
 
+  // Durable-store health: can we reach the engagements + deposits tables?
+  let durableStore = { engagements: false, deposits: false };
+  if (has("SUPABASE_SERVICE_ROLE_KEY")) {
+    try {
+      const { getSupabaseAdminClient } = await import("@/lib/production/supabase");
+      const supabase = getSupabaseAdminClient() as unknown as {
+        from: (t: string) => {
+          select: (c: string, o: { count: "exact"; head: true }) => Promise<{ error: unknown }>;
+        };
+      };
+      const [e, d] = await Promise.all([
+        supabase.from("engagements").select("id", { count: "exact", head: true }),
+        supabase.from("deposits").select("engagement_id", { count: "exact", head: true }),
+      ]);
+      durableStore = { engagements: !e.error, deposits: !d.error };
+    } catch {
+      // leave false — surfaced in the UI
+    }
+  }
+
   const system = {
     environment: process.env.NODE_ENV || "development",
     region: process.env.VERCEL_REGION || "local",
     commit: process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7) || null,
     supabase_configured: supabaseConfigured,
+    durable_store: durableStore,
   };
 
   return Response.json({ ok: true, integrations, llm, system });
