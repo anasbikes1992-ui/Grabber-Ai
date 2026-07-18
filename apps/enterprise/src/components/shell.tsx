@@ -11,6 +11,7 @@ import {
   LayoutDashboard,
   LogOut,
   Megaphone,
+  Settings,
   ShieldCheck,
   Sparkles,
   UserCog,
@@ -47,6 +48,10 @@ const NAV_GROUPS: {
       { href: "/delivery", label: "Delivery & Support", icon: Headphones },
       { href: "/marketing", label: "Marketing Intel", icon: Megaphone },
     ],
+  },
+  {
+    label: "System",
+    items: [{ href: "/settings", label: "Settings & Monitoring", icon: Settings }],
   },
 ];
 
