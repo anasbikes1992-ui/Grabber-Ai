@@ -61,6 +61,9 @@ export default function ClientPortalPage() {
     [prefersReducedMotion],
   );
 
+  const [sessionRole, setSessionRole] = useState<"admin" | "client" | null>(null);
+  const [scopeNote, setScopeNote] = useState("");
+
   const loadClients = useCallback(async () => {
     const res = await fetch("/api/portal").then((r) => r.json());
     if (res.ok) setClients(res.clients || []);
@@ -69,6 +72,40 @@ export default function ClientPortalPage() {
   useEffect(() => {
     void loadClients();
   }, [loadClients]);
+
+  // Auto-scope: a logged-in client lands directly on their own engagement.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const me = await fetch("/api/me").then((r) => r.json());
+        if (cancelled || !me.ok) return;
+        setSessionRole(me.user.role === "admin" ? "admin" : "client");
+        if (me.user.role !== "client") return;
+        if (!me.user.engagementId) {
+          setScopeNote(
+            "Your portal isn't linked to a project yet — your consultant will connect it shortly.",
+          );
+          return;
+        }
+        const eng = await fetch(`/api/engagements/${me.user.engagementId}`).then((r) =>
+          r.json(),
+        );
+        if (cancelled) return;
+        const name = eng?.engagement?.client_name;
+        if (name) {
+          setClient(name);
+          void load(name);
+        }
+      } catch {
+        // fall back to the picker
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const seededClient = searchParams.get("client") || "";
@@ -172,7 +209,19 @@ export default function ClientPortalPage() {
         }
       />
 
-      <motion.div variants={cardVariant}>
+      {searchParams.get("paid") === "1" ? (
+        <div className="mb-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-200">
+          Payment received — thank you. Your deposit is confirmed and delivery is
+          being scheduled. A receipt is on its way to your email.
+        </div>
+      ) : null}
+      {scopeNote ? (
+        <div className="mb-4 rounded-xl border border-sky-500/30 bg-sky-500/10 px-4 py-3 text-sm">
+          {scopeNote}
+        </div>
+      ) : null}
+
+      <motion.div variants={cardVariant} hidden={sessionRole === "client"}>
         <Section title="Open a client portal">
         <div className="flex flex-wrap items-end gap-2">
           <div className="min-w-50 flex-1">

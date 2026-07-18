@@ -1,6 +1,7 @@
 import type Stripe from "stripe";
 import { getStripe, isStripeConfigured } from "@/lib/stripe";
 import { recordDeposit } from "@/lib/deposits";
+import { notifyOwnerDeposit, sendDepositReceipt } from "@/lib/email";
 import { ent, monorepoCwd } from "@/lib/enterprise";
 
 export const runtime = "nodejs";
@@ -67,6 +68,26 @@ export async function POST(req: Request) {
         console.error(JSON.stringify({ scope: "stripe.webhook", event: "record_failed", error: String(e) }));
       }
       await advanceEngineGovernance(engagementId);
+
+      // Best-effort notifications (no-ops when RESEND_API_KEY unset).
+      const amount = Number(meta.deposit_amount) || (session.amount_total ?? 0) / 100;
+      const currency = meta.currency || session.currency || "usd";
+      const clientEmail = session.customer_details?.email || session.customer_email;
+      if (clientEmail) {
+        await sendDepositReceipt({
+          to: clientEmail,
+          clientName: meta.client_name || "your project",
+          amount,
+          currency,
+          engagementId,
+        });
+      }
+      await notifyOwnerDeposit({
+        clientName: meta.client_name || "Unknown client",
+        amount,
+        currency,
+        engagementId,
+      });
     }
   }
 

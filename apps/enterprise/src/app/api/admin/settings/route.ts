@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 type Integration = {
   key: string;
   label: string;
-  group: "Core" | "AI providers" | "Delivery" | "Payments";
+  group: "Core" | "AI providers" | "Delivery" | "Payments" | "Email";
   purpose: string;
   required: boolean;
   configured: boolean;
@@ -43,7 +43,12 @@ export async function GET() {
     { key: "VERCEL_TOKEN", label: "Vercel", group: "Delivery", purpose: "Deploy automation", required: false, configured: has("VERCEL_TOKEN") },
     { key: "SUPABASE_STORAGE_BUCKET", label: "Storage bucket", group: "Delivery", purpose: "Client documents & assets", required: false, configured: has("SUPABASE_STORAGE_BUCKET") },
     // Payments
-    { key: "STRIPE_SECRET_KEY", label: "Stripe", group: "Payments", purpose: "Deposits & invoices (optional)", required: false, configured: has("STRIPE_SECRET_KEY") },
+    { key: "STRIPE_SECRET_KEY", label: "Stripe", group: "Payments", purpose: "Client deposit checkout", required: false, configured: has("STRIPE_SECRET_KEY") },
+    { key: "STRIPE_WEBHOOK_SECRET", label: "Stripe webhook", group: "Payments", purpose: "Verifies payment events", required: false, configured: has("STRIPE_WEBHOOK_SECRET") },
+    { key: "NEXT_PUBLIC_APP_URL", label: "App URL", group: "Payments", purpose: "Checkout return address", required: false, configured: has("NEXT_PUBLIC_APP_URL") },
+    // Email
+    { key: "RESEND_API_KEY", label: "Resend", group: "Email", purpose: "Receipts & notifications", required: false, configured: has("RESEND_API_KEY") },
+    { key: "EMAIL_FROM", label: "Sender address", group: "Email", purpose: "Verified from address", required: false, configured: has("EMAIL_FROM") },
   ];
 
   const llm = {
