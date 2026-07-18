@@ -1,7 +1,0 @@
-{
-  "module": "payments",
-  "entities": [
-    "payments",
-    "payment_methods"
-  ]
-}

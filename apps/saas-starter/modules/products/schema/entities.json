@@ -1,7 +1,0 @@
-{
-  "module": "products",
-  "entities": [
-    "products",
-    "categories"
-  ]
-}

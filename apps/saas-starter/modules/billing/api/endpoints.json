@@ -1,7 +1,0 @@
-{
-  "module": "billing",
-  "endpoints": [
-    "GET /billing/plans",
-    "POST /billing/checkout"
-  ]
-}

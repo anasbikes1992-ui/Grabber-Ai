@@ -1,7 +1,0 @@
-{
-  "module": "payments",
-  "endpoints": [
-    "POST /payments/intent",
-    "POST /webhooks/stripe"
-  ]
-}

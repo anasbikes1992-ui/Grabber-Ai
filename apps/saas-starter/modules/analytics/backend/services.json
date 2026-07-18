@@ -1,6 +1,0 @@
-{
-  "module": "analytics",
-  "services": [
-    "events_analyticsService"
-  ]
-}

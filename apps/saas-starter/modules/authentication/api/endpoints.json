@@ -1,8 +1,0 @@
-{
-  "module": "authentication",
-  "endpoints": [
-    "POST /auth/signup",
-    "POST /auth/login",
-    "POST /auth/logout"
-  ]
-}

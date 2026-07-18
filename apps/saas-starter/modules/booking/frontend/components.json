@@ -1,7 +1,0 @@
-{
-  "module": "booking",
-  "components": [
-    "BookingCalendar",
-    "BookingForm"
-  ]
-}

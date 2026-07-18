@@ -1,6 +1,0 @@
-{
-  "module": "audit",
-  "services": [
-    "audit_logsService"
-  ]
-}

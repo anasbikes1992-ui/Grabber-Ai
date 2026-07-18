@@ -1,7 +1,0 @@
-{
-  "module": "teams",
-  "services": [
-    "teamsService",
-    "team_membersService"
-  ]
-}

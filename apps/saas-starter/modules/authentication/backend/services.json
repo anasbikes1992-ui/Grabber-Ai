@@ -1,7 +1,0 @@
-{
-  "module": "authentication",
-  "services": [
-    "usersService",
-    "sessionsService"
-  ]
-}

@@ -1,7 +1,0 @@
-{
-  "module": "inventory",
-  "endpoints": [
-    "GET /inventory",
-    "POST /inventory/adjust"
-  ]
-}

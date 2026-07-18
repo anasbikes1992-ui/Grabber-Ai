@@ -1,7 +1,0 @@
-{
-  "module": "orders",
-  "endpoints": [
-    "GET /orders",
-    "POST /orders"
-  ]
-}

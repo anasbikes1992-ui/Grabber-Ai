@@ -1,7 +1,0 @@
-{
-  "module": "products",
-  "components": [
-    "ProductGrid",
-    "ProductForm"
-  ]
-}

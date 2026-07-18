@@ -1,7 +1,0 @@
-{
-  "module": "teams",
-  "components": [
-    "TeamList",
-    "InviteMember"
-  ]
-}

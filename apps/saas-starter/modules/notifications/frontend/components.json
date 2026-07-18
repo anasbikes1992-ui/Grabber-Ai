@@ -1,6 +1,0 @@
-{
-  "module": "notifications",
-  "components": [
-    "NotificationBell"
-  ]
-}

@@ -1,7 +1,0 @@
-{
-  "module": "notifications",
-  "entities": [
-    "notifications",
-    "notification_prefs"
-  ]
-}

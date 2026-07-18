@@ -1,6 +1,0 @@
-{
-  "module": "search",
-  "endpoints": [
-    "GET /search"
-  ]
-}

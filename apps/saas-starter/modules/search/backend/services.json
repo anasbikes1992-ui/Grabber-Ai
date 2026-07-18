@@ -1,6 +1,0 @@
-{
-  "module": "search",
-  "services": [
-    "search_indexService"
-  ]
-}

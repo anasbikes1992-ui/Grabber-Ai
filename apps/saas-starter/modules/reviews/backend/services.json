@@ -1,6 +1,0 @@
-{
-  "module": "reviews",
-  "services": [
-    "reviewsService"
-  ]
-}

@@ -1,7 +1,0 @@
-{
-  "module": "authentication",
-  "entities": [
-    "users",
-    "sessions"
-  ]
-}

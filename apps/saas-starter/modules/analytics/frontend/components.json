@@ -1,6 +1,0 @@
-{
-  "module": "analytics",
-  "components": [
-    "AnalyticsDashboard"
-  ]
-}

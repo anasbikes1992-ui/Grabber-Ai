@@ -1,8 +1,0 @@
-{
-  "module": "crm",
-  "entities": [
-    "deals",
-    "activities",
-    "pipelines"
-  ]
-}

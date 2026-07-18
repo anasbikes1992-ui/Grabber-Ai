@@ -1,8 +1,0 @@
-{
-  "module": "booking",
-  "endpoints": [
-    "GET /bookings",
-    "POST /bookings",
-    "POST /bookings/:id/cancel"
-  ]
-}

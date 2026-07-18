@@ -133,10 +133,16 @@ export default function ClientPortalPage() {
   ];
 
   return (
-    <motion.div variants={containerVariant} initial="hidden" animate="visible">
+    <motion.div
+      variants={containerVariant}
+      initial="hidden"
+      animate="visible"
+      className="mx-auto max-w-6xl px-5 py-8 md:px-8 md:py-12"
+    >
       <PageHeader
-        title="Client Portal"
-        description="Your project status, documents, invoices, approvals, and support — transparent end to end."
+        eyebrow="Client Portal"
+        title="Project status & documents"
+        description="Project status, documents, invoices, approvals, and support — transparent end to end."
         actions={
           <Link href="/business" className="btn btn-ghost text-sm">
             Business OS (internal)
@@ -145,10 +151,10 @@ export default function ClientPortalPage() {
       />
 
       <motion.div variants={cardVariant}>
-        <Section title="Sign in as client">
+        <Section title="Open a client portal">
         <div className="flex flex-wrap items-end gap-2">
           <div className="min-w-50 flex-1">
-            <label className="label">Client name</label>
+            <label className="label">Client</label>
             {clients.length > 0 ? (
               <select
                 className="select"
@@ -167,7 +173,7 @@ export default function ClientPortalPage() {
                 className="input"
                 value={client}
                 onChange={(e) => setClient(e.target.value)}
-                placeholder="Harbor Hotel"
+                placeholder="Client name"
               />
             )}
           </div>
@@ -192,8 +198,11 @@ export default function ClientPortalPage() {
       {!view ? (
         <motion.div variants={cardVariant} className="mt-4">
           <Empty>
-            Open a client with an engagement (seed from Command Center, or create
-            one in Business OS). Example: Harbor Hotel.
+            Select a client with an active engagement, or{" "}
+            <Link href="/business" className="text-sky-300 hover:underline">
+              create one in Business OS
+            </Link>
+            .
           </Empty>
         </motion.div>
       ) : (

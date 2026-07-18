@@ -1,7 +1,0 @@
-{
-  "module": "payments",
-  "services": [
-    "paymentsService",
-    "payment_methodsService"
-  ]
-}

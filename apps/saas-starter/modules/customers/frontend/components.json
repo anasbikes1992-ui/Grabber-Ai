@@ -1,6 +1,0 @@
-{
-  "module": "customers",
-  "components": [
-    "CustomerList"
-  ]
-}

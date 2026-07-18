@@ -1,7 +1,0 @@
-{
-  "module": "calendar",
-  "services": [
-    "eventsService",
-    "availability_slotsService"
-  ]
-}
