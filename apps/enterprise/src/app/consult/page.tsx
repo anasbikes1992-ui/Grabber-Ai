@@ -3,7 +3,17 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { GitBranch, LineChart, Network, ShieldAlert } from "lucide-react";
+import {
+  Check,
+  ClipboardCheck,
+  GitBranch,
+  LineChart,
+  Network,
+  Rocket,
+  ShieldAlert,
+  ShieldCheck,
+  TrendingUp,
+} from "lucide-react";
 import { PageHeader, Section, StatusPill } from "@/components/ui";
 import { DESIGN_TOKENS } from "@/lib/design-tokens";
 import { createFadeUpVariant, createStaggerVariant } from "@/lib/motion";
@@ -31,6 +41,44 @@ const JARVIS_NODES = [
   { icon: ShieldAlert, label: "Risk lattice", desc: "Compliance & failure modes" },
   { icon: LineChart, label: "Commercial sim", desc: "ROI, pricing, payback" },
   { icon: GitBranch, label: "Execution path", desc: "Phased delivery plan" },
+];
+
+const VALUE = [
+  {
+    icon: ClipboardCheck,
+    title: "A blueprint before code",
+    body: "Senior-consultant discovery that separates essential from optional — with ROI you can defend to your team.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Governed delivery",
+    body: "Approval and deposit gates protect both sides. The build starts only after you approve the plan.",
+  },
+  {
+    icon: Rocket,
+    title: "Production software",
+    body: "A deterministic factory ships reliable systems — not throwaway prototypes — then supports them.",
+  },
+  {
+    icon: TrendingUp,
+    title: "A system that compounds",
+    body: "Every engagement sharpens the next recommendation, so your later projects get better and faster.",
+  },
+];
+
+const ADVANTAGE = [
+  {
+    title: "A firm, not a chatbot",
+    body: "discovery → commercial → governance → delivery → support, handled end to end.",
+  },
+  {
+    title: "Evidence, not guesses",
+    body: "recommendations carry provenance from industry patterns and real benchmarks.",
+  },
+  {
+    title: "Industry depth",
+    body: "we know your sector's workflows, so we ask what a generic tool never would.",
+  },
 ];
 
 function JarvisWorldPanel({ engagementId }: { engagementId?: string }) {
@@ -196,13 +244,14 @@ export default function ConsultPage() {
       className="mx-auto max-w-6xl px-5 py-8 md:px-8 md:py-12"
     >
       <PageHeader
-        title="Jarvis Consulting"
-        description="Describe your business - not software. Jarvis interviews, benchmarks patterns, identifies gaps, and shapes the blueprint before any factory work starts."
+        eyebrow="AI-native consulting & delivery"
+        title="You describe the business. We deliver the system."
+        description="Grabber is a consulting firm, not a code chatbot. We interview you like a senior consultant, produce a complete blueprint with clear ROI, and deliver production software under governance — you never touch prompts or tooling."
         actions={
           <>
-            <Link href="/signup" className="btn btn-primary">
-              Sign up
-            </Link>
+            <a href="#discovery" className="btn btn-primary">
+              Start free discovery
+            </a>
             <Link href="/login" className="btn btn-ghost">
               Login
             </Link>
@@ -212,26 +261,48 @@ export default function ConsultPage() {
 
       <motion.div
         variants={cardVariant}
-        className="mb-4 grid gap-4 rounded-2xl border border-(--border) bg-linear-to-br from-sky-500/10 via-transparent to-violet-500/10 p-4 lg:grid-cols-[1.4fr_1fr]"
+        className="mb-4 grid gap-3 md:grid-cols-2 lg:grid-cols-4"
+      >
+        {VALUE.map((v) => {
+          const Icon = v.icon;
+          return (
+            <div key={v.title} className="card card-hover">
+              <span
+                className="grid h-9 w-9 place-items-center rounded-lg text-sky-300"
+                style={{
+                  background:
+                    "linear-gradient(135deg, rgba(56,189,248,0.16), rgba(167,139,250,0.16))",
+                }}
+              >
+                <Icon className="h-4 w-4" />
+              </span>
+              <h3 className="mt-3 text-sm font-semibold">{v.title}</h3>
+              <p className="mt-1 text-xs leading-relaxed text-(--muted)">{v.body}</p>
+            </div>
+          );
+        })}
+      </motion.div>
+
+      <motion.div
+        variants={cardVariant}
+        className="mb-4 grid gap-4 rounded-2xl border border-(--border) bg-linear-to-br from-sky-500/10 via-transparent to-violet-500/10 p-5 lg:grid-cols-[1.4fr_1fr]"
       >
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-(--muted)">
-            Unified consulting to factory flow
-          </p>
-          <h2 className="mt-2 text-2xl font-semibold tracking-tight">
-            One operating system, connected use-cases
+          <div className="eyebrow">Why Grabber</div>
+          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-balance">
+            Your unfair advantage: a firm that compounds
           </h2>
-          <p className="mt-2 max-w-2xl text-sm text-(--muted)">
-            Start in consulting, structure the business blueprint, and move into delivery only when the engagement is ready.
-          </p>
-          <div className="mt-4 flex flex-wrap gap-2">
-            <Link href="/portal" className="btn btn-primary">
-              Open client portal
-            </Link>
-            <Link href="/login" className="btn btn-ghost">
-              Owner sign in
-            </Link>
-          </div>
+          <ul className="mt-3 grid gap-2.5">
+            {ADVANTAGE.map((a) => (
+              <li key={a.title} className="flex gap-2.5">
+                <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" />
+                <span className="text-sm">
+                  <span className="font-medium">{a.title}</span>{" "}
+                  <span className="text-(--muted)">— {a.body}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
         </div>
         <JarvisWorldPanel engagementId={engagement?.id} />
       </motion.div>
@@ -242,8 +313,8 @@ export default function ConsultPage() {
         </div>
       ) : null}
 
-      <motion.div variants={cardVariant}>
-        <Section title="Business story">
+      <motion.div variants={cardVariant} id="discovery" className="scroll-mt-6">
+        <Section title="Tell us about your business">
           <input
             className="input mb-2 max-w-md"
             value={name}

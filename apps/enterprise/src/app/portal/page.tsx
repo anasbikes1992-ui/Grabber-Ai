@@ -145,7 +145,7 @@ export default function ClientPortalPage() {
         description="Project status, documents, invoices, approvals, and support — transparent end to end."
         actions={
           <Link href="/business" className="btn btn-ghost text-sm">
-            Business OS (internal)
+            Business OS
           </Link>
         }
       />

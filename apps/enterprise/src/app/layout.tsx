@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Grabber Enterprise v3.0",
+  title: "Grabber Studio — AI consulting & software delivery",
   description:
-    "Business OS, Client Portal, Ops, Delivery, Marketing Intelligence — Track B on frozen Grabber Core",
+    "Grabber Studio turns business problems into production software: senior-consultant discovery, an evidence-based blueprint with clear ROI, and governed delivery — you never touch prompts or tooling.",
 };
 
 export default function RootLayout({

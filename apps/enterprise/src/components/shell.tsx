@@ -62,9 +62,9 @@ export function EnterpriseShell({ children }: { children: React.ReactNode }) {
           </span>
           <div className="leading-tight">
             <div className="text-sm font-semibold tracking-tight">
-              Grabber <span className="text-gradient">Enterprise</span>
+              Grabber <span className="text-gradient">Studio</span>
             </div>
-            <p className="text-[0.68rem] text-(--muted)">Core 1.8 · frozen</p>
+            <p className="text-[0.68rem] text-(--muted)">Consulting & delivery</p>
           </div>
         </div>
 
@@ -103,12 +103,11 @@ export function EnterpriseShell({ children }: { children: React.ReactNode }) {
 
       <div className="min-w-0 flex-1">
         <header className="sticky top-0 z-10 flex items-center justify-between border-b border-(--border) bg-[rgba(6,8,15,0.6)] px-6 py-3 backdrop-blur-xl">
-          <div className="eyebrow">AI-native software company OS</div>
+          <div className="eyebrow">AI-native consulting &amp; delivery</div>
           <div className="flex items-center gap-2">
             <span className="badge gap-1.5">
-              <span className="stage-dot" /> Core 1.8
+              <span className="stage-dot" /> Operational
             </span>
-            <span className="badge">Factory 2.0</span>
           </div>
         </header>
         <main className="mx-auto max-w-[1400px] p-6 md:p-8">{children}</main>

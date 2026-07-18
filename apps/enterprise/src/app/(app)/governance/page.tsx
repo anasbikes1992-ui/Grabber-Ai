@@ -75,8 +75,8 @@ export default function GovernancePage() {
           </div>
           <p className="mt-4 text-sm muted">
             The factory builds only after governance approval and deposit —
-            never before. Factory Excellence (Program B) continues in the
-            runtime factory, modules, and golden references.
+            never before. Delivery runs on reusable modules and validated
+            reference builds for reliable, repeatable outcomes.
           </p>
         </Section>
       </div>
