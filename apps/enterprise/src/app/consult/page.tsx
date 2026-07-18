@@ -15,6 +15,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { PageHeader, Section, StatusPill } from "@/components/ui";
+import { JarvisGreeting } from "@/components/jarvis-greeting";
 import { DESIGN_TOKENS } from "@/lib/design-tokens";
 import { createFadeUpVariant, createStaggerVariant } from "@/lib/motion";
 
@@ -259,6 +260,8 @@ export default function ConsultPage() {
         }
       />
 
+      <JarvisGreeting />
+
       <motion.div
         variants={cardVariant}
         className="mb-4 grid gap-3 md:grid-cols-2 lg:grid-cols-4"
@@ -315,6 +318,11 @@ export default function ConsultPage() {
 
       <motion.div variants={cardVariant} id="discovery" className="scroll-mt-6">
         <Section title="Tell us about your business">
+          <p className="mb-3 text-sm text-(--muted)">
+            <span className="font-medium text-sky-300">Jarvis:</span> Describe your
+            operations, your biggest pains, and what success looks like — in your own
+            words. No tech needed. I&apos;ll ask the right follow-ups from here.
+          </p>
           <input
             className="input mb-2 max-w-md"
             value={name}
@@ -322,13 +330,14 @@ export default function ConsultPage() {
             placeholder="Business name"
           />
           <textarea
-            className="textarea font-mono text-xs"
+            className="textarea text-sm"
             value={story}
             onChange={(e) => setStory(e.target.value)}
-            rows={8}
+            rows={7}
+            placeholder="e.g. We're a textile wholesaler in Colombo. Stock counts never match, credit customers are hard to track, and we have no reorder signal…"
           />
           <button className="btn btn-primary mt-3" disabled={busy} onClick={start}>
-            {busy ? "..." : "Start discovery interview"}
+            {busy ? "Starting…" : "Start discovery interview"}
           </button>
         </Section>
       </motion.div>
@@ -352,13 +361,19 @@ export default function ConsultPage() {
           </motion.div>
 
           <motion.div variants={cardVariant}>
-            <Section title="Interview (Jarvis asks - you answer)">
+            <Section title="Jarvis is interviewing you">
               {nextQs.length === 0 ? (
                 <p className="text-sm text-emerald-300">
-                  Discovery threshold met (or no pending). Run intelligence to package.
+                  <span className="font-medium">Jarvis:</span> I have enough to work
+                  with — thank you. Let&apos;s turn this into your blueprint below.
                 </p>
               ) : (
                 <div className="space-y-3">
+                  <p className="text-sm text-(--muted)">
+                    <span className="font-medium text-sky-300">Jarvis:</span> A few
+                    questions to sharpen your blueprint. Answer what you can — skip
+                    anything you&apos;re unsure of, and we&apos;ll cover it in the review.
+                  </p>
                   {nextQs.map((q: Any) => (
                     <div key={q.id}>
                       <label className="label">{q.prompt}</label>
