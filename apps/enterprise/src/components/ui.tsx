@@ -1,4 +1,5 @@
 import { cn } from "@/lib/cn";
+import { AnimatedNumber, TiltCard } from "@/components/motion-ui";
 
 export function PageHeader({
   title,
@@ -41,16 +42,18 @@ export function Metric({
   trend?: { value: string; direction?: "up" | "down" };
 }) {
   return (
-    <div className="kpi">
+    <TiltCard className="kpi">
       <div className="kpi-label">{label}</div>
-      <div className="kpi-value">{value}</div>
+      <div className="kpi-value">
+        {typeof value === "number" ? <AnimatedNumber value={value} /> : value}
+      </div>
       {trend ? (
         <div className={cn("kpi-trend", trend.direction ?? "up")}>
           {trend.direction === "down" ? "▾" : "▴"} {trend.value}
         </div>
       ) : null}
       {hint ? <div className="mt-1 text-xs text-[var(--muted)]">{hint}</div> : null}
-    </div>
+    </TiltCard>
   );
 }
 

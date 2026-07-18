@@ -238,13 +238,11 @@ a {
   color: var(--text);
 }
 
-/* glow rail on the active item */
-.nav-link.active::before {
-  content: "";
+/* animated glow rail (framer-motion layoutId glides it between items) */
+.nav-rail {
   position: absolute;
   left: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 20%;
   width: 3px;
   height: 60%;
   border-radius: 999px;

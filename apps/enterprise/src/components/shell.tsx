@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 import {
   Briefcase,
   Building2,
@@ -89,6 +90,13 @@ export function EnterpriseShell({ children }: { children: React.ReactNode }) {
                     href={item.href}
                     className={cn("nav-link", active && "active")}
                   >
+                    {active ? (
+                      <motion.span
+                        layoutId="nav-rail"
+                        className="nav-rail"
+                        transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                      />
+                    ) : null}
                     <Icon className="h-4 w-4 shrink-0" />
                     {item.label}
                   </Link>

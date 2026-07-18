@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { Empty, Metric, PageHeader, Section, StatusPill } from "@/components/ui";
+import { StaggerGroup, StaggerItem } from "@/components/motion-ui";
 
 type Kpis = {
   sales?: { leads: number; proposals: number; proposal_acceptance_rate: number };
@@ -45,19 +46,27 @@ export default function CommandCenter() {
         }
       />
 
-      <div className="grid-metrics mb-6">
-        <Metric label="Leads" value={kpis?.sales?.leads ?? "-"} />
-        <Metric label="Proposals" value={kpis?.sales?.proposals ?? "-"} />
-        <Metric label="Acceptance" value={pct(kpis?.sales?.proposal_acceptance_rate)} />
-        <Metric label="Factory ready" value={kpis?.factory?.eligible ?? "-"} />
-        <Metric
-          label="Revenue booked"
-          value={kpis?.finance?.revenue_booked != null ? `$${kpis.finance.revenue_booked.toLocaleString()}` : "-"}
-        />
-        <Metric label="Gross margin" value={pct(kpis?.finance?.gross_margin_pct)} />
-        <Metric label="Deployments" value={kpis?.customer_success?.deployments ?? "-"} />
-        <Metric label="Marketing pubs" value={kpis?.marketing?.published ?? "-"} />
-      </div>
+      <StaggerGroup className="grid-metrics mb-6">
+        {[
+          ["Leads", kpis?.sales?.leads ?? "-"],
+          ["Proposals", kpis?.sales?.proposals ?? "-"],
+          ["Acceptance", pct(kpis?.sales?.proposal_acceptance_rate)],
+          ["Factory ready", kpis?.factory?.eligible ?? "-"],
+          [
+            "Revenue booked",
+            kpis?.finance?.revenue_booked != null
+              ? `$${kpis.finance.revenue_booked.toLocaleString()}`
+              : "-",
+          ],
+          ["Gross margin", pct(kpis?.finance?.gross_margin_pct)],
+          ["Deployments", kpis?.customer_success?.deployments ?? "-"],
+          ["Marketing pubs", kpis?.marketing?.published ?? "-"],
+        ].map(([label, value]) => (
+          <StaggerItem key={String(label)}>
+            <Metric label={String(label)} value={value as React.ReactNode} />
+          </StaggerItem>
+        ))}
+      </StaggerGroup>
 
       <div className="grid gap-4 lg:grid-cols-3">
         <Section title="Programs" className="lg:col-span-1">
