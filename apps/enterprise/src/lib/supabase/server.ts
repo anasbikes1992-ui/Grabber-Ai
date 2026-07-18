@@ -1,23 +1,19 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { getSupabaseAnonKey, getSupabaseUrl, isSupabaseConfigured } from "@/lib/supabase/config";
 
 type CookieToSet = { name: string; value: string; options: CookieOptions };
 
-export function isSupabaseConfigured(): boolean {
-  return Boolean(
-    process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() &&
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim(),
-  );
-}
+export { isSupabaseConfigured };
 
 /**
  * Server Supabase client bound to the request cookie jar.
  * Reads sessions in server components and writes refreshed cookies from
- * server actions / route handlers. Uses the anon key — RLS enforces access.
+ * server actions / route handlers. Uses the anon/publishable key — RLS enforces access.
  */
 export async function createSupabaseServerClient() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() ?? "";
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim() ?? "";
+  const url = getSupabaseUrl();
+  const anonKey = getSupabaseAnonKey();
   if (!url || !anonKey) {
     throw new Error(
       "Supabase is not configured (NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY).",

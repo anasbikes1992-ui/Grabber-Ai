@@ -10,6 +10,10 @@ function isRedirectError(e: unknown): boolean {
   return Boolean(e && typeof e === "object" && "digest" in e);
 }
 
+function errorMessage(e: unknown): string {
+  return e instanceof Error ? e.message : String(e);
+}
+
 /**
  * Password sign-in via Supabase. No demo / any-password path.
  * Owner lands on the console; clients land on their portal.
@@ -31,7 +35,7 @@ export async function signIn(_prev: AuthState, formData: FormData): Promise<Auth
     if (error) return { error: error.message };
   } catch (e) {
     if (isRedirectError(e)) throw e;
-    return { error: "Sign-in failed. Check Supabase configuration." };
+    return { error: `Sign-in failed: ${errorMessage(e)}` };
   }
 
   const user = await getSessionUser();
@@ -71,7 +75,7 @@ export async function signUp(_prev: AuthState, formData: FormData): Promise<Auth
     return { success: "Account created. Check your email, then sign in." };
   } catch (e) {
     if (isRedirectError(e)) throw e;
-    return { error: "Sign-up failed. Check Supabase configuration." };
+    return { error: `Sign-up failed: ${errorMessage(e)}` };
   }
 }
 
