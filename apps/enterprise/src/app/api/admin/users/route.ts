@@ -1,5 +1,6 @@
 import { getSupabaseAdminClient } from "@/lib/production/supabase";
 import { getSessionUser } from "@/lib/auth/session";
+import { sendPortalReadyEmail } from "@/lib/email";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -68,6 +69,19 @@ export async function POST(req: Request) {
       app_metadata: meta,
     });
     if (error) throw error;
+
+    // Onboard the client when their portal gets linked to an engagement.
+    if (meta.role === "client" && body.engagementId && current.user?.email) {
+      const base =
+        process.env.NEXT_PUBLIC_APP_URL?.trim() ||
+        (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "");
+      if (base) {
+        void sendPortalReadyEmail({
+          to: current.user.email,
+          portalUrl: `${base}/portal`,
+        });
+      }
+    }
     return json({ ok: true });
   } catch (e) {
     return json({ ok: false, error: e instanceof Error ? e.message : String(e) }, 500);

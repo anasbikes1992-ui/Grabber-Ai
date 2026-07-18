@@ -74,6 +74,57 @@ export async function sendDepositReceipt(input: {
   if (!r.ok) console.warn(JSON.stringify({ scope: "email", event: "receipt_failed", error: r.error }));
 }
 
+export async function sendBlueprintEmail(input: {
+  to: string;
+  clientName: string;
+  briefingHtml: string;
+}): Promise<void> {
+  const r = await sendEmail({
+    to: input.to,
+    subject: `Your business blueprint is ready — ${input.clientName}`,
+    html: input.briefingHtml,
+  });
+  if (!r.ok) console.warn(JSON.stringify({ scope: "email", event: "blueprint_failed", error: r.error }));
+}
+
+export async function sendPortalReadyEmail(input: {
+  to: string;
+  portalUrl: string;
+}): Promise<void> {
+  const r = await sendEmail({
+    to: input.to,
+    subject: "Your Grabber Studio client portal is ready",
+    html: wrap(
+      "Your portal is ready",
+      `<p>Your consulting engagement is now linked to your account.</p>
+       <p>Sign in any time to see project status, documents, proposals, and payments:</p>
+       <p><a href="${input.portalUrl}" style="display:inline-block;background:#0284c7;color:#fff;padding:10px 18px;border-radius:10px;text-decoration:none">Open your portal</a></p>`,
+    ),
+  });
+  if (!r.ok) console.warn(JSON.stringify({ scope: "email", event: "portal_ready_failed", error: r.error }));
+}
+
+export async function notifyOwnerLead(input: {
+  clientName: string;
+  industry?: string;
+  contactEmail?: string;
+  source: string;
+}): Promise<void> {
+  const owner = (process.env.OWNER_EMAIL ?? "").split(",")[0]?.trim();
+  if (!owner) return;
+  const r = await sendEmail({
+    to: owner,
+    subject: `🔔 New lead: ${input.clientName}`,
+    html: wrap(
+      "A new lead just arrived",
+      `<p><strong>${input.clientName}</strong>${input.industry ? ` · ${input.industry}` : ""}</p>
+       ${input.contactEmail ? `<p>Contact: ${input.contactEmail}</p>` : ""}
+       <p style="font-size:13px;color:#64748b">Source: ${input.source}</p>`,
+    ),
+  });
+  if (!r.ok) console.warn(JSON.stringify({ scope: "email", event: "lead_notify_failed", error: r.error }));
+}
+
 export async function notifyOwnerDeposit(input: {
   clientName: string;
   amount: number;

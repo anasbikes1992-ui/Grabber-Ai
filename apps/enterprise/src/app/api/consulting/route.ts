@@ -1,5 +1,6 @@
 import { ent, monorepoCwd, jsonOk, jsonErr } from "@/lib/enterprise";
 import { log } from "@/lib/production/logger";
+import { notifyOwnerLead, sendBlueprintEmail } from "@/lib/email";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -25,6 +26,12 @@ export async function POST(req: Request) {
         },
         cwd,
       );
+      void notifyOwnerLead({
+        clientName: engagement.client_name || "Unknown",
+        industry: engagement.industry,
+        contactEmail: body.email,
+        source: "consult discovery",
+      });
       return jsonOk(
         {
           engagement,
@@ -56,6 +63,17 @@ export async function POST(req: Request) {
 
     if (action === "package") {
       const engagement = api.produceSolutionPackage(body.id, cwd);
+      if (engagement.contact_email) {
+        try {
+          void sendBlueprintEmail({
+            to: engagement.contact_email,
+            clientName: engagement.client_name || "your business",
+            briefingHtml: api.getExecutiveHtml(engagement.id, cwd),
+          });
+        } catch {
+          // briefing render/send is best-effort
+        }
+      }
       return jsonOk({
         engagement,
         package: engagement.consulting?.solution_package,

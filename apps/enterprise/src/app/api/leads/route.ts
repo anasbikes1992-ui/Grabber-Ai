@@ -7,6 +7,7 @@ import {
 import { publishDomainEvent } from "@/lib/production/event-bus";
 import { log } from "@/lib/production/logger";
 import { checkRateLimit } from "@/lib/production/rate-limit";
+import { notifyOwnerLead } from "@/lib/email";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -93,6 +94,13 @@ export async function POST(req: Request) {
         source: lead.source,
         supabase: useSupabase,
       },
+    });
+
+    void notifyOwnerLead({
+      clientName: name,
+      industry: leadInput.industry,
+      contactEmail: email || undefined,
+      source: leadInput.source,
     });
 
     // Optionally start consulting engagement for “start discovery now”
