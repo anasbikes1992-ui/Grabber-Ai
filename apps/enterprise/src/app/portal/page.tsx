@@ -11,6 +11,7 @@ import {
   Section,
   StatusPill,
 } from "@/components/ui";
+import { StageProgress } from "@/components/stage-progress";
 import { DESIGN_TOKENS } from "@/lib/design-tokens";
 import { createFadeUpVariant, createStaggerVariant } from "@/lib/motion";
 
@@ -228,6 +229,14 @@ export default function ClientPortalPage() {
         </motion.div>
       ) : (
         <>
+          <motion.div variants={cardVariant}>
+            <StageProgress
+              stage={view.governance_stage || view.engagements?.[0]?.governance_stage}
+              clientApproved={Boolean(view.approvals?.client)}
+              depositPaid={Boolean(view.approvals?.deposit)}
+            />
+          </motion.div>
+
           {/* Hero status */}
           <motion.div
             variants={cardVariant}
