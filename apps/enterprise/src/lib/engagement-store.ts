@@ -35,11 +35,21 @@ type EngagementsClient = {
   };
 };
 
-function engagementsDir(): string {
+function collectionDir(name: string): string {
   const root = process.env.GRABBER_ENTERPRISE_DIR;
   if (!root) throw new Error("GRABBER_ENTERPRISE_DIR not set (call ensureEnterpriseDataDir first)");
-  return join(root, "engagements");
+  return join(root, name);
 }
+
+function engagementsDir(): string {
+  return collectionDir("engagements");
+}
+
+type LeadsClient = {
+  from: (table: "leads") => {
+    select: (columns: string) => Promise<{ data: unknown; error: { message: string } | null }>;
+  };
+};
 
 export function isDurableStoreConfigured(): boolean {
   return getProductionEnv().supabaseConfigured;
@@ -74,6 +84,40 @@ export function hydrateEngagements(): Promise<void> {
   return hydrated;
 }
 
+let leadsHydrated: Promise<void> | null = null;
+
+/**
+ * Pull all leads from the existing Supabase `leads` table (already the
+ * primary write target of POST /api/leads) into the engine's file store,
+ * so getBusinessKpis() / listLeads() — which only read the file store —
+ * see leads that were created straight into Supabase.
+ */
+export function hydrateLeads(): Promise<void> {
+  if (!isDurableStoreConfigured()) return Promise.resolve();
+  if (leadsHydrated) return leadsHydrated;
+  leadsHydrated = (async () => {
+    try {
+      const supabase = getSupabaseAdminClient() as unknown as LeadsClient;
+      const { data, error } = await supabase.from("leads").select("*");
+      if (error) throw new Error(error.message);
+      const dir = collectionDir("leads");
+      mkdirSync(dir, { recursive: true });
+      for (const row of (data as { id: string }[]) ?? []) {
+        const path = join(dir, `${row.id}.json`);
+        if (!existsSync(path)) {
+          writeFileSync(path, JSON.stringify(row, null, 2));
+        }
+      }
+    } catch (e) {
+      log("warn", {
+        event: "leads.hydrate_failed",
+        details: { message: e instanceof Error ? e.message : String(e) },
+      });
+    }
+  })();
+  return leadsHydrated;
+}
+
 /** Upsert every engagement file in the tmp store back to Supabase. */
 export async function mirrorEngagements(): Promise<void> {
   if (!isDurableStoreConfigured()) return;
@@ -105,6 +149,44 @@ export async function mirrorEngagements(): Promise<void> {
   } catch (e) {
     log("warn", {
       event: "engagements.mirror_failed",
+      details: { message: e instanceof Error ? e.message : String(e) },
+    });
+  }
+}
+
+/**
+ * Upsert leads written by the engine's file-store fallback (i.e. when the
+ * direct Supabase insert in lib/production/leads.ts failed) back into the
+ * `leads` table, so they aren't lost on the next cold start.
+ */
+export async function mirrorLeads(): Promise<void> {
+  if (!isDurableStoreConfigured()) return;
+  try {
+    const dir = collectionDir("leads");
+    if (!existsSync(dir)) return;
+    const rows: Record<string, unknown>[] = [];
+    for (const file of readdirSync(dir)) {
+      if (!file.endsWith(".json")) continue;
+      try {
+        rows.push(JSON.parse(readFileSync(join(dir, file), "utf8")) as Record<string, unknown>);
+      } catch {
+        // skip unreadable file
+      }
+    }
+    if (rows.length === 0) return;
+    const supabase = getSupabaseAdminClient() as unknown as {
+      from: (t: "leads") => {
+        upsert: (
+          v: Record<string, unknown>[],
+          o?: { onConflict?: string },
+        ) => Promise<{ error: { message: string } | null }>;
+      };
+    };
+    const { error } = await supabase.from("leads").upsert(rows, { onConflict: "id" });
+    if (error) throw new Error(error.message);
+  } catch (e) {
+    log("warn", {
+      event: "leads.mirror_failed",
       details: { message: e instanceof Error ? e.message : String(e) },
     });
   }

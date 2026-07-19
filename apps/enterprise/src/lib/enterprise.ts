@@ -7,9 +7,14 @@ import { pathToFileURL } from "node:url";
 import { existsSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
-import { hydrateEngagements, mirrorEngagements } from "@/lib/engagement-store";
+import {
+  hydrateEngagements,
+  hydrateLeads,
+  mirrorEngagements,
+  mirrorLeads,
+} from "@/lib/engagement-store";
 
-export { mirrorEngagements };
+export { mirrorEngagements, mirrorLeads };
 
 const require = createRequire(import.meta.url);
 
@@ -37,7 +42,7 @@ export async function ent() {
   ensureEnterpriseDataDir();
   // Read-through: on a fresh serverless invocation, rehydrate the tmp file
   // store from the durable Supabase mirror before the engine reads it.
-  await hydrateEngagements();
+  await Promise.all([hydrateEngagements(), hydrateLeads()]);
 
   try {
     return import("@grabber/enterprise");

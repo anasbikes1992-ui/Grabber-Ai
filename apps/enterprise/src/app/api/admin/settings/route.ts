@@ -57,8 +57,8 @@ export async function GET() {
     key_present: has("ANTHROPIC_API_KEY"),
   };
 
-  // Durable-store health: can we reach the engagements + deposits tables?
-  let durableStore = { engagements: false, deposits: false };
+  // Durable-store health: can we reach the engagements + leads + deposits tables?
+  let durableStore = { engagements: false, leads: false, deposits: false };
   if (has("SUPABASE_SERVICE_ROLE_KEY")) {
     try {
       const { getSupabaseAdminClient } = await import("@/lib/production/supabase");
@@ -67,11 +67,12 @@ export async function GET() {
           select: (c: string, o: { count: "exact"; head: true }) => Promise<{ error: unknown }>;
         };
       };
-      const [e, d] = await Promise.all([
+      const [e, l, d] = await Promise.all([
         supabase.from("engagements").select("id", { count: "exact", head: true }),
+        supabase.from("leads").select("id", { count: "exact", head: true }),
         supabase.from("deposits").select("engagement_id", { count: "exact", head: true }),
       ]);
-      durableStore = { engagements: !e.error, deposits: !d.error };
+      durableStore = { engagements: !e.error, leads: !l.error, deposits: !d.error };
     } catch {
       // leave false — surfaced in the UI
     }

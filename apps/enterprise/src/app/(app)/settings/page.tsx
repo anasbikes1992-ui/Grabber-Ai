@@ -20,7 +20,7 @@ type Settings = {
     region: string;
     commit: string | null;
     supabase_configured: boolean;
-    durable_store?: { engagements: boolean; deposits: boolean };
+    durable_store?: { engagements: boolean; leads: boolean; deposits: boolean };
   };
 };
 
@@ -99,14 +99,15 @@ export default function SettingsPage() {
         />
         <Metric
           label="Durable store"
-          value={
-            data?.system.durable_store?.engagements && data.system.durable_store.deposits
-              ? "Active"
-              : data?.system.durable_store?.engagements || data?.system.durable_store?.deposits
-                ? "Partial"
-                : "Not set"
-          }
-          hint="engagements + deposits tables"
+          value={(() => {
+            const s = data?.system.durable_store;
+            if (!s) return "Not set";
+            const ok = [s.engagements, s.leads, s.deposits].filter(Boolean).length;
+            if (ok === 3) return "Active";
+            if (ok === 0) return "Not set";
+            return `Partial (${ok}/3)`;
+          })()}
+          hint="engagements + leads + deposits tables"
         />
       </div>
 

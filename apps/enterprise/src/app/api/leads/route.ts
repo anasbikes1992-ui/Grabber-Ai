@@ -1,4 +1,4 @@
-import { ent, monorepoCwd, jsonOk, jsonErr } from "@/lib/enterprise";
+import { ent, monorepoCwd, jsonOk, jsonErr, mirrorLeads } from "@/lib/enterprise";
 import {
   createLead,
   isSupabasePersistenceEnabled,
@@ -68,6 +68,7 @@ export async function POST(req: Request) {
         api = await ent();
         cwd = monorepoCwd();
         lead = api.recordLead(leadInput, cwd);
+        void mirrorLeads(); // Supabase insert failed — retry via the durable mirror
       }
     } else {
       api = await ent();
