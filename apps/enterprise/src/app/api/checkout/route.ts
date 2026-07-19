@@ -1,5 +1,6 @@
 import { appBaseUrl, getStripe, isStripeConfigured } from "@/lib/stripe";
 import { getDeposit, isDepositStoreReady } from "@/lib/deposits";
+import { checkRateLimit } from "@/lib/production/rate-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -13,6 +14,13 @@ export async function POST(req: Request) {
   if (!isStripeConfigured()) {
     return json({ ok: false, error: "Payments are not configured yet." }, 503);
   }
+
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    req.headers.get("x-real-ip") ||
+    "unknown";
+  const throttle = checkRateLimit(`checkout:${ip}`, 20, 60 * 60 * 1000);
+  if (!throttle.allowed) return json({ ok: false, error: "rate limit exceeded" }, 429);
 
   try {
     const body = (await req.json().catch(() => ({}))) as {

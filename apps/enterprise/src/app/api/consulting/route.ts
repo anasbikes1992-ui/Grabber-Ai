@@ -1,6 +1,7 @@
 import { ent, monorepoCwd, jsonOk, jsonErr, mirrorEngagements } from "@/lib/enterprise";
 import { log } from "@/lib/production/logger";
 import { notifyOwnerLead, sendBlueprintEmail } from "@/lib/email";
+import { checkRateLimit } from "@/lib/production/rate-limit";
 
 /** Persist engine mutations to the durable store before responding. */
 async function okMirrored(data: unknown, status = 200) {
@@ -17,6 +18,13 @@ export const dynamic = "force-dynamic";
  */
 export async function POST(req: Request) {
   try {
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      req.headers.get("x-real-ip") ||
+      "unknown";
+    const throttle = checkRateLimit(`consulting:${ip}`, 60, 60 * 60 * 1000);
+    if (!throttle.allowed) return jsonErr("rate limit exceeded", 429);
+
     const body = await req.json();
     const api = await ent();
     const cwd = monorepoCwd();
