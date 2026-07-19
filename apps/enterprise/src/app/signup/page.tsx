@@ -31,6 +31,34 @@ export default function SignupPage() {
 
         <form action={formAction} style={{ display: "grid", gap: "0.875rem" }}>
           <div style={{ display: "grid", gap: "0.375rem" }}>
+            <label className="label" htmlFor="full_name">
+              Full name
+            </label>
+            <input
+              id="full_name"
+              name="full_name"
+              type="text"
+              autoComplete="name"
+              className="input"
+              placeholder="Jane Silva"
+            />
+          </div>
+
+          <div style={{ display: "grid", gap: "0.375rem" }}>
+            <label className="label" htmlFor="phone">
+              Phone number
+            </label>
+            <input
+              id="phone"
+              name="phone"
+              type="tel"
+              autoComplete="tel"
+              className="input"
+              placeholder="+94 77 123 4567"
+            />
+          </div>
+
+          <div style={{ display: "grid", gap: "0.375rem" }}>
             <label className="label" htmlFor="email">
               Email
             </label>

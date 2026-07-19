@@ -46,6 +46,8 @@ export async function signIn(_prev: AuthState, formData: FormData): Promise<Auth
 export async function signUp(_prev: AuthState, formData: FormData): Promise<AuthState> {
   const email = String(formData.get("email") ?? "").trim().toLowerCase();
   const password = String(formData.get("password") ?? "");
+  const fullName = String(formData.get("full_name") ?? "").trim();
+  const phone = String(formData.get("phone") ?? "").trim();
 
   if (!email || !email.includes("@")) return { error: "Enter a valid email address." };
   if (password.length < 6) return { error: "Password must be at least 6 characters." };
@@ -60,8 +62,12 @@ export async function signUp(_prev: AuthState, formData: FormData): Promise<Auth
       email,
       password,
       options: {
+        // Self-reported contact info only — never used for role/authorization
+        // decisions (role stays in app_metadata, set by the owner).
         data: {
           role: "client",
+          full_name: fullName || undefined,
+          phone: phone || undefined,
         },
       },
     });

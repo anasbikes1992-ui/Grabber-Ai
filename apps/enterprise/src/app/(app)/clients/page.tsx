@@ -7,6 +7,7 @@ type AccountRole = "admin" | "client" | "operator" | "viewer";
 
 type Account = {
   id: string;
+  name: string | null;
   email: string | null;
   phone: string | null;
   role: string;
@@ -16,6 +17,8 @@ type Account = {
   confirmed: boolean;
 };
 
+type Draft = { role: string; engagement_id: string; name: string; phone: string };
+
 const fmtDate = (iso: string | null) =>
   iso ? new Date(iso).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }) : "—";
 
@@ -24,7 +27,7 @@ export default function ClientsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [savingId, setSavingId] = useState<string | null>(null);
-  const [draft, setDraft] = useState<Record<string, { role: string; engagement_id: string }>>({});
+  const [draft, setDraft] = useState<Record<string, Draft>>({});
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -44,10 +47,15 @@ export default function ClientsPage() {
     void load();
   }, [load]);
 
-  function edit(id: string, patch: Partial<{ role: string; engagement_id: string }>) {
+  function edit(id: string, patch: Partial<Draft>) {
     setDraft((d) => {
       const acc = accounts.find((a) => a.id === id);
-      const base = d[id] ?? { role: acc?.role ?? "client", engagement_id: acc?.engagement_id ?? "" };
+      const base: Draft = d[id] ?? {
+        role: acc?.role ?? "client",
+        engagement_id: acc?.engagement_id ?? "",
+        name: acc?.name ?? "",
+        phone: acc?.phone ?? "",
+      };
       return { ...d, [id]: { ...base, ...patch } };
     });
   }
@@ -61,7 +69,13 @@ export default function ClientsPage() {
       const res = await fetch("/api/admin/users", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ userId: id, role: patch.role, engagementId: patch.engagement_id }),
+        body: JSON.stringify({
+          userId: id,
+          role: patch.role,
+          engagementId: patch.engagement_id,
+          name: patch.name,
+          phone: patch.phone,
+        }),
       }).then((r) => r.json());
       if (!res.ok) throw new Error(res.error || "Save failed");
       setDraft((d) => {
@@ -86,7 +100,7 @@ export default function ClientsPage() {
       <PageHeader
         eyebrow="Access control"
         title="Clients & registrations"
-        description="Every account that has registered — email, phone, status — and who can see what. Assign a role or link a client to their engagement."
+        description="Every account that has registered — name, email, phone, status — and who can see what. Assign a role or link a client to their engagement."
         actions={
           <button className="btn btn-ghost" onClick={() => void load()} disabled={loading}>
             {loading ? "Loading…" : "Refresh"}
@@ -115,6 +129,7 @@ export default function ClientsPage() {
             <table className="table">
               <thead>
                 <tr>
+                  <th>Name</th>
                   <th>Email</th>
                   <th>Phone</th>
                   <th>Status</th>
@@ -130,11 +145,28 @@ export default function ClientsPage() {
                   const d = draft[a.id];
                   const role = d?.role ?? a.role;
                   const eng = d?.engagement_id ?? a.engagement_id ?? "";
+                  const name = d?.name ?? a.name ?? "";
+                  const phone = d?.phone ?? a.phone ?? "";
                   const dirty = Boolean(d);
                   return (
                     <tr key={a.id}>
+                      <td>
+                        <input
+                          className="input"
+                          value={name}
+                          placeholder="Add name"
+                          onChange={(e) => edit(a.id, { name: e.target.value })}
+                        />
+                      </td>
                       <td className="font-medium">{a.email ?? "—"}</td>
-                      <td className="muted">{a.phone ?? "—"}</td>
+                      <td>
+                        <input
+                          className="input"
+                          value={phone}
+                          placeholder="Add phone"
+                          onChange={(e) => edit(a.id, { phone: e.target.value })}
+                        />
+                      </td>
                       <td>
                         <StatusPill status={a.confirmed ? "confirmed" : "pending"} />
                       </td>

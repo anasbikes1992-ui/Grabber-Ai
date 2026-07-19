@@ -6,6 +6,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 type AppMeta = { role?: string; engagement_id?: string };
+type ProfileMeta = { full_name?: string; phone?: string };
 
 async function requireAdmin() {
   const user = await getSessionUser();
@@ -27,10 +28,12 @@ export async function GET() {
 
     const users = (data.users ?? []).map((u) => {
       const meta = (u.app_metadata ?? {}) as AppMeta;
+      const profile = (u.user_metadata ?? {}) as ProfileMeta;
       return {
         id: u.id,
+        name: profile.full_name ?? null,
         email: u.email ?? null,
-        phone: u.phone ?? null,
+        phone: profile.phone ?? u.phone ?? null,
         role: meta.role ?? "client",
         engagement_id: meta.engagement_id ?? null,
         created_at: u.created_at,
@@ -45,7 +48,7 @@ export async function GET() {
   }
 }
 
-/** Assign a role and/or engagement to an account (admin provisioning). */
+/** Assign a role/engagement/contact info to an account (admin provisioning). */
 export async function POST(req: Request) {
   if (!(await requireAdmin())) return json({ ok: false, error: "forbidden" }, 403);
 
@@ -54,6 +57,8 @@ export async function POST(req: Request) {
       userId?: string;
       role?: string;
       engagementId?: string;
+      name?: string;
+      phone?: string;
     };
     if (!body.userId) return json({ ok: false, error: "userId required" }, 400);
 
@@ -65,8 +70,14 @@ export async function POST(req: Request) {
     if (body.role) meta.role = body.role;
     if (body.engagementId !== undefined) meta.engagement_id = body.engagementId || undefined;
 
+    // Contact profile (display only — never used for role/authorization).
+    const profile = { ...((current.user?.user_metadata ?? {}) as ProfileMeta) };
+    if (body.name !== undefined) profile.full_name = body.name || undefined;
+    if (body.phone !== undefined) profile.phone = body.phone || undefined;
+
     const { error } = await supabase.auth.admin.updateUserById(body.userId, {
       app_metadata: meta,
+      user_metadata: profile,
     });
     if (error) throw error;
 
