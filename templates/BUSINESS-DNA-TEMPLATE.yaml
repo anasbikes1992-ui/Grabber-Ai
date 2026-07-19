@@ -1,0 +1,61 @@
+# BUSINESS DNA — the structured output of Jarvis discovery (EDR-008).
+# Owned by Jarvis (Consulting). Captures the BUSINESS only — no technology.
+# Flow: Business → Discovery → BUSINESS DNA → Execution Orchestrator →
+#       PROJECT DNA → Factory → Application.
+# The Execution Orchestrator transforms this into a Project DNA; architecture,
+# modules, stack, and integrations belong THERE, never here.
+#
+# Location: projects/<client>/business-dna.yaml
+# Changes after client approval require re-approval of the proposal.
+
+company:
+  name: ""
+  industry: ""                  # must map to knowledge/industries/
+  location: ""                  # city, country (drives regulation/currency context)
+  size: ""                      # people, branches, warehouses
+  contact:
+    name: ""
+    email: ""
+    phone: ""
+
+workflows:                      # how the business actually operates today
+  - name: ""                    # e.g. receiving, sales, credit collection
+    description: ""
+    tools_today: ""             # Excel, paper, QuickBooks, phone calls…
+    volume: ""                  # e.g. ~900 orders/month
+    owner: ""                   # who runs this workflow day to day
+
+pain_points:                    # ranked; each traceable to a workflow
+  - description: ""
+    workflow: ""
+    cost: ""                    # hours/month, error rate, lost revenue
+
+goals: []                       # measurable business outcomes, client's words
+
+kpis:                           # how the client will judge success
+  - name: ""                    # e.g. inventory accuracy
+    current: ""
+    target: ""
+    by_when: ""
+
+budget:
+  range: ""                     # client-stated or consultant-qualified
+  payment_readiness: ""         # deposit-ready | needs approval | exploring
+
+priorities: []                  # ordered; what matters first commercially
+
+timeline:
+  desired_golive: ""
+  hard_deadlines: []            # seasonal peaks, regulatory dates
+
+stakeholders:
+  - name: ""
+    role: ""                    # owner, ops manager, finance…
+    influence: ""               # decision-maker | user | blocker
+    concerns: []
+
+evidence:                       # provenance — written by the Evidence Engine
+  discovery_confidence: 0       # 0–1, from Jarvis confidence dimensions
+  interview_refs: []            # engagement/session ids
+  benchmark_refs: []            # patterns consulted (patterns only)
+  based_on_completed_projects: 0  # honest zero-state; never fabricated

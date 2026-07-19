@@ -10,12 +10,12 @@
   ],
 
   "scripts": {
-    "test": "npm test --workspace=@grabber-ai-studio/runtime ; npm test --workspace=@grabber/sdk ; npm test --workspace=@grabber/cli ; npm test --workspace=@grabber/enterprise",
+    "test": "npm test --workspace=@grabber-ai-studio/runtime && npm test --workspace=@grabber/sdk && npm test --workspace=@grabber/cli && npm test --workspace=@grabber/enterprise",
     "test:runtime": "npm test --workspace=@grabber-ai-studio/runtime",
     "test:sdk": "npm test --workspace=@grabber/sdk",
     "test:cli": "npm test --workspace=@grabber/cli",
     "test:enterprise": "npm test --workspace=@grabber/enterprise",
-    "test:milestones": "npm test --workspace=@grabber/enterprise ; npm test --workspace=@grabber/cli",
+    "test:milestones": "npm test --workspace=@grabber/enterprise && npm test --workspace=@grabber/cli",
     "grabber": "node packages/cli/bin/grabber.js",
     "dev": "npm --prefix apps/enterprise run dev -- -p 3002",
     "build": "npm --prefix apps/enterprise run build",

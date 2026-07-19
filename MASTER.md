@@ -45,7 +45,7 @@ Detail: [docs/EXECUTION-ROADMAP.md](docs/EXECUTION-ROADMAP.md)
 ## Two tracks always
 
 - **~70% Build** (consulting intelligence quality, evidence, packages)  
-- **~30% Validation** (interviews / market truth — Track B is input, not a sequential gate)
+- **~30% Validation** (interviews / market truth — validation is input, not a sequential gate)
 
 ---
 

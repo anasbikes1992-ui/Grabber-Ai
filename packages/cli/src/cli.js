@@ -2,7 +2,6 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { spawnSync } from 'node:child_process';
 import { createGrabberClient } from '@grabber/sdk';
 import { ExtensionRuntime } from '../../../runtime/src/extensions/index.js';
 import { defineSkill } from '@grabber/skill-sdk';
@@ -10,49 +9,31 @@ import { createProductFactory } from '../../../runtime/src/factory/index.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '../../..');
-const SAAS = join(ROOT, 'apps/saas-starter');
 
 const HELP = `
-grabber — Grabber AI Studio v3.0 Enterprise + Product Factory CLI
+grabber — Grabber AI Studio CLI (Foundation Layer tooling)
 
-Core is FROZEN. Product Factory + Enterprise Business OS (Track B).
+Foundation Layer is frozen; the Delivery Layer runs in apps/enterprise.
 
 Usage:
   grabber <command> [args]
 
-Product Factory:
-  create <blueprint> [name]   Create product (saas|crm|marketplace|booking|inventory)
-  build <id|name>             DNA → assembly → Core build → metrics
-  regenerate <id|name>        Rebuild deterministically
-  validate <id|name>          Validate product DNA + assembly
-  deploy <id|name>            Integration plan + production URL
-  status                      Factory status
-  metrics                     Analytics dashboard JSON
-  doctor                      Health checks (modules, blueprints, config)
-
-Catalog:
-  list                        List products
-  clone <id|name> <new-name>  Clone product
-  archive <id|name>           Archive product
-  catalog                     Factory Registry v2 (modules + blueprints)
-  reference [product|all]     Golden reference run
-
-Enterprise (milestones 1–6):
+Enterprise (Delivery Layer engine):
   enterprise seed [name] [industry]   Full governance path → factory_ready
   enterprise consult [name] [story…]  Business consulting → package (no factory)
   enterprise list                     List engagements
-  enterprise handoff <engagementId>   Approved DNA for Product Factory
-  enterprise from-engagement <id>     Create product from handoff
+  enterprise handoff <engagementId>   Approved DNA for the factory
   enterprise kpis                     Business KPI snapshot
   enterprise campaign [name]          Run marketing intelligence pipeline
-  handoff <engagementId>              Alias: factory handoff inspect
-  from-engagement <id>                Alias: create product from engagement
 
-Legacy / platform:
+Foundation:
+  plan [dna]                  Show Core builder pipeline for a Project DNA
   init [dir]                  Scaffold workspace
-  plan [dna]                  Show Core builder pipeline
   runtime status              Core runtime status
   skill list|install          First-party skills
+  plugin install <manifest>   Install an extension
+  search <query>              Knowledge search
+  graph impact <projectId>    Impact analysis
   help
 `.trim();
 
@@ -63,16 +44,6 @@ export async function main(argv) {
   if (!cmd || cmd === 'help' || cmd === '--help' || cmd === '-h') {
     console.log(HELP);
     return 0;
-  }
-
-  const productCmds = new Set([
-    'create', 'build', 'regenerate', 'validate', 'deploy', 'status', 'metrics',
-    'doctor', 'list', 'clone', 'archive', 'catalog', 'reference', 'get',
-    'handoff', 'from-engagement', 'gate',
-  ]);
-
-  if (productCmds.has(cmd)) {
-    return runProductCli([cmd, ...rest]);
   }
 
   switch (cmd) {
@@ -118,9 +89,9 @@ async function cmdEnterprise(args) {
       ok: true,
       commands: [
         'enterprise seed [name] [industry]',
+        'enterprise consult [name] [story…]',
         'enterprise list',
         'enterprise handoff <engagementId>',
-        'enterprise from-engagement <id>',
         'enterprise kpis',
         'enterprise campaign [name] [industry]',
       ],
@@ -150,11 +121,6 @@ async function cmdEnterprise(args) {
     const handoff = api.getFactoryHandoff(id, ROOT);
     console.log(JSON.stringify({ ok: true, handoff }, null, 2));
     return 0;
-  }
-
-  if (sub === 'from-engagement') {
-    // Delegate product creation to factory product-cli
-    return runProductCli(['from-engagement', rest[0]]);
   }
 
   if (sub === 'kpis') {
@@ -237,38 +203,6 @@ async function cmdEnterprise(args) {
   throw new Error(`unknown enterprise subcommand "${sub}"`);
 }
 
-function runProductCli(args) {
-  const script = join(SAAS, 'scripts/product-cli.ts');
-  if (!existsSync(script)) {
-    console.error(JSON.stringify({ ok: false, error: 'product-cli missing' }));
-    return 1;
-  }
-  // Prefer local tsx from saas-starter node_modules
-  const tsxCli = join(SAAS, 'node_modules/tsx/dist/cli.mjs');
-  const nodeArgs = existsSync(tsxCli)
-    ? [tsxCli, script, ...args]
-    : ['--import', 'tsx', script, ...args];
-
-  const r = spawnSync(process.execPath, nodeArgs, {
-    cwd: SAAS,
-    encoding: 'utf8',
-    env: process.env,
-    maxBuffer: 20 * 1024 * 1024,
-  });
-  // Use console.log so test harnesses can capture output
-  if (r.stdout?.trim()) {
-    for (const line of r.stdout.replace(/\r\n/g, '\n').split('\n')) {
-      if (line.length) console.log(line);
-    }
-  }
-  if (r.stderr?.trim()) {
-    for (const line of r.stderr.replace(/\r\n/g, '\n').split('\n')) {
-      if (line.length) console.error(line);
-    }
-  }
-  return r.status ?? 1;
-}
-
 function cmdInit(dir) {
   const target = resolve(process.cwd(), dir);
   mkdirSync(join(target, 'projects'), { recursive: true });
@@ -279,7 +213,7 @@ function cmdInit(dir) {
       version: '2.0.0',
       core: '1.8.0',
       factory: '2.0.0',
-      tracks: { platform: 'A-frozen', product: 'B' },
+      layers: { foundation: 'frozen', delivery: 'active' },
       extensions: [],
     }, null, 2)}\n`);
   }
@@ -299,13 +233,15 @@ function cmdPlan(arg) {
 
 function resolveDnaPath(arg) {
   if (!arg) {
-    return join(SAAS, 'reference-projects/saas/project-dna.json');
+    return join(ROOT, 'reference-projects/saas-starter/project-dna.json');
   }
+  // 'saas' is the historical alias for the saas-starter reference DNA
+  const name = arg === 'saas' ? 'saas-starter' : arg;
   const candidates = [
     resolve(process.cwd(), arg),
-    join(SAAS, 'reference-projects', arg, 'project-dna.json'),
-    join(ROOT, 'templates/products', arg, 'project-dna.json'),
-    join(process.cwd(), 'projects', arg, 'project-dna.json'),
+    join(ROOT, 'reference-projects', name, 'project-dna.json'),
+    join(ROOT, 'templates/products', name, 'project-dna.json'),
+    join(process.cwd(), 'projects', name, 'project-dna.json'),
   ];
   for (const c of candidates) {
     if (existsSync(c)) return c;
@@ -379,4 +315,4 @@ function cmdSkillList() {
   return 0;
 }
 
-export const _internal = { ROOT, SAAS, HELP, state };
+export const _internal = { ROOT, HELP, state };

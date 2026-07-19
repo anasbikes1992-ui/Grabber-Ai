@@ -24,7 +24,7 @@ function capture(fn) {
 test('grabber help exits 0', async () => {
   const { code, logs } = await capture(() => main(['help']));
   assert.equal(code, 0);
-  assert.ok(logs.join('\n').includes('Product Factory'));
+  assert.ok(logs.join('\n').includes('Foundation Layer'));
 });
 
 function parseLastJson(logs) {
@@ -41,37 +41,6 @@ function parseLastJson(logs) {
   // fallback: entire output
   return JSON.parse(text);
 }
-
-test('grabber doctor reports factory health', async () => {
-  const { code, logs, errs } = await capture(() => main(['doctor']));
-  assert.equal(code, 0, logs.join('\n') + errs.join('\n'));
-  const report = parseLastJson(logs);
-  assert.equal(report.ok, true);
-  assert.ok(report.catalog.module_count >= 15);
-  assert.ok(report.catalog.blueprint_count >= 5);
-});
-
-test('grabber status returns factory status', async () => {
-  const { code, logs, errs } = await capture(() => main(['status']));
-  assert.equal(code, 0, logs.join('\n') + errs.join('\n'));
-  const report = parseLastJson(logs);
-  assert.equal(report.ok, true);
-  assert.ok(report.version);
-});
-
-test('grabber create booking product and list', async () => {
-  const name = `cli-book-${Date.now().toString(36)}`;
-  const created = await capture(() => main(['create', 'booking', name]));
-  assert.equal(created.code, 0, created.logs.join('\n') + created.errs.join('\n'));
-  const body = parseLastJson(created.logs);
-  assert.equal(body.ok, true);
-  assert.equal(body.product.name, name);
-
-  const listed = await capture(() => main(['list']));
-  assert.equal(listed.code, 0, listed.logs.join('\n'));
-  const list = parseLastJson(listed.logs);
-  assert.ok(list.products.some((p) => p.name === name));
-});
 
 test('grabber skill list returns catalog', async () => {
   const { code, logs } = await capture(() => main(['skill', 'list']));
