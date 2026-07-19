@@ -88,7 +88,15 @@ Settings) · `GITHUB_TOKEN` / `VERCEL_TOKEN` (delivery automation, deferred).
 2. Create YOUR user: Authentication → Users → Add user → your email +
    password → Auto Confirm. This plus `OWNER_EMAIL` makes you admin.
 
-### 3b. Durable tables — run once in SQL Editor (idempotent)
+### 3b. Durable tables
+
+Canonical source: `supabase/migrations/` (versioned in the repo). Two ways
+to apply:
+- **GitHub integration (recommended):** Supabase → Settings → Integrations →
+  GitHub → choose `Grabber-Ai`, branch `master`. Merges then auto-apply new
+  migration files.
+- **Manual:** run the SQL below once in the SQL Editor (idempotent — same
+  content as the migration).
 
 ```sql
 -- Engagements: durable mirror of the consulting/delivery engine store
